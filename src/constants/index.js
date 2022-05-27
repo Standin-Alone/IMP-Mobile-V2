@@ -4,6 +4,7 @@ import Dimensions from './Dimensions';
 import Images from './Images';
 import Icons from './Icons';
 import EndPoints from  './EndPoints';
+import ScreenNames from './ScreenNames';
 
 export default {
     Colors,
@@ -11,6 +12,7 @@ export default {
     Dimensions,
     Images,
     Icons,
-    EndPoints
+    EndPoints,
+    ScreenNames
 
 }

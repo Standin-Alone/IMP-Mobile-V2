@@ -32,6 +32,27 @@ export const styles = StyleSheet.create({
         top:constants.Dimensions.vh(1),
         left:5
 
+    },
+    inputAndroid:{
+        borderWidth:1,
+        width:constants.Dimensions.vw(90),
+        borderRadius:10,        
+        borderColor:constants.Colors.gray,                
+        fontFamily:constants.Fonts.GothamRegular,
+        paddingLeft:constants.Dimensions.vw(15),                
+        paddingVertical:   constants.Dimensions.vh(4),      
+        color:constants.Colors.dark,  
+        fontSize:16
+    },
+    placeholder:{
+      
+            color:'#a3a3a3',                
+            zIndex:1,
+            paddingLeft:10,
+            borderRadius: 5,
+            borderWidth:1,
+            
+            
     }
   
 });

@@ -23,8 +23,12 @@ export const styles = StyleSheet.create({
     searchContainer:{      
         left:constants.Dimensions.vw(5),
         position:'absolute',        
-        bottom:constants.Dimensions.vh(175),
-        backgroundColor:'transparent'
+        bottom:constants.Dimensions.vh(193),
+        backgroundColor:'transparent'        
+    },
+    body:{
+    
+        alignSelf:'center'
         
     }
 });

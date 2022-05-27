@@ -11,11 +11,16 @@ import SignUp from "../screens/SignUp";
 import Authentication from "../screens/Authentication";
 import VerifyOtp from "../screens/VerifyOtp";
 import {BottomTabNavigator} from "./BottomTab";
+import constants from "../constants";
 
 
 LogBox.ignoreLogs([
   "[react-native-gesture-handler] Seems like you\'re using an old API with gesture components, check out new Gestures system!",
+  
 ]);
+
+  
+
 
 
 
@@ -24,12 +29,13 @@ const Stack  = createStackNavigator();
 
 const AppStack = () =>(
 
-    <Stack.Navigator initialRouteName="Login" screenOptions={{headerShown:false }} >
-        <Stack.Screen component={Authentication} name={"Authentication"}/>
-        <Stack.Screen component={Login} name={"Login"} options={{cardStyleInterpolator:CardStyleInterpolators.forHorizontalIOS}}/>    
+    <Stack.Navigator initialRouteName={constants.ScreenNames.APP_STACK.AUTHENTICATION} screenOptions={{headerShown:false }} >
+        <Stack.Screen component={Authentication} name={constants.ScreenNames.APP_STACK.AUTHENTICATION}/>
+        <Stack.Screen component={Login} name={constants.ScreenNames.APP_STACK.LOGIN} options={{cardStyleInterpolator:CardStyleInterpolators.forHorizontalIOS}}/>    
         <Stack.Screen component={SignUp} name={"SignUp"} options={{cardStyleInterpolator:CardStyleInterpolators.forHorizontalIOS}}/>    
-        <Stack.Screen component={VerifyOtp} name={"VerifyOtp"} options={{cardStyleInterpolator:CardStyleInterpolators.forHorizontalIOS}}/>    
-        <Stack.Screen component={BottomTabNavigator} name={"BottomTab"} options={{cardStyleInterpolator:CardStyleInterpolators.forHorizontalIOS}}/>    
+        <Stack.Screen component={VerifyOtp} name={constants.ScreenNames.APP_STACK.VERIFY_OTP} options={{cardStyleInterpolator:CardStyleInterpolators.forHorizontalIOS}}/>    
+        <Stack.Screen component={BottomTabNavigator} name={constants.ScreenNames.APP_STACK.MAIN_TAB} options={{cardStyleInterpolator:CardStyleInterpolators.forHorizontalIOS}}/>    
+        
     </Stack.Navigator>
 
 )

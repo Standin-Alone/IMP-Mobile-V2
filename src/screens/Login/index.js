@@ -91,13 +91,13 @@ export default class Login extends React.Component {
                                 <Text style={styles.forgotPassword}>Forgot Password?</Text>
                             </View>
                             
-                            <Animated.View>
+                            <View>
                                 <Components.PrimaryButton  
                                     onPress={this.handleLogin}                      
                                     title={"Log In"}                                
                                     isLoading={this.state.isLoading}
                                 />
-                            </Animated.View>
+                            </View>
                         </View>                                                                                                
                     </View>
                     

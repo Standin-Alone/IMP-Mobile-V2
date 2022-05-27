@@ -39,13 +39,7 @@ export const login = (payload,setState,props) => {
                 // POST REQUEST
                 POST(`${getBaseUrl().accesspoint}${constants.EndPoints.LOGIN}`,clean_payload).then((response)=>{                    
                     
-                    if(response.data.status == true){
-                        
-                        Toast.show({
-                                type:'success',
-                                text1:'Success',                    
-                                text2: response.data.message
-                        });
+                    if(response.data.status == true){                    
 
                         console.warn(response.data.data);
                         let params = {
@@ -99,35 +93,32 @@ export const login = (payload,setState,props) => {
 }
 
 
-export const verifyOtp = (payload,setState)=>{
+export const verifyOtp = (payload,setState,props)=>{
     setState({isLoading:true});
 
     // Check Internet Connection
     NetInfo.fetch().then((state)=>{
          // if internet connected
          if(state.isConnected && state.isInternetReachable){
-           
-            console.warn(payload.otp.length)       
-            if(payload.otp.length == 6){
+           console.warn(payload.otp);
+             
+            if(payload.otp.value.length == 6){
 
 
                 let cleanPayload = {
-                    otp : payload.otp,
+                    otp : payload.otp.value,
                     user_id : payload.userId
                 }
                 // POST REQUEST
                 POST(`${getBaseUrl().accesspoint}${constants.EndPoints.VERIFY_OTP}`,cleanPayload).then((response)=>{                    
                     
-                    if(response.data.status == true){
-                        Toast.show({
-                                type:'success',
-                                text1:'Success',                    
-                                text2: response.data.message
-                        });                     
+                    if(response.data.status == true){                      
                         
                         SET_SESSION('USER_ID',payload.userId)
-                        
-                        
+
+                         // NAVIGATE TO HOME
+                         props.navigation.navigate('MainTabs');                                                
+
                     }else{
                         Toast.show({
                             type:'error',
@@ -135,6 +126,7 @@ export const verifyOtp = (payload,setState)=>{
                             text2: response.data.message
                         });
 
+                        setState({otp:{...payload.otp,error:true,value:''}})    
                     }
 
                      // turn off loading
@@ -146,7 +138,7 @@ export const verifyOtp = (payload,setState)=>{
                         type:'error',
                         text1:'Something went wrong!',                     
                     });
-                    
+                    setState({otp:{...payload.otp,error:true}})    
                     // turn off loading
                     setState({isLoading:false});
                 });
@@ -154,8 +146,7 @@ export const verifyOtp = (payload,setState)=>{
 
 
                 
-                setState({otp:{...payload.otp,error:false},isLoading:false})
-                
+                            
             }else{          
                 setState({otp:{...payload.otp,error:true},isLoading:false})
                 Toast.show({
@@ -205,7 +196,7 @@ export const resendOtp = (payload,setState)=>{
                             text1:'Success',                    
                             text2: response.data.message
                     });                                                                                                    
-                    
+
                 }else{
                     Toast.show({
                         type:'error',

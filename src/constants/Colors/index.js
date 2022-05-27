@@ -8,7 +8,7 @@ export default Colors = {
         secondary:'',
     }, 
     danger:'',
-    warning:'',
+    warning:'#FFD700',
     gray:'#ACB1C1',
     gray_tint:'#ececec',
     danger:'#D9534F',

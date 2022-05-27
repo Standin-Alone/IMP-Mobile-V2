@@ -34,18 +34,24 @@ export default class VerifyOtp extends React.Component {
 
     setMyState = (value)=>this.setState(value);
     
-    handleChangeOtp = (value)=>this.setState({otp:{...this.state.otp,value:value,error:false}})
+    handleChangeOtp = (value)=>{
+        
+        this.setState({otp:{...this.state.otp,value:value,error:false}})
+
+       
+    }
 
     handleVerifyOtp = (value)=>{        
 
         let payload = {
-            otp    : this.state.otp.value,       
+            otp    : this.state.otp,       
             userId : this.state.parameters.userId
         };  
-
         
+
+
                     
-        return verifyOtp(payload,this.setMyState);
+        return verifyOtp(payload,this.setMyState,this.props);
     }
 
     handleResendOtp = ()=>{
@@ -71,7 +77,7 @@ export default class VerifyOtp extends React.Component {
                 />
                 <View style={styles.otpVerificationTitleContainer}>
                     <Text style={styles.otpVerificationTitle} adjustsFontSizeToFit>OTP Verification</Text>
-                    <Text style={styles.otpSubtitle} adjustsFontSizeToFit numberOfLines={3}>Enter the OTP has sent to
+                    <Text style={styles.otpSubtitle} adjustsFontSizeToFit numberOfLines={3}>Enter the 6 digit code we sent to your
                         <Text style={styles.email}> {this.state.parameters.email}</Text>
                     </Text>
                 </View>
@@ -84,7 +90,7 @@ export default class VerifyOtp extends React.Component {
                         rootStyle={styles.codeFieldRoot}                    
                         keyboardType="number-pad"
                         textContentType="oneTimeCode"
-                        onSubmitEditing= {this.handleVerifyOtp}
+                        onSubmitEditing= {this.handleVerifyOtp}                        
                         multiline={false}
                         renderCell={({index, symbol, isFocused}) => (
                         <Text

@@ -1,4 +1,4 @@
-package com.ImpMobile;
+package com.impmobile;
 
 import com.facebook.react.ReactActivity;
 
