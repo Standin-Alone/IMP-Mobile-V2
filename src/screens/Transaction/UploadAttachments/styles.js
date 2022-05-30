@@ -9,10 +9,15 @@ export const styles = StyleSheet.create({
    
     container: {
 
-        flex: 0.8,
-        backgroundColor: constants.Colors.primary,
+        flex: 1,
+    
         justifyContent: 'center',
         flexDirection: 'column'
+    },
+    label:{
+        fontFamily:constants.Fonts.PoppinsBold,
+        fontSize:20,
+        left:constants.Dimensions.vw(5)
     }
 
 

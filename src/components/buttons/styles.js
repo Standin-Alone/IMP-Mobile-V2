@@ -34,6 +34,14 @@ export const styles = StyleSheet.create({
         fontSize:20,
         fontFamily:constants.Fonts.GothamBold,        
         color:constants.Colors.primary
+    },
+    secondaryButton:{
+        alignSelf:'center',
+        borderWidth:1,
+        borderColor:constants.Colors.primary,
+        height:constants.Dimensions.vh(50),
+        width:constants.Dimensions.vw(90),
+        borderRadius:30,    
     }
 });
 

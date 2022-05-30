@@ -1,7 +1,8 @@
 
 import { 
     PrimaryButton,
-    PrimaryButtonOutline
+    PrimaryButtonOutline,
+    SecondaryButton
     } from "./buttons";
 
 import { 
@@ -12,7 +13,8 @@ import {
 
 import { 
         PrimaryCard,
-        CommodityCard
+        CommodityCard,
+        ImageCard
     } from "./cards";
 
 import { 
@@ -29,13 +31,17 @@ import {
     PrimaryHeader,
     PrimaryHeaderSearch
     } from "./headers";
-
+import { 
+    ImageModal,
+    ConfirmModal,
+    ProgressModal
+} from "./modals";
 
 export default {
     // Buttons
     PrimaryButton,
     PrimaryButtonOutline,
-
+    SecondaryButton,
 
 
     PrimaryTextInput,
@@ -51,5 +57,10 @@ export default {
     AmountText,
     
     PrimaryCard,
-    CommodityCard
+    CommodityCard,
+    ImageCard,
+
+    ImageModal,
+    ConfirmModal,
+    ProgressModal
 }

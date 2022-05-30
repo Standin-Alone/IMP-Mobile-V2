@@ -38,9 +38,14 @@ export const styles = StyleSheet.create({
         textAlign:'center'
     },
     label:{
-        fontFamily:constants.Fonts.PoppinsBold,
+        fontFamily:constants.Fonts.PoppinsRegular,
         color:constants.Colors.dark_tint,
         fontSize:18,        
+    },
+    value:{
+        fontFamily:constants.Fonts.PoppinsRegular,
+        color:constants.Colors.dark_tint,
+        fontSize:18,      
     }
 
 });

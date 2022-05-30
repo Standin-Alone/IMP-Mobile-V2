@@ -6,24 +6,46 @@ import FastImage  from 'react-native-fast-image'
 import constants from "../../constants";
 
 export const PrimaryCard = ({
-
+    image,
+    imageStyle,
+    title,
+    titleStyle,
+    buttonStyle,
+    onPress
 })=>(   
-    <TouchableOpacity style={styles.primaryCard}>
+    <TouchableOpacity style={[styles.primaryCard,buttonStyle]} onPress={onPress}>
         <View style={styles.imageContainer}>
             <FastImage
-                style={styles.attachments}
-
-                source={{
-                    uri: 'https://unsplash.it/400/400?image=1',
-                    headers: { Authorization: 'someAuthToken' },                
-                }}
-
+                style={[styles.attachments,imageStyle]}
+                source={image}
                 resizeMode={FastImage.resizeMode.cover}    
             >
 
                 <View style={styles.cardHeader}>
-                    <Text style={styles.cardHeaderText}>Jojo bardon</Text>
+                    <Text style={[styles.cardHeaderText,titleStyle]}>{title}</Text>
                 </View>
+            </FastImage>
+        </View>
+    </TouchableOpacity>
+);
+
+
+
+
+export const ImageCard = ({
+
+    image,
+    onViewImage
+})=>(   
+    <TouchableOpacity style={styles.imageCard} onPress={onViewImage}>
+        <View style={styles.imageContainer}>
+            <FastImage
+                style={styles.attachments}
+
+                source={{ uri:`data:image/jpeg;base64,${image}` }}
+
+                resizeMode={FastImage.resizeMode.cover}    
+            >            
             </FastImage>
         </View>
     </TouchableOpacity>

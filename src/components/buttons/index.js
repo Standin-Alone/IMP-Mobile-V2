@@ -85,3 +85,31 @@ export const PrimaryButtonOutline = ({
         </TouchableOpacity>
     </LinearGradient>
 );
+
+
+
+
+export const SecondaryButton = ({
+    onPress, 
+    iconName,
+    iconColor,
+    iconSize
+})=>(   
+
+  
+        <TouchableOpacity  onPress={onPress}  style={styles.secondaryButton}>
+            <View style={{ flexDirection:'column',top:constants.Dimensions.vh(20)}} >
+                <View style={{ flexDirection:'row',justifyContent:'center'}}>
+                    <constants.Icons.MaterialCommunityIcons name={iconName} size={iconSize} color={iconColor}/>
+                </View>
+            </View>
+        </TouchableOpacity>
+  
+);
+
+
+
+
+
+
+

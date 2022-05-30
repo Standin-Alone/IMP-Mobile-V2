@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
         fontFamily:constants.Fonts.PoppinsMedium,
         color:constants.Colors.gray,
         fontSize:16,
-    },
+    },   
     cartSummaryText:{
         fontFamily:constants.Fonts.PoppinsBold,
         color:constants.Colors.dark,

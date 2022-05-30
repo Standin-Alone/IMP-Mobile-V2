@@ -17,6 +17,7 @@ const ScreenNames = {
         SET_COMMODITY_DETAILS:'SetCommodityDetails',
         CHECKOUT:'Checkout',
         UPLOAD_ATTACHMENTS:'UploadAttachments',
+        REVIEW_TRANSACTION:'ReviewTransaction',
 
     }
 

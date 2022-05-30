@@ -115,6 +115,7 @@ export const verifyOtp = (payload,setState,props)=>{
                     if(response.data.status == true){                      
                         
                         SET_SESSION('USER_ID',payload.userId)
+                        SET_SESSION('FULL_NAME',payload.fullName)
 
                          // NAVIGATE TO HOME
                          props.navigation.navigate('MainTabs');                                                

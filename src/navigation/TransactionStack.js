@@ -7,6 +7,7 @@ import FarmerProfile from '../screens/Transaction/FarmerProfile';
 import SetCommodityDetails from '../screens/Transaction/SetCommodityDetails';
 import Checkout from '../screens/Transaction/Checkout';
 import UploadAttachments from '../screens/Transaction/UploadAttachments';
+import ReviewTransaction from '../screens/Transaction/ReviewTransaction';
 
 
 const TransactionStack = createStackNavigator();
@@ -60,6 +61,13 @@ export const TransactionStackComponent= (props) => {
             <TransactionStack.Screen
                 component={UploadAttachments}
                 name={constants.ScreenNames.TRANSACTION_STACK.UPLOAD_ATTACHMENTS}
+                
+            /> 
+
+
+            <TransactionStack.Screen
+                component={ReviewTransaction}
+                name={constants.ScreenNames.TRANSACTION_STACK.REVIEW_TRANSACTION}
                 
             />  
 

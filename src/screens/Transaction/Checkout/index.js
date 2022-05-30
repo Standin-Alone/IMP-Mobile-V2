@@ -3,7 +3,7 @@ import { View,Text,FlatList} from 'react-native';
 import constants from '../../../constants';
 import {styles} from './styles'
 import Components from '../../../components';
-
+import { checkout } from '../../../actions/transaction';
 
 export default class Checkout extends React.Component {
     constructor(props) {
@@ -111,7 +111,7 @@ export default class Checkout extends React.Component {
                     </View>
                     <View style={{ left: constants.Dimensions.vh(4),bottom:constants.Dimensions.vh(2) }}>
                         <Components.PrimaryButton  
-                            onPress={this.handleGoToCheckout}                      
+                            onPress={this.handleCheckout}                      
                             title={`Checkout`}                                
                             isLoading={this.state.isLoading}
                         />

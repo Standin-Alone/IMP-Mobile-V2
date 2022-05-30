@@ -7,8 +7,8 @@ import constants from '../../constants';
 
 export const styles = StyleSheet.create({
     primaryCard:{
-        height:constants.Dimensions.vh(120),
-        width:constants.Dimensions.vw(90), 
+        height:constants.Dimensions.vh(40),
+        width:constants.Dimensions.vw(40), 
         borderTopLeftRadius:20,
         borderTopRightRadius:20,
         borderBottomRightRadius:20,
@@ -42,11 +42,14 @@ export const styles = StyleSheet.create({
         left:constants.Dimensions.vw(2),
         top:constants.Dimensions.vh(2),
         color:'white',
+        fontSize:12,
         fontFamily:constants.Fonts.PoppinsRegular
     },
 
     commodityCard:{
-        marginVertical:constants.Dimensions.vh(2)
+        marginVertical:constants.Dimensions.vh(2),
+        backgroundColor:constants.Colors.light,
+        paddingVertical:constants.Dimensions.vh(2)
     },
     commodity:{
         
@@ -91,6 +94,15 @@ export const styles = StyleSheet.create({
         fontFamily:constants.Fonts.PoppinsMedium,
         color:constants.Colors.light,
         fontSize:16
-    }
+    },
+    imageCard:{        
+        width:constants.Dimensions.vw(90), 
+        borderTopLeftRadius:20,
+        borderTopRightRadius:20,
+        borderBottomRightRadius:20,
+        borderBottomLeftRadius:20,
+        backgroundColor: constants.Colors.light,
+        elevation:1,
+    },
 });
 

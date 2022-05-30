@@ -6,8 +6,11 @@ import Toast from 'react-native-toast-message';
 import {POST} from '../axios';
 import {SET_SESSION,GET_SESSION} from '../async_storage';
 import DeviceInfo from 'react-native-device-info';
-
-
+import ImageResizer from 'react-native-image-resizer';
+import Geolocation from '@react-native-community/geolocation';
+import {  dump, insert,ImageIFD,GPSIFD,ExifIFD,GPSHelper} from "piexifjs";
+import * as RNFS from 'react-native-fs';
+import AwesomeAlert from 'react-native-awesome-alerts';
 
 
 
@@ -70,4 +73,49 @@ export const checkAppVersion = async ()=>{
 
     return result;
     
+}
+
+
+
+export const  rotateImage = async (uri) =>{
+
+    const rotated_image                   = await   ImageResizer.createResizedImage('data:image/JPEG,'+uri, 1920, 1080, 'JPEG', 50, 90, RNFS.DocumentDirectoryPath);
+    const convert_rotated_image_to_base64 = await RNFS.readFile(rotated_image.uri,'base64');
+  
+    return convert_rotated_image_to_base64;
+  }
+
+  
+export const  getLocation = async (uri) =>{
+    return new Promise((resolve, reject) => {
+        Geolocation.getCurrentPosition((position) =>{
+            const {latitude, longitude,altitude} = position.coords;
+            resolve([latitude, longitude,altitude]);
+        },(error) => {
+            reject(error);
+          })
+    });
+}
+
+
+// GEO TAGGING
+export const geotagging = (response,param_loc)=>{
+
+     let zeroth = {};
+     let gps = {};
+     let exif = {};
+     zeroth[ImageIFD.Make] = "Make";
+     exif[ExifIFD.LensMake] = "LensMake";     
+     gps[GPSIFD.GPSLatitude] = GPSHelper.degToDmsRational(param_loc.latitude);
+     gps[GPSIFD.GPSLongitude] = GPSHelper.degToDmsRational(param_loc.longitude);
+     gps[GPSIFD.GPSAltitude] = param_loc.altitude;
+     gps[GPSIFD.GPSLatitudeRef] = param_loc.latitude < 0 ? 'S' : 'N';
+     gps[GPSIFD.GPSLongitudeRef] = param_loc.longitude < 0 ? 'W' : 'E';
+ 
+     let exifObj = { "0th":zeroth,"Exif":exif, "GPS":gps};
+     let exifBtyes = dump(exifObj);
+     let newBase64 = insert(exifBtyes,'data:image/jpeg;base64,'+response);    
+ 
+     return newBase64.replace('data:image/jpeg;base64,','');
+             
 }
