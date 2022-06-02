@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
         backgroundColor:constants.Colors.primary        
     },
     contentContainer:{
-         top:constants.Dimensions.vw(30),
+         top:constants.Dimensions.vw(20),
          flex:1,
          backgroundColor:constants.Colors.light,     
          height:constants.Dimensions.vh(100),    
@@ -22,8 +22,8 @@ export const styles = StyleSheet.create({
     },
     searchContainer:{      
         left:constants.Dimensions.vw(5),
-        position:'absolute',        
-        bottom:constants.Dimensions.vh(193),
+           
+        bottom:constants.Dimensions.vh(10),
         backgroundColor:'transparent'        
     },
     body:{

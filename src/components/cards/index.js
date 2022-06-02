@@ -4,7 +4,7 @@ import { View,TouchableOpacity,Text } from "react-native";
 import { styles } from "./styles";
 import FastImage  from 'react-native-fast-image'
 import constants from "../../constants";
-
+import Components from '../../components';
 export const PrimaryCard = ({
     image,
     imageStyle,
@@ -31,13 +31,97 @@ export const PrimaryCard = ({
 
 
 
+export const HomePrimaryCard = ({
+    image,
+    imageStyle,
+    title,
+    subtitle,
+    titleStyle,
+    buttonStyle,
+    onPress,
+    onViewTransaction
+})=>(   
+    <TouchableOpacity style={[styles.homePrimaryCard,buttonStyle]} onPress={onPress}>
+        <View style={styles.imageContainer}>
+            <FastImage
+                style={[styles.attachments,imageStyle]}
+                source={image}
+                resizeMode={FastImage.resizeMode.cover}    
+            >
+
+                <View style={styles.cardHeader}>
+                    <View style={styles.cardHeaderContent}>
+                        
+                            <constants.Icons.Fontisto name="ticket-alt" size={20} color={constants.Colors.secondary} style={{top:constants.Dimensions.vh(2),left:constants.Dimensions.vw(1),}}/> 
+                        <View style={{ flexDirection:'column',}}>
+                            <Text style={[styles.cardHeaderText,titleStyle]}>{title}</Text>
+                            <Text style={[styles.cardHeaderSubTitle]}>{subtitle}</Text>
+                        </View>
+                    </View>
+                </View>
+
+                <View style={[styles.imageMenu,{top:constants.Dimensions.vh(70)}]}>
+                    <View style={styles.imageMenuContainer}>                    
+                        <TouchableOpacity >
+                            <constants.Icons.Ionicons name ="eye" color={constants.Colors.light}  size={30} onPress={onViewTransaction} />
+                        </TouchableOpacity>
+                    </View>
+                </View>     
+            </FastImage>
+        </View>
+    </TouchableOpacity>
+);
+
+
+
+
+
+export const ViewTransactionCommodityCard = ({
+    image,
+    commodityName,
+    category,
+    subCategory,
+    amount
+
+})=>(   
+    <View>
+        <View style={styles.commodityInfo}>
+            <View style={{ flexDirection:'row',justifyContent:'space-between',marginHorizontal:constants.Dimensions.vw(5)}}>                
+                <Text style={styles.commodityLabel}>{commodityName}</Text>                
+                <FastImage
+                    style={styles.commodityImage}
+                    source={{ uri:`data:image/jpeg;base64,${image}` }}
+                    resizeMode={FastImage.resizeMode.cover}    
+                />          
+            </View>
+            <View style={{ flexDirection:'row',justifyContent:'space-between',marginHorizontal:constants.Dimensions.vw(5)}}>                
+                <Text style={styles.commodityLabel}>{category}</Text>                
+            </View>
+
+            {subCategory &&
+                <View style={{ flexDirection:'row',justifyContent:'space-between',marginHorizontal:constants.Dimensions.vw(5)}}>                
+                    <Text style={styles.commodityLabel}>{subCategory}</Text>                
+                </View>
+            }
+            
+
+            <View style={{ flexDirection:'row',justifyContent:'space-between',marginHorizontal:constants.Dimensions.vw(5)}}>                
+                <Text style={styles.commodityLabel}><Components.AmountText  amountStyle={styles.amount} value={ amount}/></Text>                
+            </View>
+        </View>     
+    </View>
+);
+
+
 
 export const ImageCard = ({
 
     image,
-    onViewImage
+    onViewImage,
+    onChangeImage,
+    
 })=>(   
-    <TouchableOpacity style={styles.imageCard} onPress={onViewImage}>
+    <View style={styles.imageCard}>
         <View style={styles.imageContainer}>
             <FastImage
                 style={styles.attachments}
@@ -46,9 +130,19 @@ export const ImageCard = ({
 
                 resizeMode={FastImage.resizeMode.cover}    
             >            
+            <View style={styles.imageMenu}>
+                <View style={styles.imageMenuContainer}>
+                    <TouchableOpacity onPress={onChangeImage}>
+                        <constants.Icons.Ionicons name ="camera-reverse" color={constants.Colors.light} size={40} />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={onViewImage}>
+                        <constants.Icons.Ionicons name ="eye" color={constants.Colors.light}  size={40} />
+                    </TouchableOpacity>
+                </View>
+            </View>                
             </FastImage>
         </View>
-    </TouchableOpacity>
+    </View>
 );
 
 
@@ -64,12 +158,14 @@ export const CommodityCard = ({
     onRemove,
     quantity,
     unitMeasurement,
-    showCommodityInfo
+    totalAmount,
+    showCommodityInfo,
+    
 
 })=>(   
     <View style={styles.commodityCard}>       
         <View style={{ flexDirection:'row',justifyContent:'flex-start'}}>
-            <View style={{ flexDirection:'row',justifyContent:'flex-start',marginHorizontal:constants.Dimensions.vw(5)}}>
+            <View style={{ flexDirection:'row',justifyContent:'flex-start',marginHorizontal:constants.Dimensions.vw(0)}}>
             <FastImage
                     style={styles.commodity}
 
@@ -86,7 +182,11 @@ export const CommodityCard = ({
                         <>
                             <Text style={styles.category}>{category}</Text>
                             <Text style={styles.category}>{subCategory}</Text>
-                            <Text style={styles.category}>Quantity:{quantity} ({unitMeasurement})</Text>
+                            <Text style={styles.category}>Total Amount: 
+                                    <Components.AmountText  amountStyle={styles.category} value={totalAmount}/>
+                            </Text>
+
+                            <Text style={styles.category}>Quantity: {quantity} ({unitMeasurement})</Text>
                         </>
                         )
                     }
@@ -104,7 +204,7 @@ export const CommodityCard = ({
             </View>  
 
             {showRemoveButton &&
-                <View style={{ flexDirection:'row',justifyContent:'flex-start',marginHorizontal:constants.Dimensions.vw(5)}}>
+                <View style={{ flexDirection:'row',justifyContent:'flex-start',marginHorizontal:constants.Dimensions.vw(2)}}>
                         <TouchableOpacity onPress={onRemove}>
                             <constants.Icons.Ionicons name="close-circle-outline" size={18} color={constants.Colors.danger}/>
                         </TouchableOpacity>

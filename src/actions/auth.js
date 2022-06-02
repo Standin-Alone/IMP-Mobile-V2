@@ -5,7 +5,49 @@ import constants from '../constants';
 import Toast from 'react-native-toast-message';
 import {POST,GET} from '../utils/axios';
 import { GET_SESSION, SET_SESSION } from "../utils/async_storage";
+import { getLocation } from "../utils/functions";
+import {Linking}   from 'react-native'; 
 
+
+export const authenticate = async (setstate,props)=>{
+    setstate({showConfirm:false,loadingText:'Loading...'});
+    let checkSession = await GET_SESSION('USER_ID');
+    let checkLocation =  await   getLocation();
+    
+    // Check Internet Connection
+    NetInfo.fetch().then(async (state)=>{
+
+        // if internet connected
+        if(state.isConnected && state.isInternetReachable){
+            
+          
+            setTimeout(()=>{
+                if(checkLocation.code != 2){
+                    
+                    if(checkSession){            
+        
+                         props.navigation.replace(constants.ScreenNames.APP_STACK.MAIN_TAB);
+                    }else{
+                        props.navigation.replace(constants.ScreenNames.APP_STACK.LOGIN);
+                    }
+                }else{
+                        
+                     setstate({showConfirm:true,confirmText:'Try again',title:'Message',message:'Please turn on your location service.'});
+                }
+                   
+            },2000)
+        }else{
+            
+            
+         
+            
+
+            setstate({showConfirm:true,confirmText:'Try again',title:'Message',message:'Please check your internet connectivity'});
+        }
+
+    });
+
+}
 export const login = (payload,setState,props) => {     
     //turn on loading
     setState({isLoading:true});

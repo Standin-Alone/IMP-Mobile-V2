@@ -12,7 +12,8 @@ export const styles = StyleSheet.create({
    },
    form:{
        flexDirection:'column',
-       left:constants.Dimensions.vw(5)
+       left:constants.Dimensions.vw(5),
+       
    },
    label:{
        fontFamily:constants.Fonts.PoppinsBold,
@@ -25,7 +26,7 @@ export const styles = StyleSheet.create({
         color:constants.Colors.dark
     },
    scrollView:{
-       paddingBottom:constants.Dimensions.vh(100),
+       paddingBottom:constants.Dimensions.vh(50),
        
    },
    remainingBalance:{

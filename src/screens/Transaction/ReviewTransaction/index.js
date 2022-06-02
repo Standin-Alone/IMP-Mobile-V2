@@ -12,6 +12,9 @@ export default class ReviewTransaction extends React.Component {
           voucherInfo:this.props.route.params.voucherInfo,
           cart:this.props.route.params.cart,
           attachments:this.props.route.params.attachments,
+          longitude:this.props.route.params.longitude,
+          latitude:this.props.route.params.latitude,
+          cartTotalAmount:0,
           showImage:false,
           imageUri:'',
           showConfirm:false,   
@@ -23,6 +26,9 @@ export default class ReviewTransaction extends React.Component {
 
     setMyState = (value)=>this.setState(value);
 
+    componentDidMount(){
+        this.setState({cartTotalAmount:  Number(this.state.cart.reduce((prev, current) => prev + parseFloat(current.totalAmount), 0)).toFixed(2)});    
+    }
 
     showImage = (image)=>{
         this.setState({showImage:true,imageUri:image})
@@ -205,8 +211,12 @@ export default class ReviewTransaction extends React.Component {
                
                 <View style={styles.bottom}>
                     <View style={{ flexDirection:'column',alignContent:'center',bottom:constants.Dimensions.vw(5),marginHorizontal:constants.Dimensions.vw(3)}}>                
+                    <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
+                            <Text style={styles.labelSummary}>Cart Total Amount</Text>
+                            <Components.AmountText  amountStyle={styles.cashAdded} value={this.state.cartTotalAmount}/>                                    
+                        </View>                        
                         <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
-                            <Text style={styles.labelSummary}>Total Amount</Text>
+                            <Text style={styles.labelSummary}>Voucher Total Amount</Text>
                             <Components.AmountText  amountStyle={styles.cashAdded} value={this.state.voucherInfo.amount_val}/>                                    
                         </View>                        
                         <View style={{ flexDirection:'row',justifyContent:'space-between'}}>

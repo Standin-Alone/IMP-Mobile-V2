@@ -29,11 +29,7 @@ export const scanQrCode =   async (payload,setState,props) => {
                     reference_number:payload.scanResult,
                     user_id:  payload.userId,
                 }
-                console.warn('scanned');
-
-                console.warn(payload);
-
-                console.warn(`${getBaseUrl().accesspoint}${constants.EndPoints.SCAN_QR_CODE}`)
+                console.warn('scanned');                
                 // POST REQUEST
                 await POST(`${getBaseUrl().accesspoint}${constants.EndPoints.SCAN_QR_CODE}`,clean_payload).then((response)=>{  
                     console.warn(response.data);
@@ -152,20 +148,32 @@ export const addToCart = (payload,setState,props) => {
             let countError = 0;
             // validate payload
 
-
+            
+           
             Object.keys(payload).map((item,index)=>{                         
-
-                
-
-                
-                if((payload[item] !== undefined ||  payload[item] != '')  && (item != 'subCategory' && item != 'cashAdded' )   ){                   
-                    if((payload[item] == '' || payload[item] === undefined)  ){
-                        console.warn(item);
+                                
+                if((item != 'subCategory' && item != 'cashAdded'  && item != 'subCategories' )   ){          
+                    
+                    if((payload[item] == '' || payload[item] === null)  || payload[item] === undefined  ||  payload[item] == 0 ){                        
+                        console.warn(item)
                         setState({[item]:{...payload[item],error:true,errorMessage:`Please enter your ${item}.`}})      
                         countError++;
-                    }                    
+                    } 
                 }
 
+                // sub category validation
+                if(item == 'category'){
+
+                    if(payload.subCategories.length  > 0){
+                        if(payload['subCategory'] == ''){
+                          
+                            setState({['subCategory']:{...payload['subCategory'],error:true,errorMessage:`Please enter your sub category.`}})      
+                            countError++;
+                        }
+                    }                        
+
+                }
+            
 
             })          
                 
@@ -299,7 +307,7 @@ export const checkout = (payload,setState,props) => {
 
 export const openCamera = (payload,setState) => {     
     
-    
+    setState({showProgress:true});
     // Check Internet Connection
     NetInfo.fetch().then(async(state)=>{
             
@@ -310,9 +318,9 @@ export const openCamera = (payload,setState) => {
   
             //Check if the mobile app is latest.
             if(checkVersion){
-
+                
                 let checkLocation =    await getLocation();
-                console.warn(checkLocation)
+             
                 //Check if location was turn on
                 if(checkLocation){
                 
@@ -325,13 +333,15 @@ export const openCamera = (payload,setState) => {
 
                     // camera function
                     if (!openUpCamera.didCancel) {
+
+                        
                         let {assets} = openUpCamera;
 
                         assets.map(async(cameraResponse)=>{
-
+                            
                             // set latitude longitude
                             setState({latitude:checkLocation.latitude,longitude:checkLocation.longitude})
-
+                            
                             // check if image is jpeg format
                             if(cameraResponse.type == 'image/jpeg' || cameraResponse.type == 'image/jpg') {
                                 // rotate image
@@ -368,30 +378,30 @@ export const openCamera = (payload,setState) => {
                                     }
                                 });
 
-
+                                setState({showProgress:false});
                             }else{
-                                    
+                                
                                 Toast.show({
                                     type:'error',
                                     text1:'Warning!',
                                     text1:'Your captured image is not in jpeg format'
                                 })                        
+                                setState({showProgress:false});
                             }
 
                         })
                        
                     }else{
-
-
+                        setState({showProgress:false});
                     }
 
                 }else{
-
+                    Toast.show({
+                        type:'error',
+                        text1:'Error!',
+                        text1:'Please open your location services.'
+                    })  
                 }
-            }else{
-
-                console.warn(checkVersion);
-  
             }
                         
         }else{
@@ -501,11 +511,60 @@ export const transact = (payload,setState,props) => {
         
                 payload.userId = await GET_SESSION('USER_ID');
                 payload.supplierName = await GET_SESSION('FULL_NAME');
+                
+                let cleanCart = [];
+                payload.cart.map((item)=>{
 
+                    cleanCart.push({
+                        sub_id: item.sub_id,                        
+                        name: item.name,
+                        unitMeasurement: item.unitMeasurement ,           
+                        totalAmount: item.totalAmount,
+                        quantity: item.quantity,                        
+                        category: item.category,
+                        subCategory: item.subCategory,            
+                        cashAdded: item.cashAdded
+                    })
+
+                })
+
+                payload.cart = cleanCart;
+                payload.transactionTotalAmount = cleanCart.reduce((prev, current) => prev + parseFloat(current.totalAmount + current.cashAdded), 0).toFixed(2);
+
+
+                console.warn(payload.longitude);
+                
                 POST(`${getBaseUrl().accesspoint}${constants.EndPoints.TRANSACT_VOUCHER}`,payload).then((response)=>{  
                     
-                    console.warn(response)
-                    setState({showConfirm:false,showProgress:false});
+                    console.warn(response.data)
+
+                    if(response.data.status == true){
+                        
+                        
+          
+                        Toast.show({
+                            type:'success',
+                            text1:'Success!',
+                            text2: response.data.message
+                        })
+
+                        setState({showConfirm:false,showProgress:false});
+                        
+                        props.navigation.reset({
+                            index: 0,
+                            routes: [{ name: constants.ScreenNames.APP_STACK.MAIN_TAB }]
+                        });
+                    }else{
+
+                        //  No internet Connection
+                        Toast.show({
+                            type:'error',
+                            text1:'error!',
+                            text2: response.data.message
+                        })
+                        setState({showConfirm:false,showProgress:false});
+                    }
+                    
                 }).catch((error)=>{
                     console.warn(error.response)
                      //  No internet Connection
@@ -516,8 +575,7 @@ export const transact = (payload,setState,props) => {
                     })
                     setState({showConfirm:false,showProgress:false});
                 });
-
-                setState({showConfirm:false,showProgress:false});
+                
                 
             }else{
 

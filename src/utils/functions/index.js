@@ -90,12 +90,27 @@ export const  getLocation = async (uri) =>{
     return new Promise((resolve, reject) => {
         Geolocation.getCurrentPosition((position) =>{
             const {latitude, longitude,altitude} = position.coords;
-            resolve([latitude, longitude,altitude]);
+            resolve({
+                latitude:latitude,
+                longitude:longitude,
+                altitude:altitude,
+            });
         },(error) => {
-            reject(error);
-          })
+            
+            if(error.code == 2){
+                // Toast.show({
+                //     type:'error',
+                //     text1: 'Warning',
+                //     text2: 'Please turn on your location services.'
+                // });
+            }
+            resolve(error);
+
+        },{ enableHighAccuracy: false})
     });
 }
+
+
 
 
 // GEO TAGGING

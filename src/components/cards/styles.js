@@ -16,6 +16,17 @@ export const styles = StyleSheet.create({
         backgroundColor: constants.Colors.light,
         elevation:2,
     },
+    homePrimaryCard:{
+        height:constants.Dimensions.vh(100),
+        width:constants.Dimensions.vw(90), 
+        borderTopLeftRadius:20,
+        borderTopRightRadius:20,
+        borderBottomRightRadius:20,
+        borderBottomLeftRadius:20,
+        backgroundColor: constants.Colors.light,
+        elevation:2,
+    },
+    
     attachments:{
      
         resizeMode:'cover',
@@ -38,11 +49,22 @@ export const styles = StyleSheet.create({
         flexDirection:'row',
         height:constants.Dimensions.vh(10)
     },
+    cardHeaderContent:{
+        flexDirection:'row'
+    },
     cardHeaderText:{
         left:constants.Dimensions.vw(2),
         top:constants.Dimensions.vh(2),
         color:'white',
         fontSize:12,
+        fontFamily:constants.Fonts.PoppinsRegular
+    },
+
+    cardHeaderSubTitle:{
+        left:constants.Dimensions.vw(2),
+        top:constants.Dimensions.vh(2),
+        color:constants.Colors.gray,
+        fontSize:10,
         fontFamily:constants.Fonts.PoppinsRegular
     },
 
@@ -104,5 +126,36 @@ export const styles = StyleSheet.create({
         backgroundColor: constants.Colors.light,
         elevation:1,
     },
+    imageMenu:{
+        width:constants.Dimensions.vw(45),
+        height:constants.Dimensions.vh(15),
+        borderRadius:20,
+        alignSelf:'center',
+        top:constants.Dimensions.vh(70),        
+        backgroundColor:'rgba(0, 0, 0, 0.3)'
+    },
+    imageMenuContainer:{
+        top:constants.Dimensions.vh(4),        
+        flexDirection:'row',
+        justifyContent:'space-around'
+    },
+    commodityInfo:{
+        borderBottomWidth:0.2,
+        borderColor:constants.Colors.dark_tint,
+        marginVertical:constants.Dimensions.vh(2)        
+    },
+    commodityLabel:{
+        fontFamily:constants.Fonts.PoppinsBold,
+        color:constants.Colors.dark_tint,
+        fontSize:12
+    },
+    amount:{
+        fontFamily:constants.Fonts.PoppinsBold,
+        color:constants.Colors.danger,
+        fontSize:12
+    },
+    commodityImage:{
+        
+    }
 });
 

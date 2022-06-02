@@ -18,7 +18,11 @@ export const PrimaryTextInput = ({
     isError,
     errorMessage,
     value,
-    keyboardType
+    keyboardType,
+    lineColor,
+    onShowPassword,
+    showPassword,
+    showPasswordToggle
     
 
 })=>(   
@@ -30,38 +34,43 @@ export const PrimaryTextInput = ({
                     name={iconName} 
                     size={40} 
                     color={isFocus ||  value != '' ? 
-                                constants.Colors.primary 
+                                constants.Colors.secondary 
                                 : 
                                 isError ? 
                                     constants.Colors.danger
-                                    :
-                                    constants.Colors.gray
+                                    :                                    
+                                    !lineColor ? constants.Colors.gray : lineColor
                             } 
                     style={{ top:10 }} />
             </View>
 
             <View>
-                
-                <TextInput 
-                    keyboardType={keyboardType ? keyboardType : 'default'}
-                    placeholder={placeholder}     
-                    placeholderTextColor={constants.Colors.gray}            
-                    style={[styles.primaryInput,
-                                {borderColor: isFocus ||  value != '' ? 
-                                                        constants.Colors.primary 
-                                                        : 
-                                                        isError ? 
-                                                            constants.Colors.danger
-                                                            :
-                                                            constants.Colors.gray
-                                }]} 
-                    onFocus={onFocus} 
-                    onBlur={onBlur} 
-                    secureTextEntry={secureTextEntry} 
-                    onChangeText={onChangeText}
-                    value={value}
-                    adjustsFontSizeToFit
-                    />
+                <View style={{ flexDirection:'row' }}>
+                    <TextInput 
+                        keyboardType={keyboardType ? keyboardType : 'default'}
+                        placeholder={placeholder}     
+                        placeholderTextColor={constants.Colors.gray}            
+                        style={[styles.primaryInput,
+                                    {borderColor: isFocus ||  value != '' ? 
+                                                            constants.Colors.secondary 
+                                                            : 
+                                                            isError ? 
+                                                                constants.Colors.danger
+                                                                :
+                                                                !lineColor ? constants.Colors.gray : lineColor
+                                    }]} 
+                        onFocus={onFocus} 
+                        onBlur={onBlur} 
+                        secureTextEntry={secureTextEntry} 
+                        onChangeText={onChangeText}
+                        value={value}
+                        adjustsFontSizeToFit
+                        />
+                    {(showPassword &&
+                        <constants.Icons.Ionicons name={secureTextEntry ? "eye" : "eye-off"} color={constants.Colors.secondary} style={styles.eye} size={30} onPress={onShowPassword}/>                                                
+                        )
+                    }
+                </View>
                 {isError && 
                     <View style={{ flexDirection:'row' }}>
                         <MaterialIcons 

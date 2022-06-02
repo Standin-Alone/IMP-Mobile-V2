@@ -11,7 +11,27 @@ export const styles = StyleSheet.create({
         backgroundColor:constants.Colors.light
         
     },
+    backgroundImage:{
+        flex:1,
+        height:constants.Dimensions.vh(100),
+        width:constants.Dimensions.vw(100),                
+        
+        
+    },
+    logo:{
+        position:'absolute',
+        height:constants.Dimensions.vh(50),
+        width:constants.Dimensions.vw(50),     
+        alignSelf:'center',
+        top:constants.Dimensions.vh(10)           
+    },
     form:{
+        backgroundColor:'rgba(0,0,0,0.5)',
+        paddingVertical:constants.Dimensions.vh(20),
+        paddingHorizontal:constants.Dimensions.vw(2),
+        width:constants.Dimensions.vw(95),
+        borderRadius:20,
+        position:'absolute',
         top:constants.Dimensions.vh(80),        
         alignSelf:'center',
         flexDirection:"column",        

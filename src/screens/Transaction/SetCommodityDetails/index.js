@@ -60,8 +60,7 @@ export default class SetCommodityDetails extends React.Component {
     
     componentDidMount(){
 
-        console.warn(  this.state.parameters.cart);
-        //console.warn((this.state.voucherInfo.amount_val - this.state.parameters.cartTotalAmount) - this.state.totalAmount.value < 0 ? 0 : (this.state.voucherInfo.amount_val - this.state.parameters.cartTotalAmount) - this.state.totalAmount.value )
+        
         
         
         
@@ -71,20 +70,21 @@ export default class SetCommodityDetails extends React.Component {
     setMyState = (value)=>this.setState(value);
 
     handleChangeTotalAmount = (value)=>{                                              
-        
-        this.setState({totalAmount:{...this.state.totalAmount,value:value,error:false,isAmountExceed:(value + this.state.totalAmount.value) <= this.state.voucherInfo.amount_val  ? false :true}})      
+        console.warn(value)
+        this.setState({totalAmount:{...this.state.totalAmount,value:value === null ? 0 : Math.abs(value) ,error:false,isAmountExceed:(value + this.state.totalAmount.value) <= this.state.voucherInfo.amount_val  ? false :true}})      
 
     }   
 
     handleAddToCart = (commodity)=>{
-
+        // console.warn((this.state.voucherInfo.amount_val - this.state.parameters.cartTotalAmount) - this.state.totalAmount.value)
         
         let parameter = {
+            subCategories:this.state.subCategories,
             sub_id: commodity.sub_id,
             image: commodity.base64,
             name: commodity.item_name,
             unitMeasurement: this.state.unitMeasurement.value,            
-            totalAmount: this.state.totalAmount.value,
+            totalAmount: Math.abs(this.state.totalAmount.value),
             quantity: this.state.quantity.value,                        
             category: this.state.category.value,
             subCategory: this.state.subCategory.value,            
@@ -98,7 +98,7 @@ export default class SetCommodityDetails extends React.Component {
     }
 
     handleChangeCategory = (value)=>{                           
-            console.warn(   this.state.voucherInfo.sub_categories);
+            
             let subCategories= [];
             this.state.voucherInfo.sub_categories.map((item)=>{
 
@@ -110,9 +110,11 @@ export default class SetCommodityDetails extends React.Component {
 
             })
 
-            console.warn(subCategories);
+            
             this.setState({subCategories:subCategories})
             this.setState({category:{...this.state.category,value:value,error:false}})
+            this.setState({subCategory:{...this.state.subCategory,value:'',error:false}})
+            
         }
 
 
@@ -126,7 +128,8 @@ export default class SetCommodityDetails extends React.Component {
                         title={"Set Commodity Details"}
                         showAddToCartButton={true}        
                         onAddToCart={()=>this.handleAddToCart(this.state.commodityInfo)}               
-                />                
+                />       
+                <ScrollView style={{ flexGrow:0 }} >         
                  <FastImage
                     style={styles.commodity}
                     source={{
@@ -136,7 +139,7 @@ export default class SetCommodityDetails extends React.Component {
                 />
 
 
-                <ScrollView >
+               
                     <View style={styles.scrollView}>
                         <View style={styles.form}>
                             <Text style={styles.label}>Total Amount</Text>

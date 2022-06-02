@@ -6,6 +6,24 @@ import LinearGradient from 'react-native-linear-gradient';
 import constants from "../../constants";
 import  MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
+
+export const HomeHeader = ({
+    title,    
+      
+ })=>(   
+    <>  
+         <View style={[styles.primaryContainer,{backgroundColor:constants.Colors.primary,bottom:constants.Dimensions.vh(2)}]}>             
+             <View>
+                 <Text style={[styles.primaryTitle,{color:constants.Colors.light,fontSize:30,left:constants.Dimensions.vw(2) }]}>
+                     {title}
+                 </Text>
+             </View>         
+         </View>             
+    </>
+ );
+
+ 
+
 export const PrimaryHeader = ({
    title,
    onGoBack,
@@ -46,8 +64,11 @@ export const PrimaryHeader = ({
 
 
 export const PrimaryHeaderSearch = ({
-    title,
-    onGoBack
+    onChangeText,
+    onBlur,
+    onFocus,
+    isFocus,
+    value
  })=>(   
     <>  
          <View style={styles.headerSearchContainer}>
@@ -62,8 +83,17 @@ export const PrimaryHeaderSearch = ({
                 </View>
                 <View>
                     <TextInput 
-                        style={styles.searchInput}                        
+                        style={[styles.searchInput, {borderColor: isFocus ? 
+                        constants.Colors.primary 
+                        :                     
+                        constants.Colors.gray
+                        }]}                        
                         placeholder="Search here"
+                        onChangeText={onChangeText}
+                        onFocus={onFocus} 
+                        onBlur={onBlur} 
+                        value={value}
+                        adjustsFontSizeToFit
                     />
                 </View>                
             </View>

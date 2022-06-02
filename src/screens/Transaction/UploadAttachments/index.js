@@ -11,7 +11,11 @@ export default class UploadAttachments extends React.Component {
       this.state = {        
           parameters:this.props.route.params,
           voucherInfo:this.props.route.params.voucherInfo,
-          cart:this.props.route.params.cart,                                        
+          cart:this.props.route.params.cart,         
+          showImage:false,  
+          showProgress:false,           
+          imageUri:'',      
+          loadingTitle:'',
           attachments:[
             {
               name: "Beneficiary with Commodity",
@@ -50,6 +54,11 @@ export default class UploadAttachments extends React.Component {
     }
 
 
+    showImage = (image)=>{
+        this.setState({showImage:true,imageUri:image})
+    }
+
+
     handleReviewTransaction = ()=>{
 
         let parameters = {           
@@ -58,7 +67,9 @@ export default class UploadAttachments extends React.Component {
             attachments:this.state.attachments,
             latitude:this.state.latitude,
             longitude:this.state.longitude
-        }
+        }   
+
+      
 
         return goToReviewTransaction(parameters,this.setMyState,this.props)
 
@@ -76,6 +87,7 @@ export default class UploadAttachments extends React.Component {
                                 iconColor={constants.Colors.primary}
                                 iconSize= {40}
                                 onPress={()=>this.openCamera(item.name)}
+                                title={"Press to add photo."}
                             />
                             <View style={{ left:constants.Dimensions.vh(5) }}>                         
                             </View>
@@ -83,35 +95,48 @@ export default class UploadAttachments extends React.Component {
 
                         :
 
-                        item.file.map((image)=>(
+                        item.file.map((image,index)=>(
                             <View style={{ flexDirection:'column',justifyContent:'flex-start'}}>
                                 <View style={{ left:constants.Dimensions.vh(5),marginVertical:constants.Dimensions.vh(4)}}>                                    
                                     <Components.ImageCard
                                         image={image}
+                                        onChangeImage={()=>this.openCamera(item.name)}
+                                        onViewImage={()=>this.showImage(item.file)}
                                     />
-                                    <Components.PrimaryButtonOutline  
-                                        onPress={this.handleStartTransaction}                      
-                                        title={"Add More"}                                
-                                        isLoading={this.state.isLoading}                                        
-                                    />
+                             
                                 </View>
+
+                                {item.file.length == (index +1) &&
+                                    <View style={{ flexDirection:'column',justifyContent:'flex-start'}}>                                                        
+                                        <Components.SecondaryButton                     
+                                            iconName={"camera-plus"}
+                                            iconColor={constants.Colors.primary}
+                                            iconSize= {40}
+                                            onPress={()=>this.openCamera(item.name)}
+                                            title={"Press to add photo."}
+                                        />                                                                                  
+                                    </View>  
+                                }
+
                             </View>
+                            
                         ))
                     }
                 </>
             :
             item.name == 'Valid ID' ?                
                 <>                  
-                    <View style={{ flexDirection:'column',justifyContent:'flex-start'}}>
-                        <Text style={styles.label} adjustsFontSizeToFit>{item.name}</Text>
+                    <View style={{ flexDirection:'column',justifyContent:'flex-start',marginVertical:constants.Dimensions.vh(2)}}>
+                        <Text style={styles.label} adjustsFontSizeToFit>{item.name}<Text style={{ color:constants.Colors.danger }}>*</Text></Text>
 
                         {item.file[0].front == null ?
-                            <View style={{marginVertical:constants.Dimensions.vh(5) }}>
+                            <View style={{marginVertical:constants.Dimensions.vh(2) }}>
                                 <Components.SecondaryButton                     
                                     iconName={"camera-plus"}
                                     iconColor={constants.Colors.primary}
                                     iconSize= {40}
                                     onPress={()=>this.openCamera(item.name  + "(front)")}
+                                    title={"Press to add photo of valid ID (Front)."}
                                     
                                 />
                             </View>
@@ -120,6 +145,8 @@ export default class UploadAttachments extends React.Component {
                                 <View style={{ left:constants.Dimensions.vh(5) }}>                                    
                                     <Components.ImageCard
                                         image={item.file[0].front}
+                                        onChangeImage={()=>this.openCamera(item.name  + "(front)")}
+                                        onViewImage={()=>this.showImage(item.file[0]?.front)}
                                     />
                                 </View>
                             </View>
@@ -131,6 +158,7 @@ export default class UploadAttachments extends React.Component {
                                     iconColor={constants.Colors.primary}
                                     iconSize= {40}
                                     onPress={()=>this.openCamera(item.name  + "(back)")}
+                                    title={"Press to add photo of valid ID (Back)."}
                                     
                                 />
                             </View>
@@ -139,6 +167,9 @@ export default class UploadAttachments extends React.Component {
                                 <View style={{ left:constants.Dimensions.vh(5),marginVertical:constants.Dimensions.vh(4)}}>                                    
                                     <Components.ImageCard
                                         image={item.file[0].back}
+                                        onChangeImage={()=>this.openCamera(item.name  + "(back)")}
+                                        onViewImage={()=>this.showImage(item.file[0].back)}
+                                        
                                     />
                                 </View>
                             </View>
@@ -149,12 +180,13 @@ export default class UploadAttachments extends React.Component {
             item.file  == undefined  ? 
             <>                  
                 <View style={{ flexDirection:'column',justifyContent:'flex-start'}}>
-                    <Text style={styles.label} adjustsFontSizeToFit>{item.name}</Text>
+                    <Text style={styles.label} adjustsFontSizeToFit>{item.name}<Text style={{ color:constants.Colors.danger }}>*</Text></Text>
                     <Components.SecondaryButton                     
                         iconName={"camera-plus"}
                         iconColor={constants.Colors.primary}
                         iconSize= {40}
                         onPress={()=>this.openCamera(item.name)}
+                        title={"Press to add photo."}
                     />
                 </View>  
             </>
@@ -165,6 +197,8 @@ export default class UploadAttachments extends React.Component {
                         <Text style={styles.label} adjustsFontSizeToFit>{item.name}</Text>                        
                         <Components.ImageCard
                             image={item.file}
+                            onChangeImage={()=>this.openCamera(item.name)}
+                            onViewImage={()=>this.showImage(item.file)}
                         />
                     </View>
                 </View>
@@ -175,14 +209,25 @@ export default class UploadAttachments extends React.Component {
     render(){
         return(
             <>  
-            
+                 <Components.ProgressModal
+                    showProgress={this.state.showProgress}    
+                    title={this.state.loadingTitle}                
+                />
+                       
                 <Components.PrimaryHeader                    
                         onGoBack = {()=>this.props.navigation.goBack()}
                  
                         title={"Upload Attachments"}
                         
                 />
-                                                
+
+               
+
+                 <Components.ImageModal
+                    showImage={this.state.showImage}
+                    image={{ url: "data:image/jpeg;base64," + this.state.imageUri}}
+                    onRequestClose={()=>this.setState({showImage:false})}
+                />
                 <View style={styles.container}>           
 
                     <FlatList

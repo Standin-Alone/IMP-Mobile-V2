@@ -1,38 +1,105 @@
 import React from 'react';
-import { View,Text} from 'react-native';
+import { View,Text, FlatList} from 'react-native';
 import constants from '../../../constants';
 import {styles} from './styles'
 import Components from '../../../components';
+import { getTransactedVouchers, goToViewTransaction } from '../../../actions/home';
+import { createFilter } from "react-native-search-filter";
 
 
-
-
-
+const KEYS_TO_FILTERS = ["reference_no", "fullname"];
 
 export default class Home extends React.Component {
     constructor(props) {
       super(props);
       this.state = {        
-      };
+          transactedVouchers:[],
+          isReadyToRender:false,
+          search:{
+            focus:false,
 
+
+            value:''
+          },  
+      };
 
     }
 
-    render(){
-        return(
-            <>
+    setMyState = (value)=>this.setState(value);
 
-                <View style={styles.container}>                                               
+    componentDidMount(){
+        
+        getTransactedVouchers(this.setMyState)
+
+        this.props.navigation.addListener('focus',()=>{
+            getTransactedVouchers(this.setMyState)
+        })
+
+    }
+
+
+    handleViewTransaction = (item)=>{
+
+                        
+    
+        let payload = {
+            transactionInfo:item
+        };
+
+        
+        return goToViewTransaction(payload,this.setMyState,this.props);    
+    }
+
+    renderItem = ({item,index})=>{
+
+        
+        return(
+            <Components.HomePrimaryCard
+                image={{uri:`data:image/jpeg;base64,${item.base64[0]}` }}
+                title={item.reference_no}
+                titleStyle={{ color:constants.Colors.secondary,fontFamily:constants.Fonts.GothamBold }}
+                subtitle={item.transac_date}
+                onViewTransaction={()=>this.handleViewTransaction(item)}
+            />
+        )
+    }
+
+    
+    render(){
+        const filteredVouchers = this.state.transactedVouchers.filter(
+            createFilter(this.state.search.value, KEYS_TO_FILTERS)
+        );
+        return(
+            <>  
+            
+                <View style={styles.container}>   
+                    <Components.HomeHeader
+                        title={'IMP'}
+                    />                    
                     <View style={styles.contentContainer}>
                         <View style={styles.searchContainer}>
-                                <Components.PrimaryHeaderSearch/>
+                                <Components.PrimaryHeaderSearch
+                                    onFocus={()=>this.setState({search:{...this.state.search,focus:true}})}
+                                    onBlur={()=>this.setState({search:{...this.state.search,focus:false}})}                                    
+                                    onChangeText={(value)=>this.setState({search:{...this.state.search,value:value,error:false}})}                                
+                                />
                         </View>
 
                         <View style={styles.body}>
-                            <View style={{ top:80 }}>
-                                <Components.PrimaryCard
-                                />
-                            </View>
+
+                            {!this.state.isReadyToRender ? (
+                                <View style={{ bottom:constants.Dimensions.vh(50) }}>
+                                    <Components.Loader isLoading={true}/>
+                                </View>
+                            ) : (
+                                <View style={{ top:0 }}>                               
+                                    <FlatList
+                                    data={this.state.transactedVouchers ? filteredVouchers : null}
+                                    renderItem={this.renderItem}
+                                    />
+                                </View>
+                            )}
+                            
                         </View>
                         
                     </View>      

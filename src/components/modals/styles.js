@@ -16,6 +16,19 @@ export const styles = StyleSheet.create({
         borderWidth:0.5,
         borderColor:constants.Colors.gray
 
+    },
+    confirmButtonStyle:{
+        borderColor:constants.Colors.primary,
+        borderWidth:1
+    },
+    confirmButtonTextStyle:{
+        color:constants.Colors.primary
+    },
+    cancelButtonStyle:{
+        backgroundColor:constants.Colors.light
+    },
+    cancelButtonTextStyle:{
+        color:constants.Colors.dark_tint
     }
 });
 

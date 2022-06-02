@@ -39,7 +39,9 @@ export const ConfirmModal =  ({
     cancelText,
     confirmText,
     onConfirmPressed,
-    onCancelPressed
+    onCancelPressed,
+    confirmButtonStyle,
+    confirmButtonTextStyle
  
  })=>(
     <AwesomeAlert
@@ -47,19 +49,52 @@ export const ConfirmModal =  ({
     showProgress={false}
     title={title}
     message={message}
-    closeOnTouchOutside={true}
+    closeOnTouchOutside={false}
     closeOnHardwareBackPress={false}
     showCancelButton={true}
     showConfirmButton={true}
     cancelText={cancelText}
     confirmText={confirmText}
-    confirmButtonColor="#DD6B55"
+    confirmButtonColor="white"
+    confirmButtonStyle={[styles.confirmButtonStyle,confirmButtonStyle]}
+    confirmButtonTextStyle={[styles.confirmButtonTextStyle,confirmButtonTextStyle]}
+    cancelButtonStyle={styles.cancelButtonStyle}
+    cancelButtonTextStyle={styles.cancelButtonTextStyle}
     onCancelPressed={onCancelPressed}
-    onConfirmPressed={onConfirmPressed}
+    onConfirmPressed={onConfirmPressed}    
   />
 
 )
 
+
+
+export const MessageModal =  ({
+   
+  showConfirm,
+  title,
+  message,
+  confirmText,  
+  onConfirmPressed,  
+  confirmButtonStyle,
+  confirmButtonTextStyle
+
+})=>(
+  <AwesomeAlert
+  show={showConfirm}
+  showProgress={false}
+  title={title}
+  message={message}
+  closeOnTouchOutside={false}
+  closeOnHardwareBackPress={false}
+  showConfirmButton={true}  
+  confirmText={confirmText} 
+  confirmButtonStyle={[styles.confirmButtonStyle,confirmButtonStyle]}
+  confirmButtonTextStyle={[styles.confirmButtonTextStyle,confirmButtonTextStyle]}
+  onConfirmPressed={onConfirmPressed}
+  
+/>
+
+)
 
 
 
@@ -73,7 +108,9 @@ export const ProgressModal =  ({
   <AwesomeAlert
   show={showProgress}
   showProgress={true}
+  closeOnTouchOutside={false}
   title={title ? title: 'Loading...'}  
+  
 />
 
 )

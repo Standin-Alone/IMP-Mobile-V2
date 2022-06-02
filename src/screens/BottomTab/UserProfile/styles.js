@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
     profile_pic:{
         width:constants.Dimensions.vw(30),
         height:constants.Dimensions.vh(30),
-        backgroundColor:'red',borderRadius:900,
+        borderRadius:10,
         bottom:constants.Dimensions.vh(10) 
     },
     fullName:{
@@ -33,5 +33,13 @@ export const styles = StyleSheet.create({
         color:constants.Colors.light,
         fontSize:18,
         textAlign:'center'
+    },
+    bottom:{
+        position: 'absolute',
+        left:0,
+        right:0,
+        bottom:constants.Dimensions.vh(2),
+        backgroundColor:constants.Colors.light,
+        
     }
 });

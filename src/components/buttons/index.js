@@ -12,15 +12,16 @@ export const PrimaryButton = ({
     width,
     height,
     isLoading,
-    loadingTitle
+    loadingTitle,
+    moreStyle
 })=>(   
 
     <LinearGradient
     start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
     colors={[constants.Colors.primary, constants.Colors.secondary]}
-    style={[styles.primaryButton]}
+    style={[styles.primaryButton,moreStyle]}
     >
-        <TouchableOpacity  onPress={onPress}  style={{ justifyContent: "center",alignItems: "center",padding:14}} >
+        <TouchableOpacity  onPress={onPress}  style={{ justifyContent: "center",alignItems: "center", paddingVertical:constants.Dimensions.vh(3) }} >
             <View style={{ flexDirection:'row' }}>
       
 
@@ -93,7 +94,8 @@ export const SecondaryButton = ({
     onPress, 
     iconName,
     iconColor,
-    iconSize
+    iconSize,
+    title
 })=>(   
 
   
@@ -101,13 +103,26 @@ export const SecondaryButton = ({
             <View style={{ flexDirection:'column',top:constants.Dimensions.vh(20)}} >
                 <View style={{ flexDirection:'row',justifyContent:'center'}}>
                     <constants.Icons.MaterialCommunityIcons name={iconName} size={iconSize} color={iconColor}/>
+                    
                 </View>
+                <Text style={{ textAlign:'center' }}>{title}</Text>
             </View>
         </TouchableOpacity>
   
 );
 
 
+
+export const TertiaryButton = ({
+    onPress,     
+    title
+})=>(     
+    <TouchableOpacity  onPress={onPress}  style={styles.tertiaryButton}>
+        <View style={{ flexDirection:'column',top:constants.Dimensions.vh(5)}} >                
+            <Text style={{ textAlign:'center',color:constants.Colors.danger }}>{title}</Text>
+        </View>
+    </TouchableOpacity>  
+);
 
 
 

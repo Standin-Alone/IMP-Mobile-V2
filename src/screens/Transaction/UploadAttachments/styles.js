@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
     label:{
         fontFamily:constants.Fonts.PoppinsBold,
         fontSize:20,
-        left:constants.Dimensions.vw(5)
+        left:constants.Dimensions.vw(4)
     }
 
 

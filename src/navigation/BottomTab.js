@@ -8,6 +8,7 @@ import {BottomFabBar} from 'rn-wave-bottom-bar';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { TransactionStackComponent } from './TransactionStack';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import { HomeStackComponent } from './HomeStack';
 
 const BottomTab = createBottomTabNavigator();
 
@@ -16,7 +17,7 @@ export function getTabBarVisibility(route) {
     
     const routeName = getFocusedRouteNameFromRoute(route);
         
-    if (( routeName != 'ScanningScreen') && routeName !== undefined) {        
+    if (( routeName != 'ScanningScreen') && ( routeName != 'HomeScreen')  && routeName !== undefined) {        
       return 'none';
     }else{
         return 'flex';
@@ -78,7 +79,7 @@ export const BottomTabNavigator = ()=>(
      >
         <BottomTab.Screen 
             name ={constants.ScreenNames.BOTTOM_TABS.HOME}
-            component={Home}
+            component={HomeStackComponent}
             options={({route,navigation})=>({     
                 tabBarStyle:{display:getTabBarVisibility(route)},           
                 tabBarShowLabel:false,                    

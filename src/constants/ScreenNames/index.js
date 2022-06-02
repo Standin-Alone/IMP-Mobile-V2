@@ -18,7 +18,11 @@ const ScreenNames = {
         CHECKOUT:'Checkout',
         UPLOAD_ATTACHMENTS:'UploadAttachments',
         REVIEW_TRANSACTION:'ReviewTransaction',
-
+    },
+    HOME_STACK:{
+        HOME:'HomeScreen',
+        VIEW_TRANSACTION:'ViewTransaction',
+        
     }
 
   

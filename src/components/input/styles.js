@@ -17,8 +17,8 @@ export const styles = StyleSheet.create({
         borderRadius:10,        
         borderColor:constants.Colors.gray,        
 
-        
-        fontFamily:constants.Fonts.GothamRegular,
+        color:constants.Colors.light,
+        fontFamily:constants.Fonts.PoppinsRegular,
         paddingLeft:constants.Dimensions.vw(15),                
         paddingVertical:   constants.Dimensions.vh(4),        
         fontSize:16
@@ -38,7 +38,7 @@ export const styles = StyleSheet.create({
         width:constants.Dimensions.vw(90),
         borderRadius:10,        
         borderColor:constants.Colors.gray,                
-        fontFamily:constants.Fonts.GothamRegular,
+        fontFamily:constants.Fonts.PoppinsRegular,
         paddingLeft:constants.Dimensions.vw(15),                
         paddingVertical:   constants.Dimensions.vh(4),      
         color:constants.Colors.dark,  
@@ -53,6 +53,10 @@ export const styles = StyleSheet.create({
             borderWidth:1,
             
             
+    },
+    eye:{
+        right:constants.Dimensions.vw(12),
+        top:constants.Dimensions.vh(4)
     }
   
 });

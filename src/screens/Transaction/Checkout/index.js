@@ -45,6 +45,8 @@ export default class Checkout extends React.Component {
     renderItem = (item,index) =>{
         let categoryName = this.state.voucherInfo.fertilizer_categories.filter((info)=>info.value == item.category)[0]?.label;
         let unitMeasurement = this.state.voucherInfo.unit_measurements.filter((info)=>item.unitMeasurement == info.value)[0]?.label;
+
+        
         return (
         <Components.CommodityCard
             image={item.image}
@@ -53,6 +55,7 @@ export default class Checkout extends React.Component {
             subCategory={item.subCategory} 
             quantity={item.quantity}     
             unitMeasurement={unitMeasurement}
+            totalAmount={item.totalAmount}     
             showRemoveButton
             showCommodityInfo
             onRemove={()=>this.handleRemoveItem(index)}  
@@ -67,6 +70,7 @@ export default class Checkout extends React.Component {
             cart:this.state.cart,            
         }
 
+        
         return checkout(parameters,this.setMyState,this.props)
 
     }
@@ -97,7 +101,11 @@ export default class Checkout extends React.Component {
                     <View style={{ flexDirection:'column',alignContent:'center',bottom:constants.Dimensions.vw(10),marginHorizontal:constants.Dimensions.vw(3)}}>
                         <Text style={styles.cartSummaryText}>Cart Summary</Text>
                         <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
-                            <Text style={styles.label}>Total Amount</Text>
+                            <Text style={styles.label}>Cart Total Amount</Text>
+                            <Components.AmountText  amountStyle={styles.cashAdded} value={this.state.cartTotalAmount}/>                                    
+                        </View> 
+                        <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
+                            <Text style={styles.label}>Voucher Total Amount</Text>
                             <Components.AmountText  amountStyle={styles.cashAdded} value={this.state.voucherInfo.amount_val}/>                                    
                         </View>                        
                         <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
@@ -114,6 +122,8 @@ export default class Checkout extends React.Component {
                             onPress={this.handleCheckout}                      
                             title={`Checkout`}                                
                             isLoading={this.state.isLoading}
+                            
+                            
                         />
                     </View>
                 </View>    

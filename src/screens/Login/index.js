@@ -1,10 +1,11 @@
 import React from 'react';
-import { View,Text,Image,Animated} from 'react-native';
+import { View,Text,Image} from 'react-native';
 import Components from '../../components';
 import constants from '../../constants';
 import { styles } from './styles';
 import { login } from '../../actions/auth';
-import { POST } from '../../utils/axios';
+
+
 
 export default class Login extends React.Component {
     constructor(props) {
@@ -23,7 +24,9 @@ export default class Login extends React.Component {
             errorMessage:'',
             value:''
           },  
-          isLoading:false
+          isLoading:false,
+          secureTextEntry:true
+        
       };
      
     }
@@ -36,7 +39,8 @@ export default class Login extends React.Component {
     
         let payload = {
             username    : this.state.username.value,
-            password : this.state.password.value
+            password : this.state.password.value,            
+            
         };
 
         
@@ -53,12 +57,29 @@ export default class Login extends React.Component {
     render(){
      
         return(
-            <>                              
-                <View style={styles.container}>         
+            <>  
+              
+       
+                <View style={styles.container}>   
+                        <Image
+                            style={styles.backgroundImage}                        
+                            source={constants.Images.bgFarm}
+                            resizeMode={"cover"}
+                            blurRadius={2}                        
+                        />   
+                   <Image
+                        style={styles.logo}                        
+                        source={constants.Images.daLogoWhite}
+                        resizeMode={"contain"}
+                        blurRadius={2}                        
+                    />
                     
-                    <View style={styles.form}>                                        
+             
+                    <View style={styles.form}>       
+                        
                         <View>     
                             <Components.PrimaryTextInput
+                                    lineColor={constants.Colors.light}
                                     placeholder={"Username/Email"}
                                     iconName="email"
                                     onFocus={()=>this.setState({username:{...this.state.username,focus:true}})}
@@ -73,6 +94,7 @@ export default class Login extends React.Component {
 
                         <View>     
                             <Components.PrimaryTextInput
+                                lineColor={constants.Colors.light}
                                 placeholder={"Password"}
                                 iconName="vpn-key"
                                 onFocus={()=>this.setState({password:{...this.state.password,focus:true}})}
@@ -82,7 +104,9 @@ export default class Login extends React.Component {
                                 errorMessage={this.state.password.errorMessage}
                                 value={this.state.password.value}
                                 onChangeText={(value)=>this.setState({password:{...this.state.password,value:value,error:false}})}
-                                secureTextEntry={true}
+                                secureTextEntry={this.state.secureTextEntry}
+                                showPassword={true}                                
+                                onShowPassword={()=>this.setState({secureTextEntry: this.state.secureTextEntry ? false :true})}
                             />                        
                         </View>
 
@@ -100,9 +124,10 @@ export default class Login extends React.Component {
                             </View>
                         </View>                                                                                                
                     </View>
-                    
+
+              
                 </View>
-                
+              
             </>
         )
     }
