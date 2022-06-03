@@ -11,7 +11,8 @@ export default class UploadAttachments extends React.Component {
       this.state = {        
           parameters:this.props.route.params,
           voucherInfo:this.props.route.params.voucherInfo,
-          cart:this.props.route.params.cart,         
+          cart:this.props.route.params.cart,   
+          timer:this.props.route.params.timer,      
           showImage:false,  
           showProgress:false,           
           imageUri:'',      
@@ -65,6 +66,7 @@ export default class UploadAttachments extends React.Component {
             voucherInfo:this.state.voucherInfo,
             cart:this.state.cart,            
             attachments:this.state.attachments,
+            timer:this.state.timer,
             latitude:this.state.latitude,
             longitude:this.state.longitude
         }   

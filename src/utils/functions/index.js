@@ -11,8 +11,26 @@ import Geolocation from '@react-native-community/geolocation';
 import {  dump, insert,ImageIFD,GPSIFD,ExifIFD,GPSHelper} from "piexifjs";
 import * as RNFS from 'react-native-fs';
 import AwesomeAlert from 'react-native-awesome-alerts';
+import BackgroundTimer from 'react-native-background-timer';
+export const backgroundTime = (timer,props)=>{
 
+    return BackgroundTimer.setTimeout((res) => { 
 
+    BackgroundTimer.clearTimeout(this)      
+    
+    Toast.show({
+        type:'error',
+        text1:'Message',
+        text2:'The transaction time is already ended.' 
+    })
+
+    props.navigation.reset({
+        index: 0,
+        routes: [{ name: constants.ScreenNames.BOTTOM_TABS.HOME }]
+      });                                                                
+  }, 
+  timer
+)}
 
 export const checkAppVersion = async ()=>{
 
@@ -54,7 +72,8 @@ export const checkAppVersion = async ()=>{
                 
                 Toast.show({
                     type:'error',
-                    text1:'Something went wrong!'
+                    text1:'Something went wrong!',
+                    text2:error.response
                 });
     
               

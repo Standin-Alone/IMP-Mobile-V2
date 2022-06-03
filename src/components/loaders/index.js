@@ -24,11 +24,11 @@ export const Loader = ({
 
 
 export const Divider =  ({
- 
+    style
  }) => {
 
         return (
-            <View style={styles.divider}>
+            <View style={[styles.divider,style]}>
 
             </View>
         )

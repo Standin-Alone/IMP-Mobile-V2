@@ -14,6 +14,7 @@ export default class Commodities extends React.Component {
       this.state = {        
           parameters:this.props.route.params.parameters,
           voucherInfo:this.props.route.params.parameters.voucherInfo,
+          timer:this.props.route.params.parameters.timer,
           cart:[]  
       };
 
@@ -37,12 +38,13 @@ export default class Commodities extends React.Component {
         let parameters = {
             commodityInfo:item,
             voucherInfo:this.state.voucherInfo,
-            cart:this.state.cart,            
+            cart:this.state.cart,                        
             cartTotalAmount:this.state.cart.reduce((prev, current) => prev + parseFloat(current.totalAmount), 0),
-            addToCart:this.addToCart
+            addToCart:this.addToCart,
+            timer:this.state.timer
         }
 
-        this.props.navigation.push(constants.ScreenNames.TRANSACTION_STACK.SET_COMMODITY_DETAILS,parameters);
+        this.props.navigation.navigate(constants.ScreenNames.TRANSACTION_STACK.SET_COMMODITY_DETAILS,parameters);
     }
 
     renderItem = (item,index) =>(
@@ -64,6 +66,7 @@ export default class Commodities extends React.Component {
         let parameters = {
             voucherInfo:this.state.voucherInfo,
             cart:this.state.cart,
+            timer:this.state.timer,
             handleUpdateCart:this.handleUpdateCart.bind(this)
         }
        

@@ -12,6 +12,7 @@ export default class Checkout extends React.Component {
           parameters:this.props.route.params,
           voucherInfo:this.props.route.params.voucherInfo,
           cart:this.props.route.params.cart,
+          timer:this.props.route.params.timer,
           newCart:[],
           cartTotalAmount:0
          
@@ -67,7 +68,8 @@ export default class Checkout extends React.Component {
 
         let parameters = {           
             voucherInfo:this.state.voucherInfo,
-            cart:this.state.cart,            
+            cart:this.state.cart,  
+            timer:this.state.timer,            
         }
 
         

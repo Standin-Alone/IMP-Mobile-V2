@@ -8,6 +8,7 @@ import BarcodeMask from 'react-native-barcode-mask';
 import { scanQrCode } from '../../../actions/transaction';
 import { Loader } from '../../../components/loaders';
 import { GET_SESSION } from '../../../utils/async_storage';
+import Components from '../../../components';
 
 export default class Scanning extends React.Component {
     constructor(props) {
@@ -15,7 +16,8 @@ export default class Scanning extends React.Component {
       this.state = {        
           scanning:false,
           isScanning:true,
-          isLoading:false
+          isLoading:false,
+          showProgress:false
       };
     }
 
@@ -25,7 +27,7 @@ export default class Scanning extends React.Component {
     handleBarCodeRead =   async (scanResult)=>{
         let payload = {
             scanResult:scanResult.data,
-            userId: await GET_SESSION('USER_ID'),           
+            userId: await GET_SESSION('USER_ID'),                       
         };
         
         if(this.state.isScanning == true){
@@ -37,8 +39,14 @@ export default class Scanning extends React.Component {
     render(){
         return(
             <>
-            
-                    <Loader isLoading={this.state.isLoading}/>  
+
+                    {/* <Loader isLoading={this.state.isLoading}/>   */}
+                    
+                    <Components.ProgressModal
+                        showProgress={this.state.isLoading}    
+                        title={"Loading..."}                
+                    />
+
                     {this.state.scanning == false ? (        
                     
                         <RNCamera

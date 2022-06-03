@@ -1,5 +1,5 @@
 import React from 'react';
-import { View,Text, FlatList} from 'react-native';
+import { View,Image, FlatList} from 'react-native';
 import constants from '../../../constants';
 import {styles} from './styles'
 import Components from '../../../components';
@@ -55,7 +55,7 @@ export default class Home extends React.Component {
         
         return(
             <Components.HomePrimaryCard
-                image={{uri:`data:image/jpeg;base64,${item.base64[0]}` }}
+                image={{uri:`data:image/jpeg;base64,${item.base64[0]?.image}` }}
                 title={item.reference_no}
                 titleStyle={{ color:constants.Colors.secondary,fontFamily:constants.Fonts.GothamBold }}
                 subtitle={item.transac_date}
@@ -64,6 +64,16 @@ export default class Home extends React.Component {
         )
     }
 
+
+    renderEmptyComponent = ()=>(
+
+        <Image
+            style={styles.noDataBg}                        
+            source={constants.Images.noData}
+            resizeMode={"contain"}            
+        />
+                    
+    )
     
     render(){
         const filteredVouchers = this.state.transactedVouchers.filter(
@@ -93,9 +103,12 @@ export default class Home extends React.Component {
                                 </View>
                             ) : (
                                 <View style={{ top:0 }}>                               
+
+
                                     <FlatList
-                                    data={this.state.transactedVouchers ? filteredVouchers : null}
-                                    renderItem={this.renderItem}
+                                        data={this.state.transactedVouchers ? filteredVouchers : null}
+                                        renderItem={this.renderItem}                                                                            
+                                        ListEmptyComponent = {this.renderEmptyComponent}
                                     />
                                 </View>
                             )}

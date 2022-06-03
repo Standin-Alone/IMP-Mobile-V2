@@ -22,7 +22,7 @@ export const PrimaryTextInput = ({
     lineColor,
     onShowPassword,
     showPassword,
-    showPasswordToggle
+    textColor
     
 
 })=>(   
@@ -57,7 +57,8 @@ export const PrimaryTextInput = ({
                                                             isError ? 
                                                                 constants.Colors.danger
                                                                 :
-                                                                !lineColor ? constants.Colors.gray : lineColor
+                                                                !lineColor ? constants.Colors.gray : lineColor,
+                                        color:textColor ? textColor : constants.Colors.light,
                                     }]} 
                         onFocus={onFocus} 
                         onBlur={onBlur} 
@@ -103,7 +104,8 @@ export const AmountInput = ({
     errorMessage,
     value,
     keyboardType,
-    prefix
+    prefix,
+    textColor
     
 
 })=>(   
@@ -140,7 +142,8 @@ export const AmountInput = ({
                                                         isError ? 
                                                             constants.Colors.danger
                                                             :
-                                                            constants.Colors.gray
+                                                            constants.Colors.gray,
+                                color:textColor ? textColor : constants.Colors.light,
                                 }]} 
                     onFocus={onFocus} 
                     onBlur={onBlur} 

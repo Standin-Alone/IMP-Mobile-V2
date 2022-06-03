@@ -14,6 +14,7 @@ export default class ReviewTransaction extends React.Component {
           attachments:this.props.route.params.attachments,
           longitude:this.props.route.params.longitude,
           latitude:this.props.route.params.latitude,
+          timer:this.props.route.params.timer,
           cartTotalAmount:0,
           showImage:false,
           imageUri:'',
@@ -115,7 +116,8 @@ export default class ReviewTransaction extends React.Component {
             cart:this.state.cart,            
             attachments:this.state.attachments,
             latitude:this.state.latitude,
-            longitude:this.state.longitude
+            longitude:this.state.longitude,
+            timer:this.state.timer
         }
 
         return transact(parameters,this.setMyState,this.props)

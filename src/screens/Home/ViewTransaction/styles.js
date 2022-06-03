@@ -28,6 +28,14 @@ export const styles = StyleSheet.create({
         color:constants.Colors.dark_tint,
         fontSize:16,
         left:constants.Dimensions.vw(2)
-    }
+    },
+    image:{
+        width:constants.Dimensions.vw(40),
+        height:constants.Dimensions.vh(40),
+        
+    },
+    commodityButtonImage:{
+        marginHorizontal:constants.Dimensions.vw(2)
+    },
 });
 

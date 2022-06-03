@@ -11,25 +11,29 @@ export default class ViewTransaction extends React.Component {
           parameters:this.props.route.params,
           transactionInfo:this.props.route.params.transactionInfo,
           isReadyToRender:true,
+          showImage:false,
+          imageUri:'',
          
       };
     }
 
 
     componentDidMount(){
-        console.warn(this.state.transactionInfo.commodities)
+        console.warn(this.state.transactionInfo)
     }
 
     setMyState = (value)=>this.setState(value);
 
 
     renderCommodities = ({item,index}) => {
+        
         return(
             <Components.ViewTransactionCommodityCard
                 commodityName={item.item_name}
                 category={item.item_category}
                 subCategory={item.item_sub_category}
                 amount={item.total_amount}
+                quantity={`x${item.quantity}`}
 
             />
 
@@ -37,6 +41,23 @@ export default class ViewTransaction extends React.Component {
 
     }
 
+    showImage = (image)=>{
+        this.setState({showImage:true,imageUri:image})
+    }
+
+
+    renderAttachments = ({item,index})=>{
+            console.warn(this.state.transactionInfo.commodities.reduce((prev, current) => prev + parseFloat(current.total_amount +  parseFloat(current.cash_added))))
+        return(        
+            <Components.PrimaryCard
+                image={{uri:`data:image/jpeg;base64,${item.image}` }}
+                imageStyle={styles.image}
+                title={item.name}
+                buttonStyle={styles.commodityButtonImage}
+                onPress={()=>this.showImage(item.image)}
+            />
+        )
+    }
     render(){
         return(
             <>  
@@ -46,6 +67,13 @@ export default class ViewTransaction extends React.Component {
                         backIconWhite={true}
                         title={"View Transaction"}                        
                 />
+
+                <Components.ImageModal
+                    showImage={this.state.showImage}
+                    image={{ url: "data:image/jpeg;base64," + this.state.imageUri}}
+                    onRequestClose={()=>this.setState({showImage:false})}
+                />
+
                {!this.state.isReadyToRender ? (
                     <View style={{ bottom:constants.Dimensions.vh(50) }}>
                         <Components.Loader isLoading={true}/>
@@ -63,7 +91,25 @@ export default class ViewTransaction extends React.Component {
                                     </View>                                    
                                 </View>
 
-                                <View style={{ flexDirection:'row' ,left:constants.Dimensions.vh(5),marginVertical:constants.Dimensions.vh(5)}}>
+                                <View style={{ flexDirection:'row' ,left:constants.Dimensions.vh(5),marginVertical:constants.Dimensions.vh(1)}}>
+                                    <View style={{ flexDirection:'row' }} >                                        
+                                        <Text style={styles.voucherAmountLabel}>Name:</Text>
+                                    </View>
+                                    <View style={{ flexDirection:'column',left:constants.Dimensions.vh(5) }}>                                                                                
+                                        <Text style={styles.voucherAmount}>{this.state.transactionInfo.fullname}</Text>                                        
+                                    </View>                                    
+                                </View>                                
+
+                                <View style={{ flexDirection:'row' ,left:constants.Dimensions.vh(5),marginVertical:constants.Dimensions.vh(1)}}>
+                                    <View style={{ flexDirection:'row' }} >                                        
+                                        <Text style={styles.voucherAmountLabel}>Program:</Text>
+                                    </View>
+                                    <View style={{ flexDirection:'column',left:constants.Dimensions.vh(5) }}>                                                                                
+                                        <Text style={styles.voucherAmount}>{this.state.transactionInfo.program_title}</Text>                                        
+                                    </View>                                    
+                                </View>                                
+
+                                <View style={{ flexDirection:'row' ,left:constants.Dimensions.vh(5),marginVertical:constants.Dimensions.vh(1)}}>
                                     <View style={{ flexDirection:'row' }} >                                        
                                         <Text style={styles.voucherAmountLabel}>Voucher Amount:</Text>
                                     </View>
@@ -73,16 +119,42 @@ export default class ViewTransaction extends React.Component {
                                 </View>                                
                         </View>
 
-                        <View style={styles.card}>
+                        <View style={[styles.card,{height:constants.Dimensions.vh(75)}]}>
                             <View style={{ flexDirection:'column',marginVertical:constants.Dimensions.vh(5)}}>
                                 <Text style={styles.cardHeader}>Commodities</Text>
                                     <FlatList 
                                         data={this.state.transactionInfo.commodities} 
                                         renderItem={this.renderCommodities}
+                                        nestedScrollEnabled
+                                        style={{ height:constants.Dimensions.vh(45) }}
+                                        
+                                        contentContainerStyle={{ paddingBottom:constants.Dimensions.vh(40)}}
+                                    />                                    
+                                   
+                            </View>
+
+                            <View style={{ flexDirection:'column',top:constants.Dimensions.vh(6),marginHorizontal:constants.Dimensions.vw(7)}}>
+                                        <Components.Divider style={{width:constants.Dimensions.vw(85)}}/>
+                                           <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
+                                                <Text style={styles.label}>Total Amount</Text>
+                                                <Components.AmountText  amountStyle={styles.cashAdded} value={this.state.transactionInfo.commodities.reduce((prev, current) => prev + parseFloat(current.total_amount +  parseFloat(current.cash_added)  ), 0)}/>                                    
+                                            </View>                                                                    
+                            </View>
+                            
+                        </View>
+
+                        <View style={styles.card}>
+                            <View style={{ flexDirection:'column',marginVertical:constants.Dimensions.vh(5)}}>
+                                <Text style={styles.cardHeader}>Attachments</Text>
+                                    <FlatList 
+                                        data={this.state.transactionInfo.base64} 
+                                        renderItem={this.renderAttachments}
+                                        horizontal
                                         
                                     />
                             </View>
                         </View>
+
                     </View>
                 )}
                                

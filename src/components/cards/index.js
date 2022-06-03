@@ -5,6 +5,11 @@ import { styles } from "./styles";
 import FastImage  from 'react-native-fast-image'
 import constants from "../../constants";
 import Components from '../../components';
+import Moment from 'react-moment';
+import moment from 'moment';
+
+
+
 export const PrimaryCard = ({
     image,
     imageStyle,
@@ -54,8 +59,13 @@ export const HomePrimaryCard = ({
                         
                             <constants.Icons.Fontisto name="ticket-alt" size={20} color={constants.Colors.secondary} style={{top:constants.Dimensions.vh(2),left:constants.Dimensions.vw(1),}}/> 
                         <View style={{ flexDirection:'column',}}>
-                            <Text style={[styles.cardHeaderText,titleStyle]}>{title}</Text>
-                            <Text style={[styles.cardHeaderSubTitle]}>{subtitle}</Text>
+                            <Text style={[styles.cardHeaderText,titleStyle]}>{title}</Text>                                                          
+                                { !moment(subtitle).isSame( moment().startOf('day'), 'day') ? 
+                                   <Text  style={[styles.cardHeaderSubTitle]} adjustsFontSizeToFit>{moment(subtitle).format('MMMM DD, YYYY, h:mm a')} </Text>   : 
+                                    (
+                                        <Moment element={Text} style={[styles.cardHeaderSubTitle]} adjustsFontSizeToFit   fromNow>{subtitle}</Moment>
+                                    )          
+                                }     
                         </View>
                     </View>
                 </View>
@@ -81,13 +91,14 @@ export const ViewTransactionCommodityCard = ({
     commodityName,
     category,
     subCategory,
-    amount
+    amount,
+    quantity
 
 })=>(   
     <View>
         <View style={styles.commodityInfo}>
             <View style={{ flexDirection:'row',justifyContent:'space-between',marginHorizontal:constants.Dimensions.vw(5)}}>                
-                <Text style={styles.commodityLabel}>{commodityName}</Text>                
+                <Text style={styles.commodityLabel}>{commodityName}  ({quantity})</Text>                
                 <FastImage
                     style={styles.commodityImage}
                     source={{ uri:`data:image/jpeg;base64,${image}` }}
@@ -106,7 +117,7 @@ export const ViewTransactionCommodityCard = ({
             
 
             <View style={{ flexDirection:'row',justifyContent:'space-between',marginHorizontal:constants.Dimensions.vw(5)}}>                
-                <Text style={styles.commodityLabel}><Components.AmountText  amountStyle={styles.amount} value={ amount}/></Text>                
+                <Text style={styles.commodityLabel}><Components.AmountText  amountStyle={styles.amount} value={ amount}/> </Text>                
             </View>
         </View>     
     </View>

@@ -30,6 +30,10 @@ export const styles = StyleSheet.create({
     
         alignSelf:'center'
         
+    },
+    noDataBg:{
+        height:constants.Dimensions.vh(100),    
+        width:constants.Dimensions.vw(100),
     }
 });
 

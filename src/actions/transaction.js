@@ -5,11 +5,11 @@ import constants from '../constants';
 import Toast from 'react-native-toast-message';
 import {POST,GET} from '../utils/axios';
 import { GET_SESSION, SET_SESSION } from "../utils/async_storage";
-import { checkAppVersion, getLocation, rotateImage,geotagging } from "../utils/functions";
-
+import { checkAppVersion, getLocation, rotateImage,geotagging, backgroundTime } from "../utils/functions";
+import BackgroundTimer from 'react-native-background-timer';
 import {launchCamera} from 'react-native-image-picker';
 
-export const scanQrCode =   async (payload,setState,props) => {     
+export const scanQrCode =    (payload,setState,props) => {     
     //turn on loading
      setState({isLoading:true,isScanning:false});
  
@@ -18,7 +18,7 @@ export const scanQrCode =   async (payload,setState,props) => {
             
         // if internet connected
         if(state.isConnected && state.isInternetReachable){
-            let checkVersion = await checkAppVersion();
+            let checkVersion = await  checkAppVersion();
             
 
 
@@ -32,43 +32,49 @@ export const scanQrCode =   async (payload,setState,props) => {
                 console.warn('scanned');                
                 // POST REQUEST
                 await POST(`${getBaseUrl().accesspoint}${constants.EndPoints.SCAN_QR_CODE}`,clean_payload).then((response)=>{  
-                    console.warn(response.data);
+                   
                     if(response.data.status == true){
                          
 
                          let parameters = {
-                             voucherInfo:response.data.voucherInfo
+                             voucherInfo:response.data.voucherInfo,
+                             timer:  backgroundTime(response.data.timer,props)
                          }
                          
                          setState({isLoading:false,isScanning:true});
                          //  NAVIGATE TO FARMER PROFILE
                          props.navigation.navigate(constants.ScreenNames.TRANSACTION_STACK.FARMER_PROFILE,parameters)
                          
-                         
+                        
                     }else{
                         Toast.show({
                             type:'error',
                             text1: 'Error',
                             text2:response.data.message ? response.data.message : response.data.errorMessage,
                         });
+
+                        console.warn()
+                        
                         setState({isLoading:false,isScanning:true});
+                      
                     }
 
 
                 }).catch((error)=>{
+                    console.warn('error',error);
                     
-                    console.warn(error);
                     Toast.show({
                         type:'error',
                         text1:'Something went wrong!',
-                        text2:error.response
+                        text2:error
                     });                   
+                    setState({isLoading:false,isScanning:true});
                 });
 
-                setState({isLoading:false,isScanning:true});
+                
             }else{
 
-                console.warn(checkVersion);
+                console.warn('checkVersion',checkVersion);
                 setState({isLoading:false,isScanning:true});
             }
                         
@@ -547,6 +553,11 @@ export const transact = (payload,setState,props) => {
                             text1:'Success!',
                             text2: response.data.message
                         })
+
+                        BackgroundTimer.clearTimeout(payload.timer);         
+
+                        
+                    
 
                         setState({showConfirm:false,showProgress:false});
                         

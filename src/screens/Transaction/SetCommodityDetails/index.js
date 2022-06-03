@@ -154,8 +154,9 @@ export default class SetCommodityDetails extends React.Component {
                                 onBlur={()=>this.setState({totalAmount:{...this.state.totalAmount,focus:false}})}
                                 isFocus={this.state.totalAmount.focus}
                                 isError={this.state.totalAmount.error}
-                                errorMessage={this.state.totalAmount.errorMessage}
+                                errorMessage={this.state.totalAmount.errorMessage}                                
                                 prefix={'₱'}
+                                textColor={constants.Colors.dark_tint}
                             
                                     
                             />
@@ -174,6 +175,7 @@ export default class SetCommodityDetails extends React.Component {
                                     isFocus={this.state.quantity.focus}
                                     isError={this.state.quantity.error}
                                     errorMessage={this.state.quantity.errorMessage}
+                                    textColor={constants.Colors.dark_tint}
                                 
                             />
                         </View>
