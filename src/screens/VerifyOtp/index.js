@@ -46,7 +46,9 @@ export default class VerifyOtp extends React.Component {
         let payload = {
             otp    : this.state.otp,       
             userId : this.state.parameters.userId,
-            fullName : this.state.parameters.fullName
+            fullName : this.state.parameters.fullName,
+            regName : this.state.parameters.regName,
+            programs : this.state.parameters.programs
         };  
         
 

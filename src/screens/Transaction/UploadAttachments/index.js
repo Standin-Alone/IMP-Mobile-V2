@@ -14,7 +14,7 @@ export default class UploadAttachments extends React.Component {
           cart:this.props.route.params.cart,   
           timer:this.props.route.params.timer,      
           showImage:false,  
-          showProgress:false,           
+          showProgress:false,              
           imageUri:'',      
           loadingTitle:'',
           attachments:[

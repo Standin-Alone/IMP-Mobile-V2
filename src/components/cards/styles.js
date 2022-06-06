@@ -17,6 +17,7 @@ export const styles = StyleSheet.create({
         elevation:2,
     },
     homePrimaryCard:{
+        marginVertical:constants.Dimensions.vh(2),
         height:constants.Dimensions.vh(100),
         width:constants.Dimensions.vw(90), 
         borderTopLeftRadius:20,
@@ -70,7 +71,8 @@ export const styles = StyleSheet.create({
 
     commodityCard:{
         marginVertical:constants.Dimensions.vh(2),
-        backgroundColor:constants.Colors.light,
+        backgroundColor:constants.Colors.light,   
+        borderRadius:20,     
         paddingVertical:constants.Dimensions.vh(2)
     },
     commodity:{
@@ -154,8 +156,23 @@ export const styles = StyleSheet.create({
         color:constants.Colors.danger,
         fontSize:12
     },
-    commodityImage:{
+    payoutCard:{
+        backgroundColor:constants.Colors.primary,
+        height:constants.Dimensions.vh(20),
+        width:constants.Dimensions.vh(90),
+        borderRadius:15
+    },
+    forPayout:{
         
-    }
+        fontFamily:constants.Fonts.NexaRegular,
+        fontSize:18,
+        color:constants.Colors.gray_tint
+    },
+    payoutValue:{
+        
+        fontFamily:constants.Fonts.PoppinsBold,
+        fontSize:20,
+        color:constants.Colors.light
+    },
 });
 

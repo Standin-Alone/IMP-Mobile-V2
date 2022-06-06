@@ -15,6 +15,7 @@ export default class Commodities extends React.Component {
           parameters:this.props.route.params.parameters,
           voucherInfo:this.props.route.params.parameters.voucherInfo,
           timer:this.props.route.params.parameters.timer,
+          isLoading:false,
           cart:[]  
       };
 
@@ -87,6 +88,11 @@ export default class Commodities extends React.Component {
                         title={"Add Commodities"}                        
                 />
 
+                <Components.ProgressModal
+                        showProgress={this.state.isLoading}    
+                        title={"Loading..."}                
+                />
+
                 <FlatList
                     data={ this.state.cart.reduce((prev, current) => prev + parseFloat(current.totalAmount), 0) >= this.state.voucherInfo.amount_val ? [] : this.state.voucherInfo.program_items}
                     renderItem = {({ item, index }) => this.renderItem(item, index)}                
@@ -106,8 +112,7 @@ export default class Commodities extends React.Component {
                     <View style={{ left: constants.Dimensions.vh(4) }}>
                         <Components.PrimaryButton  
                             onPress={this.handleGoToCheckout}                      
-                            title={` ${this.state.cart.length} items • P${this.state.cart.reduce((prev, current) => prev + parseFloat(current.totalAmount), 0).toFixed(2)}`}                                
-                            isLoading={this.state.isLoading}
+                            title={` ${this.state.cart.length} items • P${this.state.cart.reduce((prev, current) => prev + parseFloat(current.totalAmount), 0).toFixed(2)}`}                                             
                         />
                     </View>
                 </View>            

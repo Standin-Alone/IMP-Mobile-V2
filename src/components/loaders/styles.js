@@ -16,6 +16,9 @@ export const styles = StyleSheet.create({
         borderWidth:0.5,
         borderColor:constants.Colors.gray
 
+    },
+    loaderText:{
+        fontFamily:constants.Fonts.PoppinsRegular
     }
 });
 

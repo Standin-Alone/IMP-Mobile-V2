@@ -25,6 +25,8 @@ export const styles = StyleSheet.create({
         color:constants.Colors.primary
     },
     cancelButtonStyle:{
+        borderWidth:1,
+        borderColor:constants.Colors.dark_tint,
         backgroundColor:constants.Colors.light
     },
     cancelButtonTextStyle:{

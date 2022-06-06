@@ -40,7 +40,7 @@ export const styles = StyleSheet.create({
         bottom:0,
         left:0,
         right:0,
-        borderTopWidth:1,
+        borderTopWidth:0.5,
         backgroundColor:constants.Colors.light,
         borderColor:constants.Colors.primary
     }

@@ -4,7 +4,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 export default Icons = {
 
 
@@ -13,7 +13,8 @@ export default Icons = {
     FontAwesome5:FontAwesome5,
     Ionicons:Ionicons,
     MaterialCommunityIcons:MaterialCommunityIcons,
-    Fontisto:Fontisto
+    Fontisto:Fontisto,
+    MaterialIcons:MaterialIcons
 
 
 }

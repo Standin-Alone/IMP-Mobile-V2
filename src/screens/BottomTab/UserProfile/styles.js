@@ -41,5 +41,24 @@ export const styles = StyleSheet.create({
         bottom:constants.Dimensions.vh(2),
         backgroundColor:constants.Colors.light,
         
+    },
+    registeredProgramLabel:{
+        fontFamily:constants.Fonts.PoppinsBold,
+        color:constants.Colors.dark_tint,
+        fontSize:14,
+        top:constants.Dimensions.vh(2),
+        textAlign:'center'
+    },
+    programTitle:{
+        fontFamily:constants.Fonts.PoppinsMedium,
+        color:constants.Colors.dark_tint,
+        fontSize:14,        
+        
+    },
+    programShortName:{
+        fontFamily:constants.Fonts.PoppinsBold,
+        color:constants.Colors.dark_tint,
+        fontSize:14,        
+        
     }
 });

@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
         backgroundColor:constants.Colors.light,
         paddingVertical:constants.Dimensions.vh(5),
         borderTopWidth:0.5,
-        borderColor:constants.Colors.dark_tint
+        borderColor:constants.Colors.primary
     },
     label:{
 

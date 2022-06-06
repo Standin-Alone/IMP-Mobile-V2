@@ -14,7 +14,8 @@ export default class Checkout extends React.Component {
           cart:this.props.route.params.cart,
           timer:this.props.route.params.timer,
           newCart:[],
-          cartTotalAmount:0
+          cartTotalAmount:0,
+          isLoading:false
          
       };
     }
@@ -87,9 +88,15 @@ export default class Checkout extends React.Component {
                             this.state.parameters.handleUpdateCart(this.state.cart);
                             this.props.navigation.goBack()
                         }}                        
-                        title={"Review Cart"}
-                        
+                        title={"Review Cart"}                        
                 />
+
+                <Components.ProgressModal
+                    showProgress={this.state.isLoading}    
+                    title={"Loading..."}                
+                />
+
+
                 <FlatList
                     data={this.state.cart}
                     extraData={this.state.newCart}

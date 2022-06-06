@@ -8,6 +8,7 @@ const ScreenNames = {
     BOTTOM_TABS:{
         HOME:'Home',
         SCANNING:'Scanning',
+        PAYOUT_MONITORING:'PayoutMonitoring',
         USER_PROFILE:'UserProfile'
     },
     TRANSACTION_STACK:{

@@ -58,6 +58,14 @@ export default class FarmerProfile extends React.Component {
                 <View style={styles.infoContainer}>
                     <View style={{ flexDirection:'column',marginHorizontal:constants.Dimensions.vh(5) , top:constants.Dimensions.vh(10)}}>
                         <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
+                            <Text style={styles.label}>Reference Number</Text>
+                            <Text style={styles.value}>{this.state.voucherInfo.reference_no}</Text>
+                        </View>
+                        <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
+                            <Text style={styles.label}>Program</Text>
+                            <Text style={styles.value}>{this.state.voucherInfo.shortname}</Text>
+                        </View>
+                        <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
                             <Text style={styles.label}>Birthday</Text>
                             <Text style={styles.value}>{this.state.voucherInfo.birthday}</Text>
                         </View>

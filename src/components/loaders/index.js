@@ -1,6 +1,6 @@
 
 import React from "react";
-import { View,SafeAreaView,ActivityIndicator } from "react-native";
+import { View,SafeAreaView,ActivityIndicator,Text} from "react-native";
 import { styles } from "./styles";
 
 import constants from "../../constants";
@@ -22,6 +22,24 @@ export const Loader = ({
    }
 }
 
+
+export const FooterLoader = ({
+
+ }) => {
+    
+        return (    
+        <SafeAreaView style={[styles.overlay, { alignItems: 'center', justifyContent: 'center',top:constants.Dimensions.vh(10)}]}>
+            <View style={{ flexDirection:'row' }}>
+                <ActivityIndicator size="small" color={constants.Colors.primary}/>               
+                <Text style={styles.loaderText}>  Getting more transacted vouchers...</Text>
+            </View>
+            
+                
+        </SafeAreaView>
+        )
+}
+ 
+ 
 
 export const Divider =  ({
     style

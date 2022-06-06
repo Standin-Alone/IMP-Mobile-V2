@@ -31,7 +31,7 @@ export const TransactionStackComponent= (props) => {
             <TransactionStack.Screen
                 component={Scanning}
                 name={constants.ScreenNames.TRANSACTION_STACK.SCANNING}
-                options={{ }}                
+                
             />  
 
             <TransactionStack.Screen

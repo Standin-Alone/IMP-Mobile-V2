@@ -45,6 +45,7 @@ export default class Authentication extends React.Component {
                         message={this.state.message}                
                     />
                   
+          
                     <Components.ProgressModal
                         showProgress={this.state.showProgress}    
                         title={this.state.loadingText}                

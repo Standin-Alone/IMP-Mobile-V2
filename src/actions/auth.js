@@ -5,7 +5,7 @@ import constants from '../constants';
 import Toast from 'react-native-toast-message';
 import {POST,GET} from '../utils/axios';
 import { GET_SESSION, SET_SESSION } from "../utils/async_storage";
-import { getLocation } from "../utils/functions";
+import { checkAppVersion, getLocation } from "../utils/functions";
 import {Linking}   from 'react-native'; 
 
 
@@ -20,28 +20,30 @@ export const authenticate = async (setstate,props)=>{
         // if internet connected
         if(state.isConnected && state.isInternetReachable){
             
-          
-            setTimeout(()=>{
-                if(checkLocation.code != 2){
-                    
-                    if(checkSession){            
-        
-                         props.navigation.replace(constants.ScreenNames.APP_STACK.MAIN_TAB);
-                    }else{
-                        props.navigation.replace(constants.ScreenNames.APP_STACK.LOGIN);
-                    }
-                }else{
-                        
-                     setstate({showConfirm:true,confirmText:'Try again',title:'Message',message:'Please turn on your location service.'});
-                }
-                   
-            },2000)
-        }else{
-            
-            
-         
-            
+            let checkVersion = await checkAppVersion();
 
+            if(checkVersion.status){
+                setTimeout(()=>{
+                    
+                    if(checkLocation.code != 2){
+                        
+                        if(checkSession){            
+            
+                            props.navigation.replace(constants.ScreenNames.APP_STACK.MAIN_TAB);
+                        }else{
+                            props.navigation.replace(constants.ScreenNames.APP_STACK.LOGIN);
+                        }
+                    }else{
+                            
+                        setstate({showConfirm:true,confirmText:'Try again',title:'Message',message:'Please turn on your location service.'});
+                    }
+                    
+                },2000)
+            }else{
+                setstate({showConfirm:true,confirmText:'Okay',title:'Message',message:checkVersion.message});
+            }
+        }else{
+                
             setstate({showConfirm:true,confirmText:'Try again',title:'Message',message:'Please check your internet connectivity'});
         }
 
@@ -88,11 +90,13 @@ export const login = (payload,setState,props) => {
                             userId: response.data.data.user_id,
                             email:response.data.data.email,
                             fullName:response.data.data.full_name,
+                            regName:response.data.data.reg_name,
+                            programs:response.data.programs,
                             role:response.data.data.role
                         }   
                         
                         
-                        // NAVIGATE TO VERIFY OTP
+                        // // NAVIGATE TO VERIFY OTP
                         props.navigation.navigate('VerifyOtp',params);
                     }else{
                         Toast.show({
@@ -158,6 +162,8 @@ export const verifyOtp = (payload,setState,props)=>{
                         
                         SET_SESSION('USER_ID',payload.userId)
                         SET_SESSION('FULL_NAME',payload.fullName)
+                        SET_SESSION('REGION_NAME',payload.regName)
+                        SET_SESSION('PROGRAMS',JSON.stringify(payload.programs))
 
                          // NAVIGATE TO HOME
                          props.navigation.navigate('MainTabs');                                                

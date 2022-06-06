@@ -40,12 +40,13 @@ export const styles = StyleSheet.create({
     label:{
         fontFamily:constants.Fonts.PoppinsRegular,
         color:constants.Colors.dark_tint,
-        fontSize:18,        
+        fontSize:14,        
     },
     value:{
         fontFamily:constants.Fonts.PoppinsRegular,
         color:constants.Colors.dark_tint,
-        fontSize:18,      
+        fontWeight:'bold',
+        fontSize:14,      
     }
 
 });

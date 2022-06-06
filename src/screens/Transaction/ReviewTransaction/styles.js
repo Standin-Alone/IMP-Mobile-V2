@@ -32,14 +32,14 @@ export const styles = StyleSheet.create({
         backgroundColor: constants.Colors.light
     },
     label:{
-        fontFamily:constants.Fonts.PoppinsBold,
-        color:constants.Colors.dark_tint,
-        fontSize:16,        
-    },
-    value:{
         fontFamily:constants.Fonts.PoppinsRegular,
         color:constants.Colors.dark_tint,
-        fontSize:18,      
+        fontSize:14,        
+    },
+    value:{
+        fontFamily:constants.Fonts.PoppinsBold,
+        color:constants.Colors.dark_tint,
+        fontSize:14,      
     },
     image:{
         width:constants.Dimensions.vw(40),

@@ -1,6 +1,6 @@
 export default Colors = {
     dark:'#000000',
-    light:'#ffffff',
+    light:'#FFFFFF',
     primary: '#3EB489', 
     secondary:'#38ef7d',        
     gradient:{

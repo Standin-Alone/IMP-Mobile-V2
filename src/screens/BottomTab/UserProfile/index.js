@@ -1,5 +1,5 @@
 import React from 'react';
-import { View,Text,Image} from 'react-native';
+import { View,Text,Image,ScrollView} from 'react-native';
 import {styles} from './styles'
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import Components from '../../../components';
@@ -12,15 +12,24 @@ export default class UserProfile extends React.Component {
       super(props);
       this.state = {  
             showConfirm:false,      
-            fullName:''
+            fullName:'',
+            programs:[],
+            regionName:''
       };
     }
 
 
     async componentDidMount(){
         this.setState({fullName: await GET_SESSION('FULL_NAME')})
+        this.setState({regionName: await GET_SESSION('REGION_NAME')})
+        this.setState({programs: JSON.parse(await GET_SESSION('PROGRAMS'))})
+        
+
+     
     }
+
     handleLogOut = async ()=>{
+
 
         await CLEAR_SESSION();
         this.props.navigation.reset({
@@ -55,13 +64,26 @@ export default class UserProfile extends React.Component {
                     <View style={{ flexDirection:'row',justifyContent:'center' }}>
                         <View style={{ flexDirection:'column',bottom:constants.Dimensions.vh(2) }}>
                             <Text style={styles.fullName}>{this.state.fullName}</Text>
-                            {/* <Text style={styles.address}>San Jose Del Monte Bulacan</Text> */}
+                            <Text style={styles.address}>{this.state.regionName}</Text>
                         </View>
                     </View>
                 </View>
 
                 <View style={styles.infoContainer}>
-
+                    <Text style={styles.registeredProgramLabel}>Registered Programs</Text>
+                    <ScrollView style={{ top:constants.Dimensions.vh(2) }}>
+                        <View >
+                        {this.state.programs.map((item)=>{
+                                return (
+                                    <View style={{ flexDirection:'row',justifyContent:'space-between',marginHorizontal:constants.Dimensions.vw(10) }}>
+                                        <Text style={styles.programTitle}>{item.title}</Text>
+                                        <Text style={styles.programShortName}>{item.shortname}</Text>
+                                    </View>
+                                )
+                            })
+                        }
+                        </View>                        
+                    </ScrollView>
                 </View>
                 <View style={styles.bottom}>
                     <Components.TertiaryButton  

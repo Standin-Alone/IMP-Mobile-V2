@@ -1,5 +1,5 @@
 import React from 'react';
-import { View,Image, FlatList} from 'react-native';
+import { View,Image, FlatList,Text} from 'react-native';
 import constants from '../../../constants';
 import {styles} from './styles'
 import Components from '../../../components';
@@ -14,11 +14,13 @@ export default class Home extends React.Component {
       super(props);
       this.state = {        
           transactedVouchers:[],
+          isLoading:false,
+          loadingText:'',
           isReadyToRender:false,
+          showFooter:true,
+          page:0,
           search:{
             focus:false,
-
-
             value:''
           },  
       };
@@ -28,11 +30,14 @@ export default class Home extends React.Component {
     setMyState = (value)=>this.setState(value);
 
     componentDidMount(){
-        
-        getTransactedVouchers(this.setMyState)
+        let parameter = {
+            transactedVouchers:this.state.transactedVouchers,
+            page:this.state.page
+        }
+        getTransactedVouchers(parameter,this.setMyState)
 
         this.props.navigation.addListener('focus',()=>{
-            getTransactedVouchers(this.setMyState)
+            getTransactedVouchers(parameter,this.setMyState)
         })
 
     }
@@ -43,7 +48,9 @@ export default class Home extends React.Component {
                         
     
         let payload = {
-            transactionInfo:item
+            
+            transactionInfo:item,
+            
         };
 
         
@@ -74,6 +81,16 @@ export default class Home extends React.Component {
         />
                     
     )
+
+    renderFooterComponent = () =>(
+
+    
+            this.state.showFooter ?
+            <Components.FooterLoader/> :
+            <View style={styles.emptyFooter}> 
+                <Text> No transacted vouchers...</Text>
+            </View>                
+    )
     
     render(){
         const filteredVouchers = this.state.transactedVouchers.filter(
@@ -82,10 +99,16 @@ export default class Home extends React.Component {
         return(
             <>  
             
-                <View style={styles.container}>   
+                <View style={styles.container}>
+                <Components.ProgressModal
+                        showProgress={this.state.isLoading}    
+                        title={this.state.loadingText}                
+                    />
+   
                     <Components.HomeHeader
                         title={'IMP'}
-                    />                    
+                    />            
+                 
                     <View style={styles.contentContainer}>
                         <View style={styles.searchContainer}>
                                 <Components.PrimaryHeaderSearch
@@ -107,8 +130,24 @@ export default class Home extends React.Component {
 
                                     <FlatList
                                         data={this.state.transactedVouchers ? filteredVouchers : null}
+                                        extraData={this.state.transactedVouchers}
                                         renderItem={this.renderItem}                                                                            
                                         ListEmptyComponent = {this.renderEmptyComponent}
+                                        ListFooterComponent = {this.renderFooterComponent}
+                                        contentContainerStyle={{ paddingBottom:constants.Dimensions.vh(50) }}
+                                        onEndReachedThreshold={0.1} // so when you are at 5 pixel from the bottom react run onEndReached function
+                                        onEndReached={async ({distanceFromEnd}) => {     
+                                                      
+                                           if (distanceFromEnd > 0 ) 
+                                            {                               
+                                              await this.setState((prevState) => ({page:prevState.page + 2}));
+                                              let parameter = {
+                                                transactedVouchers:this.state.transactedVouchers,
+                                                page:this.state.page
+                                              }
+                                              await getTransactedVouchers(parameter,this.setMyState)
+                                            }                              
+                                        }}
                                     />
                                 </View>
                             )}

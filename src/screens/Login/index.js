@@ -54,6 +54,9 @@ export default class Login extends React.Component {
         this.props.navigation.navigate('SignUp');
     }
 
+    goToForgotPassword = () =>{
+        
+    }
     render(){
      
         return(
@@ -112,7 +115,7 @@ export default class Login extends React.Component {
 
                         <View style={styles.buttonContainer}> 
                             <View style={{ flexDirection:'row',justifyContent:'flex-end',marginBottom:20 }}>
-                                <Text style={styles.forgotPassword}>Forgot Password?</Text>
+                                <Text style={styles.forgotPassword} onPress={this.goToForgotPassword}>Forgot Password?</Text>
                             </View>
                             
                             <View>

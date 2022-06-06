@@ -17,11 +17,13 @@ import {
         CommodityCard,
         ImageCard,
         HomePrimaryCard,
-        ViewTransactionCommodityCard
+        ViewTransactionCommodityCard,
+        PayoutCard
     } from "./cards";
 
 import { 
         Loader,
+        FooterLoader,
         Divider
     } from "./loaders";
 
@@ -60,6 +62,7 @@ export default {
     HomeHeader,
 
     Loader,
+    FooterLoader,
     Divider,
     AmountText,
     
@@ -68,6 +71,7 @@ export default {
     ImageCard,
     HomePrimaryCard,
     ViewTransactionCommodityCard,
+    PayoutCard,
 
     ImageModal,
     ConfirmModal,

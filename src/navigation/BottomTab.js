@@ -9,6 +9,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { TransactionStackComponent } from './TransactionStack';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { HomeStackComponent } from './HomeStack';
+import PayoutMonitoring from '../screens/BottomTab/PayoutMonitoring';
 
 const BottomTab = createBottomTabNavigator();
 
@@ -100,6 +101,18 @@ export const BottomTabNavigator = ()=>(
                 )
              })}
         />
+        <BottomTab.Screen 
+            name ={constants.ScreenNames.BOTTOM_TABS.PAYOUT_MONITORING}
+            component={PayoutMonitoring}
+            options={({route,navigation})=>({ 
+                tabBarStyle:{display:getTabBarVisibility(route)},     
+                tabBarShowLabel:false,
+                tabBarIcon: ({color})=>(
+                    <constants.Icons.MaterialIcons name="payments" size={40} color={color}/>
+                )
+             })}
+        />
+
 
         <BottomTab.Screen 
             name ={constants.ScreenNames.BOTTOM_TABS.USER_PROFILE}

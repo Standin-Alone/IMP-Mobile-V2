@@ -225,3 +225,22 @@ export const CommodityCard = ({
     </View>
 
 );
+
+
+
+
+
+export const PayoutCard = ({
+
+
+})=>(   
+    <View style={styles.payoutCard}>       
+        <View style={{ flexDirection:'column',left:constants.Dimensions.vw(5),top:constants.Dimensions.vh(2)}}>
+            <Text style={styles.forPayout}>For Payout</Text>
+
+
+            <Text style={styles.payoutValue}>P2,000.00</Text>            
+        </View>
+        
+    </View>
+);

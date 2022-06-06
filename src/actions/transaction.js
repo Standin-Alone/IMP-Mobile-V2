@@ -18,12 +18,12 @@ export const scanQrCode =    (payload,setState,props) => {
             
         // if internet connected
         if(state.isConnected && state.isInternetReachable){
-            let checkVersion = await  checkAppVersion();
+            let checkVersion =   await checkAppVersion();
             
 
 
             //Check if the mobile app is latest.
-            if(checkVersion){
+            if(checkVersion.status){
 
                 let clean_payload = {
                     reference_number:payload.scanResult,
@@ -31,7 +31,7 @@ export const scanQrCode =    (payload,setState,props) => {
                 }
                 console.warn('scanned');                
                 // POST REQUEST
-                await POST(`${getBaseUrl().accesspoint}${constants.EndPoints.SCAN_QR_CODE}`,clean_payload).then((response)=>{  
+                POST(`${getBaseUrl().accesspoint}${constants.EndPoints.SCAN_QR_CODE}`,clean_payload).then((response)=>{  
                    
                     if(response.data.status == true){
                          
@@ -108,9 +108,9 @@ export const goToAddCommodities = (payload,setState,props) => {
             
   
 
-
+            
             //Check if the mobile app is latest.
-            if(checkVersion){
+            if(checkVersion.status){
 
                 let cleanParameters = {
                     parameters:payload.parameters
@@ -209,7 +209,7 @@ export const addToCart = (payload,setState,props) => {
 
 export const goToCheckout = (payload,setState,props) => {     
     
-
+    setState({isLoading:true})
     // Check Internet Connection
     NetInfo.fetch().then(async(state)=>{
             
@@ -221,7 +221,7 @@ export const goToCheckout = (payload,setState,props) => {
 
 
             //Check if the mobile app is latest.
-            if(checkVersion){
+            if(checkVersion.status){
 
                 if(payload.cart.length > 0){
                     let cartTotal = payload.cart.reduce((prev, current) => prev + parseFloat(current.totalAmount), 0);
@@ -229,6 +229,7 @@ export const goToCheckout = (payload,setState,props) => {
                     let compute =   payload.voucherInfo.amount_val - cartTotal;
                     console.warn(checkBalance);
                     if(checkBalance <=  0){
+                        setState({isLoading:false})
                        props.navigation.navigate(constants.ScreenNames.TRANSACTION_STACK.CHECKOUT,payload)
                     }else{
                         Toast.show({
@@ -236,6 +237,7 @@ export const goToCheckout = (payload,setState,props) => {
                             text1:'Error!',
                             text2:`Please consume the full amount of the voucher.`
                         })
+                        setState({isLoading:false})
                     }
 
                 }else{
@@ -244,12 +246,12 @@ export const goToCheckout = (payload,setState,props) => {
                         text1:'Error!',
                         text2:'You have no items on your cart.'
                     })
+                    setState({isLoading:false})
                 }
   
             }else{
-
-                console.warn(checkVersion);
-  
+                
+                setState({isLoading:false})
             }
                         
         }else{
@@ -258,6 +260,8 @@ export const goToCheckout = (payload,setState,props) => {
                 type:'error',
                 text1:'No internet Connection!'
             })
+               
+            setState({isLoading:false})
   
         }
     });
@@ -268,7 +272,8 @@ export const goToCheckout = (payload,setState,props) => {
 
 
 export const checkout = (payload,setState,props) => {     
-    
+        
+    setState({isLoading:true})
 
     // Check Internet Connection
     NetInfo.fetch().then(async(state)=>{
@@ -281,17 +286,18 @@ export const checkout = (payload,setState,props) => {
 
 
             //Check if the mobile app is latest.
-            if(checkVersion){
-
+            if(checkVersion.status){
+                setState({isLoading:false})
                 props.navigation.navigate(constants.ScreenNames.TRANSACTION_STACK.UPLOAD_ATTACHMENTS,payload)
   
             }else{
-
+                setState({isLoading:false})
                 console.warn(checkVersion);
   
             }
                         
         }else{
+            setState({isLoading:false})
             //  No internet Connection
             Toast.show({
                 type:'error',
@@ -313,7 +319,7 @@ export const checkout = (payload,setState,props) => {
 
 export const openCamera = (payload,setState) => {     
     
-    setState({showProgress:true});
+    setState({showProgress:true,loadingTitle:'Opening the camera'});
     // Check Internet Connection
     NetInfo.fetch().then(async(state)=>{
             
@@ -323,7 +329,7 @@ export const openCamera = (payload,setState) => {
             
   
             //Check if the mobile app is latest.
-            if(checkVersion){
+            if(checkVersion.status){
                 
                 let checkLocation =    await getLocation();
              
@@ -384,7 +390,7 @@ export const openCamera = (payload,setState) => {
                                     }
                                 });
 
-                                setState({showProgress:false});
+                                setState({showProgress:false,loadingTitle:'Loading'});
                             }else{
                                 
                                 Toast.show({
@@ -392,13 +398,13 @@ export const openCamera = (payload,setState) => {
                                     text1:'Warning!',
                                     text1:'Your captured image is not in jpeg format'
                                 })                        
-                                setState({showProgress:false});
+                                setState({showProgress:false,loadingTitle:'Loading'});
                             }
 
                         })
                        
                     }else{
-                        setState({showProgress:false});
+                        setState({showProgress:false,loadingTitle:'Loading'});
                     }
 
                 }else{
@@ -407,6 +413,7 @@ export const openCamera = (payload,setState) => {
                         text1:'Error!',
                         text1:'Please open your location services.'
                     })  
+                    setState({showProgress:false,loadingTitle:'Loading'});
                 }
             }
                         
@@ -417,6 +424,7 @@ export const openCamera = (payload,setState) => {
                 text1:'No internet Connection!'
             })
   
+            setState({showProgress:false,loadingTitle:'Loading'});
         }
     });
 
@@ -427,7 +435,7 @@ export const openCamera = (payload,setState) => {
 
 
 export const goToReviewTransaction = (payload,setState,props) => {     
-    
+    setState({showProgress:true});
 
     // Check Internet Connection
     NetInfo.fetch().then(async(state)=>{
@@ -440,7 +448,7 @@ export const goToReviewTransaction = (payload,setState,props) => {
 
 
             //Check if the mobile app is latest.
-            if(checkVersion){
+            if(checkVersion.status){
 
                 let noAttachmentCount = 0 ;
                 payload.attachments.map((item) => {
@@ -461,10 +469,10 @@ export const goToReviewTransaction = (payload,setState,props) => {
 
 
                 if(noAttachmentCount == 0){    
-                    
+                    setState({showProgress:false});
                     props.navigation.navigate(constants.ScreenNames.TRANSACTION_STACK.REVIEW_TRANSACTION,payload)
                 }else{
-                  
+                    setState({showProgress:false});
                     Toast.show({
                         type:'error',
                         text1:'Error',
@@ -476,7 +484,7 @@ export const goToReviewTransaction = (payload,setState,props) => {
 
                 
             }else{
-
+                setState({showProgress:false});
                 console.warn(checkVersion);
   
             }
@@ -487,7 +495,7 @@ export const goToReviewTransaction = (payload,setState,props) => {
                 type:'error',
                 text1:'No internet Connection!'
             })
-  
+            setState({showProgress:false});
         }
     });
 
@@ -513,7 +521,7 @@ export const transact = (payload,setState,props) => {
 
 
             //Check if the mobile app is latest.
-            if(checkVersion){
+            if(checkVersion.status){
         
                 payload.userId = await GET_SESSION('USER_ID');
                 payload.supplierName = await GET_SESSION('FULL_NAME');

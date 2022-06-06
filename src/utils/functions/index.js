@@ -35,7 +35,7 @@ export const backgroundTime = (timer,props)=>{
 export const checkAppVersion = async ()=>{
 
    
-    let  result = true;
+    let  result = false;
 
 
     let cleanPayload = {
@@ -45,17 +45,17 @@ export const checkAppVersion = async ()=>{
 
 
     // Check Internet Connection
-    await  NetInfo.fetch().then((state)=>{
+    await  NetInfo.fetch().then(async (state)=>{
         
          // if internet connected
          if(state.isConnected && state.isInternetReachable){
                 
             // POST REQUEST
-            POST(`${getBaseUrl().accesspoint}${constants.EndPoints.CHECK_APP_VERSION}`,cleanPayload).then((response)=>{                    
+           await  POST(`${getBaseUrl().accesspoint}${constants.EndPoints.CHECK_APP_VERSION}`,cleanPayload).then((response)=>{                    
                   
                 if(response.data.status == true){
-                    
-                    result = response.data.status;
+                                        
+                    result = { status: response.data.status};   
                 }else{
                     
                     Toast.show({
@@ -63,7 +63,7 @@ export const checkAppVersion = async ()=>{
                         text1: 'Information',
                         text2:response.data.message,
                     });
-                    result = response.data.status;                 
+                    result = { status: response.data.status,message:response.data.message};                 
                 }
                
                 
@@ -76,7 +76,7 @@ export const checkAppVersion = async ()=>{
                     text2:error.response
                 });
     
-              
+                result = { status: false};                 
             });
 
          }else{
@@ -85,6 +85,8 @@ export const checkAppVersion = async ()=>{
                 type:'error',
                 text1:'No internet Connection!'
             })
+
+            result = { status: false};    
             
          }
     });

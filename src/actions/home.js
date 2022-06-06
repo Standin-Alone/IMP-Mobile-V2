@@ -10,13 +10,13 @@ import { GET_SESSION, SET_SESSION } from "../utils/async_storage";
 
 
 export const goToViewTransaction = (payload,setState,props)=>{
-
+    setState({isLoading:true,loadingText:'Viewing the transaction...'})
     // Check Internet Connection
     NetInfo.fetch().then(async (state)=>{
 
          // if internet connected
          if(state.isConnected && state.isInternetReachable){
-            
+            setState({isLoading:false,loadingText:''})
             props.navigation.navigate(constants.ScreenNames.HOME_STACK.VIEW_TRANSACTION,payload)
             
            
@@ -27,7 +27,7 @@ export const goToViewTransaction = (payload,setState,props)=>{
                 text1:'No internet Connection!'
             })
              // turn off loading
-     
+             setState({isLoading:false,loadingText:''})
          }
     });
 
@@ -35,8 +35,8 @@ export const goToViewTransaction = (payload,setState,props)=>{
 
 
 
-export const getTransactedVouchers = (setState)=>{
-    
+export const getTransactedVouchers = (payload,setState)=>{
+    setState({showFooter:true});
 
     // Check Internet Connection
     NetInfo.fetch().then(async (state)=>{
@@ -48,17 +48,23 @@ export const getTransactedVouchers = (setState)=>{
 
             let cleanPayload = {
                 supplierId: await GET_SESSION('USER_ID'),
-                page:0
+                page:payload.page
             }
- 
+            
+            console.warn(cleanPayload);
             // POST REQUEST
             POST(`${getBaseUrl().accesspoint}${constants.EndPoints.GET_TRANSACTED_VOUCHERS}`,cleanPayload).then((response)=>{       
-                console.warn(response.data);
+                
                 if(response.data.status == true){
                     
                     
+                    let newData = response.data.data;
                     
-                    setState({transactedVouchers:response.data.data,isReadyToRender:true})
+                    setState({transactedVouchers: [...new Set(payload.transactedVouchers),...newData],isReadyToRender:true});    
+                    if(newData.length ==  0){ 
+                        setState({showFooter:false})
+                    }
+
 
                 }else{
                     Toast.show({
@@ -71,7 +77,7 @@ export const getTransactedVouchers = (setState)=>{
                 
             }).catch((error)=>{
                     
-                console.warn(error.response);
+                console.warn(error);
                 Toast.show({
                     type:'error',
                     text1:'Something went wrong!',                     
