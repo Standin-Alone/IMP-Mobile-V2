@@ -10,6 +10,7 @@ import { TransactionStackComponent } from './TransactionStack';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { HomeStackComponent } from './HomeStack';
 import PayoutMonitoring from '../screens/BottomTab/PayoutMonitoring';
+import { PayoutMonitoringStackComponent } from './PayoutMonitoringStack';
 
 const BottomTab = createBottomTabNavigator();
 
@@ -17,8 +18,8 @@ const BottomTab = createBottomTabNavigator();
 export function getTabBarVisibility(route) {   
     
     const routeName = getFocusedRouteNameFromRoute(route);
-        
-    if (( routeName != 'ScanningScreen') && ( routeName != 'HomeScreen')  && routeName !== undefined) {        
+    
+    if (( routeName != 'ScanningScreen') && ( routeName != 'HomeScreen')  && ( routeName != 'PayoutMonitoringScreen')   && routeName !== undefined) {        
       return 'none';
     }else{
         return 'flex';
@@ -103,7 +104,7 @@ export const BottomTabNavigator = ()=>(
         />
         <BottomTab.Screen 
             name ={constants.ScreenNames.BOTTOM_TABS.PAYOUT_MONITORING}
-            component={PayoutMonitoring}
+            component={PayoutMonitoringStackComponent}
             options={({route,navigation})=>({ 
                 tabBarStyle:{display:getTabBarVisibility(route)},     
                 tabBarShowLabel:false,

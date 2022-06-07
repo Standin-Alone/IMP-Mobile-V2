@@ -135,10 +135,11 @@ export default class Home extends React.Component {
                                         ListEmptyComponent = {this.renderEmptyComponent}
                                         ListFooterComponent = {this.renderFooterComponent}
                                         contentContainerStyle={{ paddingBottom:constants.Dimensions.vh(50) }}
+                                        style={{paddingleft:constants.Dimensions.vw(10) }}
                                         onEndReachedThreshold={0.1} // so when you are at 5 pixel from the bottom react run onEndReached function
                                         onEndReached={async ({distanceFromEnd}) => {     
                                                       
-                                           if (distanceFromEnd > 0 ) 
+                                           if (distanceFromEnd > 0  && this.state.transactedVouchers.length - 2 == this.state.page ) 
                                             {                               
                                               await this.setState((prevState) => ({page:prevState.page + 2}));
                                               let parameter = {

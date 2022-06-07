@@ -1,5 +1,5 @@
 const API_DEV_HOST = `http://172.17.150.188/evoucher/api-v2/`;
-const API_PRO_HOST = ``;
+const API_PRO_HOST = `http://devsysadd.da.gov.ph/evoucer/api-v2`;
 const Config = {
     // 0 => Devlopment env, 1 => Production env
     APP_MODE: 0,

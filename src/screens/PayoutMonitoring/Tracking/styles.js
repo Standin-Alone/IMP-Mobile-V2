@@ -9,8 +9,14 @@ export const styles = StyleSheet.create({
         flex:1,
         backgroundColor: constants.Colors.light,        
     },
-    listText:{
+    timelineTitle:{
         fontFamily:constants.Fonts.PoppinsBold,
-        color:constants.Colors.dark
+        
+    },
+    detailText:{
+        fontFamily:constants.Fonts.PoppinsBold
+    },
+    detailDescription:{
+        fontFamily:constants.Fonts.PoppinsRegular
     }
 });

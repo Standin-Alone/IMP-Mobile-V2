@@ -11,6 +11,11 @@ const ScreenNames = {
         PAYOUT_MONITORING:'PayoutMonitoring',
         USER_PROFILE:'UserProfile'
     },
+    PAYOUT_MONITORING_STACK:{
+        PAYOUT_MONITORING:'PayoutMonitoringScreen',
+        TRACKING:'PayoutTracking',
+        
+    },
     TRANSACTION_STACK:{
         SCANNING:'ScanningScreen',
         FARMER_PROFILE:'FarmerProfile',

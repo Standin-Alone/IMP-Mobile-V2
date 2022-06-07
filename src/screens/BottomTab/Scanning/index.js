@@ -51,7 +51,7 @@ export default class Scanning extends React.Component {
                     
                         <RNCamera
                             defaultTouchToFocus
-                            onBarCodeRead = {this.handleBarCodeRead}
+                            onBarCodeRead = {this.handleBarCodeRead.bind(this)}
                             style={[StyleSheet.absoluteFillObject,styles.container]}
                             permissionDialogTitle={'Permission to use camera'}
                             permissionDialogMessage={'We need your permission to use your camera phone'}                      

@@ -18,7 +18,8 @@ import {
         ImageCard,
         HomePrimaryCard,
         ViewTransactionCommodityCard,
-        PayoutCard
+        PayoutCard,
+        PayoutBatchCard
     } from "./cards";
 
 import { 
@@ -70,6 +71,7 @@ export default {
     CommodityCard,
     ImageCard,
     HomePrimaryCard,
+    PayoutBatchCard,
     ViewTransactionCommodityCard,
     PayoutCard,
 

@@ -157,16 +157,15 @@ export const styles = StyleSheet.create({
         fontSize:12
     },
     payoutCard:{
-        backgroundColor:constants.Colors.primary,
+        backgroundColor:constants.Colors.warning,
         height:constants.Dimensions.vh(20),
-        width:constants.Dimensions.vh(90),
+        width:constants.Dimensions.vw(90),
         borderRadius:15
     },
-    forPayout:{
-        
+    forPayout:{        
         fontFamily:constants.Fonts.NexaRegular,
         fontSize:18,
-        color:constants.Colors.gray_tint
+        color:constants.Colors.light
     },
     payoutValue:{
         
@@ -174,5 +173,42 @@ export const styles = StyleSheet.create({
         fontSize:20,
         color:constants.Colors.light
     },
+
+    payoutBatchCard:{
+        left:constants.Dimensions.vw(1),
+        marginVertical:constants.Dimensions.vh(5),
+        backgroundColor:constants.Colors.light,
+        elevation:2,
+        height:constants.Dimensions.vh(20),
+        width:constants.Dimensions.vw(90),
+        borderRadius:15
+    },
+    batchImage:{
+        width:constants.Dimensions.vw(10),
+        height:constants.Dimensions.vh(10),
+        resizeMode:'cover',
+        top:constants.Dimensions.vh(4)
+      
+    },
+    payoutBatchContent:{
+        left:constants.Dimensions.vw(2)
+    },
+    batchNumber:{        
+        fontFamily:constants.Fonts.PoppinsBold,
+        fontSize:14,        
+    },
+    payoutBatchStatus:{
+        fontFamily:constants.Fonts.PoppinsBold,
+        fontSize:12, 
+    },
+    payoutCardStatus:{
+        backgroundColor:constants.Colors.warning,
+        bottom:constants.Dimensions.vh(7),
+        left:constants.Dimensions.vw(5),
+        elevation:5,
+        borderRadius:10,
+        paddingVertical:constants.Dimensions.vh(2),
+        paddingHorizontal:constants.Dimensions.vw(5)
+    }
 });
 

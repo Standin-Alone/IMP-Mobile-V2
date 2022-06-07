@@ -232,14 +232,53 @@ export const CommodityCard = ({
 
 export const PayoutCard = ({
 
-
+amount
 })=>(   
     <View style={styles.payoutCard}>       
         <View style={{ flexDirection:'column',left:constants.Dimensions.vw(5),top:constants.Dimensions.vh(2)}}>
-            <Text style={styles.forPayout}>For Payout</Text>
+            <Text style={styles.forPayout}> Total Pending For Payout</Text>
+            
+            <Components.AmountText value={amount} amountStyle={styles.payoutValue}/>
+        </View>
+        
+    </View>
+);
 
 
-            <Text style={styles.payoutValue}>P2,000.00</Text>            
+
+
+export const PayoutBatchCard = ({
+batchNumber,
+totalAmount,
+status,
+onPress
+
+})=>(   
+    <View style={styles.payoutBatchCard}>       
+        <View style={{ flexDirection:'column',left:constants.Dimensions.vw(5),top:constants.Dimensions.vh(2)}}>
+           <View style={{ flexDirection:'row' }}>
+            <FastImage
+                style={[styles.batchImage]}
+                source={constants.Images.batch}
+                resizeMode={FastImage.resizeMode.cover}    
+            />
+            <View style={styles.payoutBatchContent}>
+                <Text style={styles.batchNumber}>{batchNumber}</Text>
+                <Text style={styles.batchAmount}> Amount: <Components.AmountText  value={totalAmount}/></Text>
+            </View>
+
+            <View style={[styles.payoutCardStatus,{backgroundColor: status == 'Approved' || status == 'Paid' ? constants.Colors.success:constants.Colors.warning}]}>
+                <Text style={styles.payoutBatchStatus}>{status}</Text>
+                
+            </View>                        
+            </View>          
+
+            <View style={{ flexDirection:'row',justifyContent:'flex-end',right:constants.Dimensions.vw(15),bottom:constants.Dimensions.vh(2)}}>
+                    <constants.Icons.Ionicons name="eye" size={20} adjustsFontSizeToFit color={constants.Colors.secondary} onPress={onPress}/>
+            </View>
+            
+
+            
         </View>
         
     </View>

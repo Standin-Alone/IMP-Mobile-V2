@@ -1,11 +1,8 @@
 import React from 'react';
-import { View,Image} from 'react-native';
-
+import { View,Image, ActivityIndicator,Text} from 'react-native';
 import constants from '../../constants';
-import Toast from 'react-native-toast-message';
 import { authenticate } from '../../actions/auth';
 import Components from '../../components';
-import FastImage  from 'react-native-fast-image'
 import {styles} from './styles'
 
 
@@ -24,10 +21,15 @@ export default class Authentication extends React.Component {
       }
   
     setMyState = (value)=>this.setState(value);
-    async componentDidMount(){
+    componentDidMount(){
 
 
         authenticate(this.setMyState,this.props)
+
+        this.props.navigation.addListener('focus',()=>{
+            authenticate(this.setMyState,this.props)
+        })
+
      
     }
 
@@ -63,6 +65,10 @@ export default class Authentication extends React.Component {
                         resizeMode={"contain"}
                         blurRadius={2}                        
                     />
+                    <View style={{ flexDirection:'row' }}>
+                        <ActivityIndicator size={'large'} color={constants.Colors.light}/>
+                        <Text>Loading...</Text>
+                    </View>
                 </View>
             </>
         )

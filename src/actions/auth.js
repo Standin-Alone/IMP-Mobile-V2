@@ -13,7 +13,7 @@ export const authenticate = async (setstate,props)=>{
     setstate({showConfirm:false,loadingText:'Loading...'});
     let checkSession = await GET_SESSION('USER_ID');
     let checkLocation =  await   getLocation();
-    
+    console.warn(checkLocation.code);
     // Check Internet Connection
     NetInfo.fetch().then(async (state)=>{
 
@@ -21,7 +21,7 @@ export const authenticate = async (setstate,props)=>{
         if(state.isConnected && state.isInternetReachable){
             
             let checkVersion = await checkAppVersion();
-
+            
             if(checkVersion.status){
                 setTimeout(()=>{
                     
@@ -38,7 +38,7 @@ export const authenticate = async (setstate,props)=>{
                         setstate({showConfirm:true,confirmText:'Try again',title:'Message',message:'Please turn on your location service.'});
                     }
                     
-                },2000)
+                },1000)
             }else{
                 setstate({showConfirm:true,confirmText:'Okay',title:'Message',message:checkVersion.message});
             }
