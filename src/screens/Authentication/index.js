@@ -17,14 +17,14 @@ export default class Authentication extends React.Component {
             loadingText:'',
             showProgress:false
         };
-       
+
       }
   
     setMyState = (value)=>this.setState(value);
     componentDidMount(){
 
 
-        authenticate(this.setMyState,this.props)
+        // authenticate(this.setMyState,this.props)
 
         this.props.navigation.addListener('focus',()=>{
             authenticate(this.setMyState,this.props)
@@ -65,10 +65,12 @@ export default class Authentication extends React.Component {
                         resizeMode={"contain"}
                         blurRadius={2}                        
                     />
-                    <View style={{ flexDirection:'row' }}>
+
+                    <View style={styles.loadingView}>
                         <ActivityIndicator size={'large'} color={constants.Colors.light}/>
-                        <Text>Loading...</Text>
+                        <Text style={styles.loadingText}>Loading...</Text>
                     </View>
+
                 </View>
             </>
         )

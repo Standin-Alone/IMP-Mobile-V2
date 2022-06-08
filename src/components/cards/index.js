@@ -42,11 +42,10 @@ export const HomePrimaryCard = ({
     title,
     subtitle,
     titleStyle,
-    buttonStyle,
-    onPress,
+    buttonStyle,    
     onViewTransaction
 })=>(   
-    <TouchableOpacity style={[styles.homePrimaryCard,buttonStyle]} onPress={onPress}>
+    <View style={[styles.homePrimaryCard,buttonStyle]} >
         <View style={styles.imageContainer}>
             <FastImage
                 style={[styles.attachments,imageStyle]}
@@ -79,7 +78,7 @@ export const HomePrimaryCard = ({
                 </View>     
             </FastImage>
         </View>
-    </TouchableOpacity>
+    </View>
 );
 
 
@@ -263,8 +262,8 @@ onPress
                 resizeMode={FastImage.resizeMode.cover}    
             />
             <View style={styles.payoutBatchContent}>
-                <Text style={styles.batchNumber}>{batchNumber}</Text>
-                <Text style={styles.batchAmount}> Amount: <Components.AmountText  value={totalAmount}/></Text>
+                <Text style={styles.batchNumber} numberOfLines={1}>{batchNumber}</Text>
+                <Text style={styles.batchAmount} numberOfLines={1}> Amount: <Components.AmountText  value={totalAmount} amountStyle={styles.amount}/></Text>
             </View>
 
             <View style={[styles.payoutCardStatus,{backgroundColor: status == 'Approved' || status == 'Paid' ? constants.Colors.success:constants.Colors.warning}]}>
@@ -273,7 +272,7 @@ onPress
             </View>                        
             </View>          
 
-            <View style={{ flexDirection:'row',justifyContent:'flex-end',right:constants.Dimensions.vw(15),bottom:constants.Dimensions.vh(2)}}>
+            <View style={styles.eyeIcon}>
                     <constants.Icons.Ionicons name="eye" size={20} adjustsFontSizeToFit color={constants.Colors.secondary} onPress={onPress}/>
             </View>
             

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View,Image, FlatList,Text} from 'react-native';
+import { View,Image, FlatList,Text,RefreshControl} from 'react-native';
 import constants from '../../../constants';
 import {styles} from './styles'
 import Components from '../../../components';
@@ -14,6 +14,7 @@ export default class Home extends React.Component {
       super(props);
       this.state = {        
           transactedVouchers:[],
+          isRefreshing:false,
           isLoading:false,
           loadingText:'',
           isReadyToRender:false,
@@ -35,10 +36,6 @@ export default class Home extends React.Component {
             page:this.state.page
         }
         getTransactedVouchers(parameter,this.setMyState)
-
-        this.props.navigation.addListener('focus',()=>{
-            getTransactedVouchers(parameter,this.setMyState)
-        })
 
     }
 
@@ -82,11 +79,25 @@ export default class Home extends React.Component {
                     
     )
 
+    refreshData = ()=>{
+   
+        
+        let parameter = {
+
+            transactedVouchers:this.state.transactedVouchers,
+            page:0
+        }
+
+        getTransactedVouchers(parameter,this.setMyState)
+    }
+
+
+
     renderFooterComponent = () =>(
 
     
             this.state.showFooter ?
-            <Components.FooterLoader/> :
+            <Components.FooterLoader message={"Getting more transacted vouchers"}/> :
             <View style={styles.emptyFooter}> 
                 <Text> No transacted vouchers...</Text>
             </View>                
@@ -136,11 +147,25 @@ export default class Home extends React.Component {
                                         ListFooterComponent = {this.renderFooterComponent}
                                         contentContainerStyle={{ paddingBottom:constants.Dimensions.vh(50) }}
                                         style={{paddingleft:constants.Dimensions.vw(10) }}
+                                        
+                                        nestedScrollEnabled
+                                        refreshControl = {
+                                            <RefreshControl
+                                                onRefresh={this.refreshData}
+                                                refreshing={this.state.isRefreshing}                                                
+                                                title="Pull to refresh"
+                                                tintColor={constants.Colors.primary}
+                                                colors={[constants.Colors.primary]}
+                                                titleColor={constants.Colors.primary}
+                                                progressViewOffset={0}
+                                                />
+                                        }
                                         onEndReachedThreshold={0.1} // so when you are at 5 pixel from the bottom react run onEndReached function
                                         onEndReached={async ({distanceFromEnd}) => {     
                                                       
                                            if (distanceFromEnd > 0  && this.state.transactedVouchers.length - 2 == this.state.page ) 
                                             {                               
+                                             await this.setState({showFooter:true});   
                                               await this.setState((prevState) => ({page:prevState.page + 2}));
                                               let parameter = {
                                                 transactedVouchers:this.state.transactedVouchers,

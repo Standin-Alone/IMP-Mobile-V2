@@ -65,14 +65,12 @@ export const styles = StyleSheet.create({
         top:30,
         alignItems:'center'
     },
-    signUpTitle:{
-        fontFamily:constants.Fonts.OpenSansRegular,
-        fontSize:18,
-    },
-    signUpText:{
+
+    forgotPasswordText:{
         fontFamily:constants.Fonts.OpenSansBold,
         color:constants.Colors.primary,
         fontSize:18,
+        top:constants.Dimensions.vh(2)
     }
 });
 

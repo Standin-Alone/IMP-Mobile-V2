@@ -1,5 +1,5 @@
 import React from 'react';
-import { View,Text} from 'react-native';
+import { View,Text,Image,RefreshControl} from 'react-native';
 import {styles} from './styles'
 
 import Components from '../../../components';
@@ -17,6 +17,7 @@ export default class PayoutMonitoring extends React.Component {
             totalPendingPayout:0,
             page:0,
             isReadyToRender:false,
+            isRefreshing:false,
             showFooter:false
          
       };
@@ -32,9 +33,9 @@ export default class PayoutMonitoring extends React.Component {
         }
         getPayoutBatchList(parameter,this.setMyState)
 
-        this.props.navigation.addListener('focus',()=>{
-            getPayoutBatchList(parameter,this.setMyState)
-        })
+        // this.props.navigation.addListener('focus',()=>{
+        //     getPayoutBatchList(parameter,this.setMyState)
+        // })
     }
 
 
@@ -45,6 +46,18 @@ export default class PayoutMonitoring extends React.Component {
         
         this.props.navigation.navigate(constants.ScreenNames.PAYOUT_MONITORING_STACK.TRACKING,parameter)
 
+    }
+
+    refreshData = ()=>{
+
+        
+        let parameter = {
+
+            payoutBatchList:this.state.payoutBatchList,
+            page:0
+        }
+
+        getPayoutBatchList(parameter,this.setMyState)
     }
 
     renderItem = ({item,index})=>{
@@ -74,6 +87,40 @@ export default class PayoutMonitoring extends React.Component {
     }
 
 
+    renderEmptyComponent = ()=>(
+
+        <Image
+            style={styles.noDataBg}                        
+            source={constants.Images.noData}
+            resizeMode={"contain"}            
+        />
+                    
+    )
+
+    renderFooterComponent = () =>(
+
+    
+            this.state.showFooter ?
+            <Components.FooterLoader message={"Getting more list..."}/> :
+            <View style={styles.emptyFooter}> 
+                <Text> No more payout batches..</Text>
+            </View>                
+    )
+
+    handleOnEndReached = async ({distanceFromEnd}) => {     
+                                                      
+        if (distanceFromEnd > 0 && this.state.payoutBatchList.length - 6 == this.state.page ) 
+         {  
+           await this.setState({showFooter:true});              
+           await this.setState((prevState) => ({page:prevState.page + 6}));
+           let parameter = {
+             payoutBatchList:this.state.payoutBatchList,
+             page:this.state.page
+           }
+           await getPayoutBatchList(parameter,this.setMyState)
+         }                              
+     }
+
     render(){
         return(
             <>                
@@ -94,8 +141,25 @@ export default class PayoutMonitoring extends React.Component {
                             ) : (
                                 <View style={{ top:constants.Dimensions.vh(10),left:constants.Dimensions.vw(5)}}>
                                     <FlatList
-                                        data={this.state.payoutBatchList}
-                                        renderItem={this.renderItem}
+                                        data={this.state.payoutBatchList}                                        
+                                        nestedScrollEnabled
+                                        refreshControl = {
+                                            <RefreshControl
+                                                onRefresh={this.refreshData}
+                                                refreshing={this.state.isRefreshing}                                                
+                                                title="Pull to refresh"
+                                                tintColor={constants.Colors.primary}
+                                                colors={[constants.Colors.primary]}
+                                                titleColor={constants.Colors.primary}
+                                                progressViewOffset={0}
+                                                />
+                                        }
+                                        renderItem={this.renderItem}                                        
+                                        ListEmptyComponent = {this.renderEmptyComponent}
+                                        ListFooterComponent = {this.renderFooterComponent}
+                                        contentContainerStyle={{ paddingBottom:constants.Dimensions.vh(45) }}
+                                        onEndReachedThreshold={0.1} // so when you are at 5 pixel from the bottom react run onEndReached function
+                                        onEndReached={this.handleOnEndReached}
                                     />
                                 </View>
                             )

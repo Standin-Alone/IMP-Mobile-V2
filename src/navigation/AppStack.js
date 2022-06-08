@@ -12,6 +12,7 @@ import Authentication from "../screens/Authentication";
 import VerifyOtp from "../screens/VerifyOtp";
 import {BottomTabNavigator} from "./BottomTab";
 import constants from "../constants";
+import ForgotPassword from "../screens/ForgotPassword";
 
 
 LogBox.ignoreLogs([
@@ -32,6 +33,7 @@ const AppStack = () =>(
     <Stack.Navigator initialRouteName={constants.ScreenNames.APP_STACK.AUTHENTICATION} screenOptions={{headerShown:false }} >
         <Stack.Screen component={Authentication} name={constants.ScreenNames.APP_STACK.AUTHENTICATION}/>
         <Stack.Screen component={Login} name={constants.ScreenNames.APP_STACK.LOGIN} options={{cardStyleInterpolator:CardStyleInterpolators.forHorizontalIOS}}/>    
+        <Stack.Screen component={ForgotPassword} name={constants.ScreenNames.APP_STACK.FORGOT_PASSWORD} options={{cardStyleInterpolator:CardStyleInterpolators.forHorizontalIOS}}/>    
         <Stack.Screen component={SignUp} name={"SignUp"} options={{cardStyleInterpolator:CardStyleInterpolators.forHorizontalIOS}}/>    
         <Stack.Screen component={VerifyOtp} name={constants.ScreenNames.APP_STACK.VERIFY_OTP} options={{cardStyleInterpolator:CardStyleInterpolators.forHorizontalIOS}}/>    
         <Stack.Screen component={BottomTabNavigator} name={constants.ScreenNames.APP_STACK.MAIN_TAB} options={{cardStyleInterpolator:CardStyleInterpolators.forHorizontalIOS}}/>    

@@ -17,6 +17,19 @@ export const styles = StyleSheet.create({
         width:constants.Dimensions.vw(50),     
         alignSelf:'center',
         top:constants.Dimensions.vh(30)           
+    },
+    loadingView:{
+         flexDirection:'row',
+         alignSelf:'center',
+         position:'absolute',
+         top:constants.Dimensions.vh(150)           
+    },
+    loadingText:{
+        marginVertical:constants.Dimensions.vh(2),
+        marginHorizontal:constants.Dimensions.vw(5),
+        color:constants.Colors.light,
+        fontFamily:constants.Fonts.PoppinsRegular,
+        fontSize:18
     }
 
 });

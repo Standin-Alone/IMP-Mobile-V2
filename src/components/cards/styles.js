@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
         borderBottomRightRadius:20,
         borderBottomLeftRadius:20,
         backgroundColor: constants.Colors.light,
-        elevation:2,
+        elevation:10,
     },
     
     attachments:{
@@ -191,7 +191,9 @@ export const styles = StyleSheet.create({
       
     },
     payoutBatchContent:{
-        left:constants.Dimensions.vw(2)
+        width:constants.Dimensions.vw(45),
+        left:constants.Dimensions.vw(2),
+
     },
     batchNumber:{        
         fontFamily:constants.Fonts.PoppinsBold,
@@ -201,14 +203,20 @@ export const styles = StyleSheet.create({
         fontFamily:constants.Fonts.PoppinsBold,
         fontSize:12, 
     },
-    payoutCardStatus:{
-        backgroundColor:constants.Colors.warning,
+    payoutCardStatus:{        
         bottom:constants.Dimensions.vh(7),
         left:constants.Dimensions.vw(5),
+        height:constants.Dimensions.vh(8),
         elevation:5,
         borderRadius:10,
-        paddingVertical:constants.Dimensions.vh(2),
+        paddingVertical:constants.Dimensions.vh(1),
         paddingHorizontal:constants.Dimensions.vw(5)
+    },
+    eyeIcon: 
+    {   flexDirection:'row',
+        justifyContent:'flex-end',    
+        right:constants.Dimensions.vw(15),
+        bottom:constants.Dimensions.vh(5)
     }
 });
 

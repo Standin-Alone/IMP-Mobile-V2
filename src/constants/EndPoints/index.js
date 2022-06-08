@@ -7,6 +7,7 @@ const EndPoints = {
     CHECK_APP_VERSION:'check-app-version',
     SCAN_QR_CODE:'scan-qr-code',
     TRANSACT_VOUCHER:'transact-voucher',
+    SEND_RESET_PASSWORD_LINK:'form_reset_password_link/sending_request',
 
 }
 

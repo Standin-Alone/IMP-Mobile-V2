@@ -13,7 +13,7 @@ export const authenticate = async (setstate,props)=>{
     setstate({showConfirm:false,loadingText:'Loading...'});
     let checkSession = await GET_SESSION('USER_ID');
     let checkLocation =  await   getLocation();
-    console.warn(checkLocation.code);
+  
     // Check Internet Connection
     NetInfo.fetch().then(async (state)=>{
 
@@ -21,18 +21,27 @@ export const authenticate = async (setstate,props)=>{
         if(state.isConnected && state.isInternetReachable){
             
             let checkVersion = await checkAppVersion();
-            
+            console.warn('checkVersion',checkVersion)
             if(checkVersion.status){
+                console.warn(checkLocation?.latitude)
                 setTimeout(()=>{
-                    
-                    if(checkLocation.code != 2){
-                        
+                    if(checkLocation?.latitude && checkLocation?.longitude ){
+
                         if(checkSession){            
             
                             props.navigation.replace(constants.ScreenNames.APP_STACK.MAIN_TAB);
                         }else{
                             props.navigation.replace(constants.ScreenNames.APP_STACK.LOGIN);
                         }
+                    }
+                    else if(checkLocation?.code != 2){
+                        if(checkSession){            
+            
+                            props.navigation.replace(constants.ScreenNames.APP_STACK.MAIN_TAB);
+                        }else{
+                            props.navigation.replace(constants.ScreenNames.APP_STACK.LOGIN);
+                        }
+                        
                     }else{
                             
                         setstate({showConfirm:true,confirmText:'Try again',title:'Message',message:'Please turn on your location service.'});
@@ -40,6 +49,8 @@ export const authenticate = async (setstate,props)=>{
                     
                 },1000)
             }else{
+                
+                
                 setstate({showConfirm:true,confirmText:'Okay',title:'Message',message:checkVersion.message});
             }
         }else{
@@ -50,6 +61,90 @@ export const authenticate = async (setstate,props)=>{
     });
 
 }
+
+export const sendResetPasswordLink = (payload,setState,props) => {     
+    //turn on loading
+    setState({isLoading:true});
+    let countError = 0;
+    // Check Internet Connection
+    NetInfo.fetch().then((state)=>{
+            
+        // if internet connected
+        if(state.isConnected && state.isInternetReachable){
+            
+
+             // validate payload
+             Object.keys(payload).map((item,index)=>{                         
+                if(payload[item] !== undefined || payload[item] != '' ){  
+                    console.warn(payload[item]);
+                    if(payload[item] == '' || payload[item] === undefined || payload[item] === null ){
+                        setState({[item]:{...payload[item],error:true,errorMessage:`Please enter your ${item}.`}})      
+                        countError++;
+                    }                                     
+                }
+            })            
+            
+            
+            if(countError == 0){
+                                      
+                let clean_payload = {
+                    email : payload.email,                    
+                }
+                console.warn(`${getBaseUrl().accesspoint}${constants.EndPoints.SEND_RESET_PASSWORD_LINK}`)
+                // POST REQUEST
+                POST(`${getBaseUrl().accesspoint}${constants.EndPoints.SEND_RESET_PASSWORD_LINK}`,clean_payload).then((response)=>{                    
+                    
+                    if(response.data.success == true){                    
+
+                        Toast.show({
+                            type:'success',
+                            text1:'Success',   
+                            text2: response.data.message
+                        });
+                        props.navigation.goBack()
+                        // turn off loading
+                        setState({isLoading:false});                        
+                    }else{
+                        Toast.show({
+                            type:'error',
+                            text1:'Error',   
+                            text2: response.data.message
+                        });
+                        // turn off loading
+                        setState({isLoading:false});
+                    }
+
+                 
+                }).catch((error)=>{
+                    
+                    console.warn(error);
+                    Toast.show({
+                        type:'error',
+                        text1:'Something went wrong!'
+                    });
+                    
+                    // turn off loading
+                    setState({isLoading:false});
+                });
+
+            }else{
+                setState({isLoading:false});
+            }
+                        
+        }else{
+            //  No internet Connection
+            Toast.show({
+                type:'error',
+                text1:'No internet Connection!'
+            })
+             // turn off loading
+            setState({isLoading:false});
+        }
+    });
+
+}
+
+
 export const login = (payload,setState,props) => {     
     //turn on loading
     setState({isLoading:true});
@@ -65,7 +160,7 @@ export const login = (payload,setState,props) => {
              Object.keys(payload).map((item,index)=>{                         
                 if(payload[item] !== undefined || payload[item] != '' ){  
                     console.warn(payload[item]);
-                    if(payload[item] == '' || payload[item] === undefined ){
+                    if(payload[item] == '' || payload[item] === undefined || payload[item] === null ){
                         setState({[item]:{...payload[item],error:true,errorMessage:`Please enter your ${item}.`}})      
                         countError++;
                     }                                     
@@ -165,8 +260,12 @@ export const verifyOtp = (payload,setState,props)=>{
                         SET_SESSION('REGION_NAME',payload.regName)
                         SET_SESSION('PROGRAMS',JSON.stringify(payload.programs))
 
-                         // NAVIGATE TO HOME
-                         props.navigation.navigate('MainTabs');                                                
+                            
+                         
+                         props.navigation.reset({
+                            index: 0,
+                            routes: [{ name: constants.ScreenNames.APP_STACK.MAIN_TAB }]
+                        });
 
                     }else{
                         Toast.show({

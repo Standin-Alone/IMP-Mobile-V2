@@ -76,7 +76,7 @@ export const checkAppVersion = async ()=>{
                     text2:error.response
                 });
     
-                result = { status: false};                 
+                result = { status: false,message:error.response};                 
             });
 
          }else{
@@ -110,11 +110,13 @@ export const  rotateImage = async (uri) =>{
 export const  getLocation = async (uri) =>{
     return new Promise((resolve, reject) => {
         Geolocation.getCurrentPosition((position) =>{
+            console.warn(position)
             const {latitude, longitude,altitude} = position.coords;
             resolve({
                 latitude:latitude,
                 longitude:longitude,
                 altitude:altitude,
+                code:position.code
             });
         },(error) => {
             

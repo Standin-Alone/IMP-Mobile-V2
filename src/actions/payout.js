@@ -8,8 +8,7 @@ import { GET_SESSION, SET_SESSION } from "../utils/async_storage";
 
 
 
-export const getPayoutBatchList = (payload,setState)=>{
-    setState({showFooter:true});
+export const getPayoutBatchList = (payload,setState)=>{    
 
     // Check Internet Connection
     NetInfo.fetch().then(async (state)=>{
@@ -27,16 +26,22 @@ export const getPayoutBatchList = (payload,setState)=>{
             console.warn(cleanPayload);
             // POST REQUEST
             POST(`${getBaseUrl().accesspoint}${constants.EndPoints.GET_PAYOUT_BATCH_LIST}`,cleanPayload).then((response)=>{       
-                console.warn(response.data);
+                
                 if(response.data.status == true){
                     
                     
                     let newData = response.data.payout_batch_list;
-                  
-                    setState({payoutBatchList: [...new Set(payload.payoutBatchList),...newData],isReadyToRender:true,totalPendingPayout:response.data.total_pending_payout});    
+                    
+                    if(payload.page == 0){
+                        setState({payoutBatchList: newData,isReadyToRender:true,totalPendingPayout:response.data.total_pending_payout});        
+                    }else{
+                        
+                        setState({payoutBatchList: [...new Set(payload.payoutBatchList),...newData],isReadyToRender:true,totalPendingPayout:response.data.total_pending_payout});    
+                    }
+                    
                     
                     if(newData.length ==  0){ 
-                        setState({showFooter:false})
+                        setState({showFooter:false,isRefreshing:false})
                     }
 
 
@@ -47,7 +52,7 @@ export const getPayoutBatchList = (payload,setState)=>{
                         text1:'Error',  
                         text2: response.data.errorMessage
                     });
-                    setState({isReadyToRender:true})
+                    setState({isReadyToRender:true,isRefreshing:false})
                 }
                 
             }).catch((error)=>{
@@ -60,7 +65,7 @@ export const getPayoutBatchList = (payload,setState)=>{
                 });
                 
                 // turn off loading
-                setState({isReadyToRender:true})
+                setState({isReadyToRender:true,isRefreshing:false})
             });
 
 
@@ -71,7 +76,7 @@ export const getPayoutBatchList = (payload,setState)=>{
                 text1:'No internet Connection!'
             })
              // turn off loading
-             setState({isReadyToRender:true})
+             setState({isReadyToRender:true,isRefreshing:false})
          }
     });
 

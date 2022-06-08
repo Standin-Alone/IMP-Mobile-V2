@@ -36,7 +36,7 @@ export const goToViewTransaction = (payload,setState,props)=>{
 
 
 export const getTransactedVouchers = (payload,setState)=>{
-    setState({showFooter:true});
+    
 
     // Check Internet Connection
     NetInfo.fetch().then(async (state)=>{
@@ -60,9 +60,15 @@ export const getTransactedVouchers = (payload,setState)=>{
                     
                     let newData = response.data.data;
                     
-                    setState({transactedVouchers: [...new Set(payload.transactedVouchers),...newData],isReadyToRender:true});    
+                    if(payload.page == 0){
+                        setState({transactedVouchers: newData,isReadyToRender:true,isRefreshing:false});    
+                    }else{
+                        setState({transactedVouchers: [...new Set(payload.transactedVouchers),...newData],isReadyToRender:true,isRefreshing:false});    
+                    }
+                    
+
                     if(newData.length ==  0){ 
-                        setState({showFooter:false})
+                        setState({showFooter:false,isRefreshing:false})
                     }
 
 
@@ -72,12 +78,12 @@ export const getTransactedVouchers = (payload,setState)=>{
                         text1:'Error',  
                         text2: response.data.errorMessage
                     });
-                    setState({isReadyToRender:true})
+                    setState({isReadyToRender:true,isRefreshing:false})
                 }
                 
             }).catch((error)=>{
                     
-                console.warn(error);
+                console.warn(error.response);
                 Toast.show({
                     type:'error',
                     text1:'Something went wrong!',                     
@@ -85,7 +91,7 @@ export const getTransactedVouchers = (payload,setState)=>{
                 });
                 
                 // turn off loading
-                setState({isReadyToRender:true})
+                setState({isReadyToRender:true,isRefreshing:false})
             });
 
 
@@ -96,7 +102,7 @@ export const getTransactedVouchers = (payload,setState)=>{
                 text1:'No internet Connection!'
             })
              // turn off loading
-             setState({isReadyToRender:true})
+             setState({isReadyToRender:true,isRefreshing:false})
          }
     });
 

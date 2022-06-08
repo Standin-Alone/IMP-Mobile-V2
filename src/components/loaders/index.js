@@ -24,14 +24,14 @@ export const Loader = ({
 
 
 export const FooterLoader = ({
-
+    message
  }) => {
     
         return (    
         <SafeAreaView style={[styles.overlay, { alignItems: 'center', justifyContent: 'center',top:constants.Dimensions.vh(10)}]}>
             <View style={{ flexDirection:'row' }}>
                 <ActivityIndicator size="small" color={constants.Colors.primary}/>               
-                <Text style={styles.loaderText}>  Getting more transacted vouchers...</Text>
+                <Text style={styles.loaderText}>  {message}</Text>
             </View>
             
                 
