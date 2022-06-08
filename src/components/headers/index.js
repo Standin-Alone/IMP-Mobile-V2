@@ -88,7 +88,8 @@ export const PrimaryHeaderSearch = ({
                         :                     
                         constants.Colors.gray
                         }]}                        
-                        placeholder="Search here"
+                        placeholder="Search here by name or reference #"
+                        
                         onChangeText={onChangeText}
                         onFocus={onFocus} 
                         onBlur={onBlur} 
@@ -97,6 +98,19 @@ export const PrimaryHeaderSearch = ({
                     />
                 </View>                
             </View>
+         </View>             
+    </>
+ );
+
+
+ 
+
+export const ListHeader = ({
+   
+ })=>(   
+    <>  
+         <View style={{ alignSelf:'center' }}>
+              <Text style={styles.listHeaderText}>Swipe down to refresh.</Text>
          </View>             
     </>
  );

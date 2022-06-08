@@ -36,7 +36,8 @@ import {
 import { 
     PrimaryHeader,
     PrimaryHeaderSearch,
-    HomeHeader
+    HomeHeader,
+    ListHeader
     } from "./headers";
 import { 
     ImageModal,
@@ -61,6 +62,7 @@ export default {
     PrimaryHeader,
     PrimaryHeaderSearch,
     HomeHeader,
+    ListHeader,
 
     Loader,
     FooterLoader,

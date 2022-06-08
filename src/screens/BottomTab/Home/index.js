@@ -138,11 +138,12 @@ export default class Home extends React.Component {
                             ) : (
                                 <View style={{ top:0 }}>                               
 
-
+                                    
                                     <FlatList
                                         data={this.state.transactedVouchers ? filteredVouchers : null}
                                         extraData={this.state.transactedVouchers}
-                                        renderItem={this.renderItem}                                                                            
+                                        renderItem={this.renderItem}          
+                                        ListHeaderComponent = {<Components.ListHeader/>}                                                                  
                                         ListEmptyComponent = {this.renderEmptyComponent}
                                         ListFooterComponent = {this.renderFooterComponent}
                                         contentContainerStyle={{ paddingBottom:constants.Dimensions.vh(50) }}

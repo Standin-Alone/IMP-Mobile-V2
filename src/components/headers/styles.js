@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
     searchInput:{
         backgroundColor:constants.Colors.light,
         width:constants.Dimensions.vw(90),
-        fontSize:17,      
+        fontSize:14,      
         fontFamily:constants.Fonts.PoppinsRegular,  
         borderRadius:14,
         paddingHorizontal:constants.Dimensions.vw(10),
@@ -38,6 +38,10 @@ export const styles = StyleSheet.create({
         position:'absolute',
         top:constants.Dimensions.vh(1),
         left:10
+    },
+    listHeaderText:{
+        fontFamily:constants.Fonts.PoppinsLight,
+        fontSize:14,
     }
   
 });
