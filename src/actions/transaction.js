@@ -376,7 +376,7 @@ export const openCamera = (payload,setState) => {
                         assets.map(async(cameraResponse)=>{
                             
                             // set latitude longitude
-                            setState({latitude:checkLocation.latitude,longitude:checkLocation.longitude})
+                            setState({latitude:checkLocation.latitude,longitude:checkLocation.longitude,loadingTitle:'Loading'})
                             
                             // check if image is jpeg format
                             if(cameraResponse.type == 'image/jpeg' || cameraResponse.type == 'image/jpg') {
@@ -414,7 +414,7 @@ export const openCamera = (payload,setState) => {
                                     }
                                 });
 
-                                setState({showProgress:false,loadingTitle:'Loading'});
+                                setState({showProgress:false});
                             }else{
                                 
                                 Toast.show({
