@@ -107,7 +107,7 @@ export const sendResetPasswordLink = (payload,setState,props) => {
                     }else{
                         Toast.show({
                             type:'error',
-                            text1:'Error',   
+                            text1:'Message',   
                             text2: response.data.message
                         });
                         // turn off loading
@@ -196,7 +196,7 @@ export const login = (payload,setState,props) => {
                     }else{
                         Toast.show({
                             type:'error',
-                            text1:'Error',   
+                            text1:'Message',   
                             text2: response.data.message
                         });
 
@@ -270,7 +270,7 @@ export const verifyOtp = (payload,setState,props)=>{
                     }else{
                         Toast.show({
                             type:'error',
-                            text1:'Error',  
+                            text1:'Message',  
                             text2: response.data.message
                         });
 
@@ -348,7 +348,7 @@ export const resendOtp = (payload,setState)=>{
                 }else{
                     Toast.show({
                         type:'error',
-                        text1:'Error',  
+                        text1:'Message',  
                         text2: response.data.message
                     });
 

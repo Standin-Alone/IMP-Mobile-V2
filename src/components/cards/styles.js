@@ -83,7 +83,7 @@ export const styles = StyleSheet.create({
         borderBottomRightRadius:20,
         borderBottomLeftRadius:20,         
         height:constants.Dimensions.vh(40),
-        width:constants.Dimensions.vw(40),
+        width:constants.Dimensions.vw(30),
     },
     commodityName:{
         
@@ -110,7 +110,7 @@ export const styles = StyleSheet.create({
     },  
     commodityDetails:{        
         flexDirection:'column',
-        justifyContent:'space-between',
+        justifyContent:'space-between',        
         left:constants.Dimensions.vw(5),      
     },
     addText:{        

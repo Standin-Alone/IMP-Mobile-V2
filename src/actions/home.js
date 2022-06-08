@@ -75,7 +75,7 @@ export const getTransactedVouchers = (payload,setState)=>{
                 }else{
                     Toast.show({
                         type:'error',
-                        text1:'Error',  
+                        text1:'Message',  
                         text2: response.data.errorMessage
                     });
                     setState({isReadyToRender:true,isRefreshing:false})

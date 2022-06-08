@@ -186,17 +186,17 @@ export const CommodityCard = ({
                     resizeMode={FastImage.resizeMode.cover}    
                 />
                 <View style={styles.commodityDetails}>
-                    <Text style={styles.commodityName}>{commodityName}</Text>
+                    <Text style={styles.commodityName} adjustsFontSizeToFit>{commodityName}</Text>
 
                     {showCommodityInfo  && (
                         <>
-                            <Text style={styles.category}>{category}</Text>
-                            <Text style={styles.category}>{subCategory}</Text>
-                            <Text style={styles.category}>Total Amount: 
+                            <Text style={styles.category} adjustsFontSizeToFit>{category}</Text>
+                            <Text style={styles.category} adjustsFontSizeToFit>{subCategory}</Text>
+                            <Text style={styles.category} adjustsFontSizeToFit>Total Amount: 
                                     <Components.AmountText  amountStyle={styles.category} value={totalAmount}/>
                             </Text>
 
-                            <Text style={styles.category}>Quantity: {quantity} ({unitMeasurement})</Text>
+                            <Text style={styles.category} adjustsFontSizeToFit>Quantity: {quantity} ({unitMeasurement})</Text>
                         </>
                         )
                     }
@@ -206,7 +206,7 @@ export const CommodityCard = ({
                     <TouchableOpacity style={styles.addCommodityButton} onPress={onPress} >
                         <View style={{ flexDirection:'row',justifyContent:'center'}}>
                             <constants.Icons.Ionicons name="add-circle-outline" size={20} color={constants.Colors.light}/>
-                            <Text style={styles.addText}>Add</Text>
+                            <Text style={styles.addText} adjustsFontSizeToFit >Add</Text>
                         </View>
                     </TouchableOpacity>
                     }

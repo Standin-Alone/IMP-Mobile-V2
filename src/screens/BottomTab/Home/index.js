@@ -96,7 +96,7 @@ export default class Home extends React.Component {
     renderFooterComponent = () =>(
 
     
-            this.state.showFooter ?
+            this.state.showFooter &&  this.state.transactedVouchers.length > 2 ?
             <Components.FooterLoader message={"Getting more transacted vouchers"}/> :
             <View style={styles.emptyFooter}> 
                 <Text> No transacted vouchers...</Text>

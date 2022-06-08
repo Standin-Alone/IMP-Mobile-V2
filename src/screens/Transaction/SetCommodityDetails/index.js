@@ -93,7 +93,7 @@ export default class SetCommodityDetails extends React.Component {
         
 
 
-
+        
         return addToCart(parameter,this.setMyState,this.props)
     }
 

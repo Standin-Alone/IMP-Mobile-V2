@@ -49,7 +49,7 @@ export const scanQrCode =    (payload,setState,props) => {
                     }else{
                         Toast.show({
                             type:'error',
-                            text1: 'Error',
+                            text1: 'Message',
                             text2:response.data.message ? response.data.message : response.data.errorMessage,
                         });
 
@@ -183,7 +183,7 @@ export const addToCart = (payload,setState,props) => {
 
             })          
                 
-            
+            console.warn(countError);
             
             if(countError == 0){
                 props.route.params.addToCart(payload);
@@ -196,7 +196,7 @@ export const addToCart = (payload,setState,props) => {
             //  No internet Connection
             Toast.show({
                 type:'error',
-                text1:'Error!',
+                text1:'Message!',
                 text2:'No internet Connection!'
             })
             
@@ -235,7 +235,7 @@ export const goToCheckout = (payload,setState,props) => {
                         }else{
                             Toast.show({
                                 type:'error',
-                                text1:'Error!',
+                                text1:'Message!',
                                 text2:`Please consume the full amount of the voucher.`
                             })
                             setState({isLoading:false})
@@ -248,7 +248,7 @@ export const goToCheckout = (payload,setState,props) => {
                 }else{
                     Toast.show({
                         type:'error',
-                        text1:'Error!',
+                        text1:'Message!',
                         text2:'You have no items on your cart.'
                     })
                     setState({isLoading:false})
@@ -304,7 +304,7 @@ export const checkout = (payload,setState,props) => {
                     }else{
                         Toast.show({
                             type:'error',
-                            text1:'Error!',
+                            text1:'Message!',
                             text2:`Please consume the full amount of the voucher.`
                         })
                         setState({isLoading:false})
@@ -434,7 +434,7 @@ export const openCamera = (payload,setState) => {
                 }else{
                     Toast.show({
                         type:'error',
-                        text1:'Error!',
+                        text1:'Message!',
                         text1:'Please open your location services.'
                     })  
                     setState({showProgress:false,loadingTitle:'Loading'});
@@ -499,7 +499,7 @@ export const goToReviewTransaction = (payload,setState,props) => {
                     setState({showProgress:false});
                     Toast.show({
                         type:'error',
-                        text1:'Error',
+                        text1:'Message',
                         text2:'Please complete all the required attachments'
                     })
 
