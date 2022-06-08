@@ -226,18 +226,23 @@ export const goToCheckout = (payload,setState,props) => {
                 if(payload.cart.length > 0){
                     let cartTotal = payload.cart.reduce((prev, current) => prev + parseFloat(current.totalAmount), 0);
                     let checkBalance = payload.voucherInfo.amount_val  - cartTotal;
-                    let compute =   payload.voucherInfo.amount_val - cartTotal;
-                    console.warn(checkBalance);
-                    if(checkBalance <=  0){
-                        setState({isLoading:false})
-                       props.navigation.navigate(constants.ScreenNames.TRANSACTION_STACK.CHECKOUT,payload)
+                    
+                     // FOR ONE TIME TRANSACTION ONLY
+                    if(payload.voucherInfo.one_time_transaction == '1'){
+                        if(checkBalance <=  0){
+                            setState({isLoading:false})
+                            props.navigation.navigate(constants.ScreenNames.TRANSACTION_STACK.CHECKOUT,payload)
+                        }else{
+                            Toast.show({
+                                type:'error',
+                                text1:'Error!',
+                                text2:`Please consume the full amount of the voucher.`
+                            })
+                            setState({isLoading:false})
+                        }
                     }else{
-                        Toast.show({
-                            type:'error',
-                            text1:'Error!',
-                            text2:`Please consume the full amount of the voucher.`
-                        })
                         setState({isLoading:false})
+                        props.navigation.navigate(constants.ScreenNames.TRANSACTION_STACK.CHECKOUT,payload)
                     }
 
                 }else{
@@ -283,13 +288,32 @@ export const checkout = (payload,setState,props) => {
             let checkVersion = await checkAppVersion();
             
   
-
+            
 
             //Check if the mobile app is latest.
             if(checkVersion.status){
-                setState({isLoading:false})
-                props.navigation.navigate(constants.ScreenNames.TRANSACTION_STACK.UPLOAD_ATTACHMENTS,payload)
-  
+
+                // FOR ONE TIME TRANSACTION ONLY
+                if(payload.voucherInfo.one_time_transaction == '1'){
+                    let cartTotal = payload.cart.reduce((prev, current) => prev + parseFloat(current.totalAmount), 0);
+                    let checkBalance = payload.voucherInfo.amount_val  - cartTotal;                    
+             
+                    if(checkBalance <=  0){
+                        setState({isLoading:false})
+                        props.navigation.navigate(constants.ScreenNames.TRANSACTION_STACK.UPLOAD_ATTACHMENTS,payload)
+                    }else{
+                        Toast.show({
+                            type:'error',
+                            text1:'Error!',
+                            text2:`Please consume the full amount of the voucher.`
+                        })
+                        setState({isLoading:false})
+                    }
+                }else{
+                    setState({isLoading:false})
+                    props.navigation.navigate(constants.ScreenNames.TRANSACTION_STACK.UPLOAD_ATTACHMENTS,payload)
+                }
+
             }else{
                 setState({isLoading:false})
                 console.warn(checkVersion);

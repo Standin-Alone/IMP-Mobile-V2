@@ -35,7 +35,7 @@ export default class Checkout extends React.Component {
           // remove delete 
           newCart.splice(index, index + 1);
 
-          this.setState({newCart:newCart})
+          this.setState({newCart:newCart,cartTotalAmount:  Number(newCart.reduce((prev, current) => prev + parseFloat(current.totalAmount), 0)).toFixed(2)})
 
           if(newCart.length  == 0){
             this.state.parameters.handleUpdateCart(newCart);
@@ -110,13 +110,13 @@ export default class Checkout extends React.Component {
                     <View style={{ flexDirection:'column',alignContent:'center',bottom:constants.Dimensions.vw(10),marginHorizontal:constants.Dimensions.vw(3)}}>
                         <Text style={styles.cartSummaryText}>Cart Summary</Text>
                         <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
-                            <Text style={styles.label}>Cart Total Amount</Text>
-                            <Components.AmountText  amountStyle={styles.cashAdded} value={this.state.cartTotalAmount}/>                                    
-                        </View> 
-                        <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
                             <Text style={styles.label}>Voucher Total Amount</Text>
                             <Components.AmountText  amountStyle={styles.cashAdded} value={this.state.voucherInfo.amount_val}/>                                    
-                        </View>                        
+                        </View>   
+                        <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
+                            <Text style={styles.label}>Cart Total Amount</Text>
+                            <Components.AmountText  amountStyle={styles.cashAdded} value={this.state.cartTotalAmount}/>                                    
+                        </View>                                           
                         <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
                             <Text style={styles.label} >Total Cash Added By Farmer</Text>
                             <Components.AmountText  amountStyle={styles.cashAdded} value={(this.state.voucherInfo.amount_val - this.state.cartTotalAmount) < 0 ? (this.state.cartTotalAmount -this.state.voucherInfo.amount_val  ) : 0.00}/>                                    

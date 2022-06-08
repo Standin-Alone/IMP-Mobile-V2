@@ -24,11 +24,11 @@ export default class Authentication extends React.Component {
     componentDidMount(){
 
 
-        // authenticate(this.setMyState,this.props)
+        authenticate(this.setMyState,this.props)
 
-        this.props.navigation.addListener('focus',()=>{
-            authenticate(this.setMyState,this.props)
-        })
+        // this.props.navigation.addListener('focus',()=>{
+        //     authenticate(this.setMyState,this.props)
+        // })
 
      
     }

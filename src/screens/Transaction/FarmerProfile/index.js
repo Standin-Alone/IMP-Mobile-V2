@@ -21,6 +21,9 @@ export default class FarmerProfile extends React.Component {
 
     setMyState = (value)=>this.setState(value);
 
+    componentDidMount(){
+        
+    }
 
     handleStartTransaction = ()=>{
 
