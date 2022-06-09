@@ -73,6 +73,8 @@ export const getTransactedVouchers = (payload,setState)=>{
 
 
                 }else{
+                    
+                console.warn( response.data.errorMessage);
                     Toast.show({
                         type:'error',
                         text1:'Message',  

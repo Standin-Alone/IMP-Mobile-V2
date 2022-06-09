@@ -12,5 +12,12 @@ export const styles = StyleSheet.create({
     listText:{
         fontFamily:constants.Fonts.PoppinsBold,
         color:constants.Colors.dark
+    },
+    noDataBg:{
+        height:constants.Dimensions.vh(100),    
+        width:constants.Dimensions.vw(100),
+    },
+    emptyFooter:{
+        alignSelf:'center'
     }
 });

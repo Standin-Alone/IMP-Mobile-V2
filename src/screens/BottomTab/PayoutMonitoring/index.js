@@ -103,7 +103,7 @@ export default class PayoutMonitoring extends React.Component {
             this.state.showFooter ?
             <Components.FooterLoader message={"Getting more list..."}/> :
             <View style={styles.emptyFooter}> 
-                <Text> No more payout batches..</Text>
+                <Text> No more batches for payout..</Text>
             </View>                
     )
 
@@ -154,7 +154,8 @@ export default class PayoutMonitoring extends React.Component {
                                                 progressViewOffset={0}
                                                 />
                                         }
-                                        renderItem={this.renderItem}                                        
+                                        renderItem={this.renderItem} 
+                                        ListHeaderComponent = {<Components.ListHeader/>}                                          
                                         ListEmptyComponent = {this.renderEmptyComponent}
                                         ListFooterComponent = {this.renderFooterComponent}
                                         contentContainerStyle={{ paddingBottom:constants.Dimensions.vh(45) }}

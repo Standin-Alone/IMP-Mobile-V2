@@ -183,7 +183,7 @@ export const CommodityCard = ({
                         uri: `data:image/jpg;base64, ${image}`
                         
                     }}
-                    resizeMode={FastImage.resizeMode.cover}    
+                    resizeMode={FastImage.resizeMode.contain}    
                 />
                 <View style={styles.commodityDetails}>
                     <Text style={styles.commodityName} adjustsFontSizeToFit>{commodityName}</Text>

@@ -57,7 +57,7 @@ export const getPayoutBatchList = (payload,setState)=>{
                 
             }).catch((error)=>{
                     
-                console.warn(error);
+                console.warn(error.response);
                 Toast.show({
                     type:'error',
                     text1:'Something went wrong!',                     

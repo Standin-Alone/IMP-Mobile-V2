@@ -77,7 +77,7 @@ export const styles = StyleSheet.create({
     },
     commodity:{
         
-        resizeMode:'cover',
+        resizeMode:'contain',
         borderTopLeftRadius:20,
         borderTopRightRadius:20,
         borderBottomRightRadius:20,
