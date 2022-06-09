@@ -52,7 +52,7 @@ export const checkAppVersion = async ()=>{
                 
             // POST REQUEST
            await  POST(`${getBaseUrl().accesspoint}${constants.EndPoints.CHECK_APP_VERSION}`,cleanPayload).then((response)=>{                    
-                  
+            console.warn('checkVersion',response.data)
                 if(response.data.status == true){
                                         
                     result = { status: response.data.status};   
@@ -68,7 +68,7 @@ export const checkAppVersion = async ()=>{
                
                 
             }).catch((error)=>{
-                console.warn(error.response)                
+                console.warn(error)                
                 
                 Toast.show({
                     type:'error',

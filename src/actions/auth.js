@@ -21,7 +21,7 @@ export const authenticate = async (setstate,props)=>{
         if(state.isConnected && state.isInternetReachable){
             
             let checkVersion = await checkAppVersion();
-            console.warn('checkVersion',checkVersion)
+   
             if(checkVersion.status){
                 console.warn(checkLocation?.latitude)
                 setTimeout(()=>{
