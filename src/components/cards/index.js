@@ -301,14 +301,14 @@ export const UploadingSelectionCard = ({
             <TouchableOpacity style={styles.uploadSelectionButton} onPress={onPressTakePhoto}>
                 <View style={{ flexDirection:'row' ,justifyContent:'center'}}>
                     <constants.Icons.MaterialIcons  name="add-a-photo" size={20} color={constants.Colors.primary}/>
-                    <Text style={styles.uploadSelectionText}>Take a Photo</Text>
+                    <Text style={styles.uploadSelectionText} adjustsFontSizeToFit>Take a Photo</Text>
                 </View>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.uploadSelectionButton}  onPress={onPressOpenGallery}>
                 <View style={{ flexDirection:'row',justifyContent:'center'}}>
                     <constants.Icons.MaterialIcons  name="add-photo-alternate" size={20} color={constants.Colors.primary}/>
-                    <Text style={styles.uploadSelectionText}>Open Gallery</Text>
+                    <Text style={styles.uploadSelectionText} adjustsFontSizeToFit>Open Gallery</Text>
                 </View>
                 
             </TouchableOpacity>

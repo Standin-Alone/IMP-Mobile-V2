@@ -184,8 +184,9 @@ export const login = (payload,setState,props) => {
                         let params = {
                             userId: response.data.data.user_id,
                             email:response.data.data.email,
+                            supplierName:response.data.data.supplier_name,
                             fullName:response.data.data.full_name,
-                            regName:response.data.data.reg_name,
+                            regName:response.data.data.reg_name,                            
                             programs:response.data.programs,
                             role:response.data.data.role
                         }   
@@ -257,7 +258,9 @@ export const verifyOtp = (payload,setState,props)=>{
                         
                         SET_SESSION('USER_ID',payload.userId)
                         SET_SESSION('FULL_NAME',payload.fullName)
+                        SET_SESSION('SUPPLIER_NAME',payload.supplierName)
                         SET_SESSION('REGION_NAME',payload.regName)
+                        
                         SET_SESSION('PROGRAMS',JSON.stringify(payload.programs))
 
                             

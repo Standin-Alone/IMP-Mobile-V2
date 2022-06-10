@@ -30,6 +30,7 @@ export default class PayoutMonitoring extends React.Component {
     async componentDidMount(){
 
         let parameter = {
+            selectedFilter:this.state.selectedFilter,
             payoutBatchList:this.state.payoutBatchList,
             page:this.state.page
         }
@@ -54,7 +55,7 @@ export default class PayoutMonitoring extends React.Component {
 
         
         let parameter = {
-
+            selectedFilter:this.state.selectedFilter,
             payoutBatchList:this.state.payoutBatchList,
             page:0
         }
@@ -116,6 +117,7 @@ export default class PayoutMonitoring extends React.Component {
            await this.setState({showFooter:true});              
            await this.setState((prevState) => ({page:prevState.page + 6}));
            let parameter = {
+            selectedFilter:this.state.selectedFilter,
              payoutBatchList:this.state.payoutBatchList,
              page:this.state.page
            }
@@ -128,9 +130,9 @@ export default class PayoutMonitoring extends React.Component {
         this.setState({selectedFilter:item});
 
         let parameter = {
-            selectedFilter:this.state.selectedFilter,
+            selectedFilter:item,
             payoutBatchList:this.state.payoutBatchList,
-            page:this.state.page
+            page:0
           }
         getPayoutBatchList(parameter,this.setMyState)
     }
@@ -151,14 +153,17 @@ export default class PayoutMonitoring extends React.Component {
                         <Components.PayoutCard
                             amount={this.state.totalPendingPayout}
                         />    
-                        <FlatList
-                            data={this.state.filterButtons}
-                            renderItem={this.renderFilterButtons}
-                            horizontal
-                        />
+                        
                         <View style={{ top:constants.Dimensions.vh(2) }}>
                             <Text style={styles.listText}>List of Batch Payout</Text>
                         </View> 
+                        <View style={{ top:constants.Dimensions.vh(2) }}>                                                    
+                            <FlatList
+                                data={this.state.filterButtons}
+                                renderItem={this.renderFilterButtons}                            
+                                horizontal
+                            />
+                        </View>
              
                     </View>                          
                         {!this.state.isReadyToRender ? (
@@ -185,7 +190,7 @@ export default class PayoutMonitoring extends React.Component {
                                         ListHeaderComponent = {<Components.ListHeader/>}                                          
                                         ListEmptyComponent = {this.renderEmptyComponent}
                                         ListFooterComponent = {this.renderFooterComponent}
-                                        contentContainerStyle={{ paddingBottom:constants.Dimensions.vh(45) }}
+                                        contentContainerStyle={{ paddingBottom:constants.Dimensions.vh(55) }}
                                         onEndReachedThreshold={0.1} // so when you are at 5 pixel from the bottom react run onEndReached function
                                         onEndReached={this.handleOnEndReached}
                                     />

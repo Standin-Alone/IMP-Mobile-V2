@@ -24,7 +24,7 @@ export const getPayoutBatchList = (payload,setState)=>{
                 selectedFilter:payload.selectedFilter
             }
             
-            console.warn(cleanPayload);
+            console.warn(payload.selectedFilter);
             // POST REQUEST
             POST(`${getBaseUrl().accesspoint}${constants.EndPoints.GET_PAYOUT_BATCH_LIST}`,cleanPayload).then((response)=>{       
                 

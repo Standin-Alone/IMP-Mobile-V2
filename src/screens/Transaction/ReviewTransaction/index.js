@@ -28,6 +28,7 @@ export default class ReviewTransaction extends React.Component {
     setMyState = (value)=>this.setState(value);
 
     componentDidMount(){
+        console.warn(this.state.attachments)
         this.setState({cartTotalAmount:  Number(this.state.cart.reduce((prev, current) => prev + parseFloat(current.totalAmount), 0)).toFixed(2)});    
     }
 
@@ -38,7 +39,7 @@ export default class ReviewTransaction extends React.Component {
 
     renderItem = ({item,index})=>{
         let categoryName = this.state.voucherInfo.fertilizer_categories.filter((info)=>info.value == item.category)[0]?.label;
-
+        
         
         return(
             <Components.PrimaryCard
@@ -61,7 +62,7 @@ export default class ReviewTransaction extends React.Component {
                     <Components.PrimaryCard
                         image={{uri:`data:image/jpeg;base64,${otherDocument}` }}
                         imageStyle={styles.image}
-                        title={item.name+'(Front)'}
+                        title={item.name}
                         buttonStyle={styles.commodityButtonImage}
                         onPress={()=>this.showImage(item.file)}
 

@@ -13,6 +13,7 @@ export default class UserProfile extends React.Component {
       this.state = {  
             showConfirm:false,      
             fullName:'',
+            supplierName:'',
             programs:[],
             regionName:''
       };
@@ -21,6 +22,7 @@ export default class UserProfile extends React.Component {
 
     async componentDidMount(){
         this.setState({fullName: await GET_SESSION('FULL_NAME')})
+        this.setState({supplierName: await GET_SESSION('SUPPLIER_NAME')})
         this.setState({regionName: await GET_SESSION('REGION_NAME')})
         this.setState({programs: JSON.parse(await GET_SESSION('PROGRAMS'))})
         
@@ -64,6 +66,7 @@ export default class UserProfile extends React.Component {
                     <View style={{ flexDirection:'row',justifyContent:'center' }}>
                         <View style={{ flexDirection:'column',bottom:constants.Dimensions.vh(2) }}>
                             <Text style={styles.fullName}>{this.state.fullName}</Text>
+                            <Text style={styles.address}>{this.state.supplierName}</Text>
                             <Text style={styles.address}>{this.state.regionName}</Text>
                         </View>
                     </View>

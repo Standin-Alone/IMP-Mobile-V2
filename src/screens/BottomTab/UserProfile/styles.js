@@ -31,7 +31,7 @@ export const styles = StyleSheet.create({
     address:{
         fontFamily:constants.Fonts.PoppinsRegular,
         color:constants.Colors.light,
-        fontSize:18,
+        fontSize:16,
         textAlign:'center'
     },
     bottom:{
