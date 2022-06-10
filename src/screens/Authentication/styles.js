@@ -24,6 +24,18 @@ export const styles = StyleSheet.create({
          position:'absolute',
          top:constants.Dimensions.vh(150)           
     },
+    titleContainer:{
+        flexDirection:'row',
+        alignSelf:'center',
+        position:'absolute',
+        top:constants.Dimensions.vh(100),
+    },
+    title:{
+        color:constants.Colors.light,
+        fontFamily:constants.Fonts.PoppinsBold,        
+        fontSize:30,
+        textAlign:'center',
+   },
     loadingText:{
         marginVertical:constants.Dimensions.vh(2),
         marginHorizontal:constants.Dimensions.vw(5),

@@ -7,6 +7,7 @@ import constants from "../../constants";
 import Components from '../../components';
 import Moment from 'react-moment';
 import moment from 'moment';
+import DraggablePanel from 'react-native-draggable-panel';
 
 
 
@@ -282,3 +283,35 @@ onPress
         
     </View>
 );
+
+
+
+
+export const UploadingSelectionCard = ({
+    showPanel,
+    onDismiss,
+    onPressTakePhoto,
+    onPressOpenGallery
+    })=>(   
+        <DraggablePanel
+            visible={showPanel}
+            initialHeight={constants.Dimensions.vh(45)}            
+            onDismiss={onDismiss}
+        >
+            <TouchableOpacity style={styles.uploadSelectionButton} onPress={onPressTakePhoto}>
+                <View style={{ flexDirection:'row' ,justifyContent:'center'}}>
+                    <constants.Icons.MaterialIcons  name="add-a-photo" size={20} color={constants.Colors.primary}/>
+                    <Text style={styles.uploadSelectionText}>Take a Photo</Text>
+                </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.uploadSelectionButton}  onPress={onPressOpenGallery}>
+                <View style={{ flexDirection:'row',justifyContent:'center'}}>
+                    <constants.Icons.MaterialIcons  name="add-photo-alternate" size={20} color={constants.Colors.primary}/>
+                    <Text style={styles.uploadSelectionText}>Open Gallery</Text>
+                </View>
+                
+            </TouchableOpacity>
+        </DraggablePanel>
+    );
+        

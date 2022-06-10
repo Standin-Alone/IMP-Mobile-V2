@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
     primaryButton:{
         height:constants.Dimensions.vh(12),
         width:constants.Dimensions.vw(90),
-        borderRadius:240,    
+        borderRadius:20,    
         elevation:2
         
     },
@@ -49,6 +49,14 @@ export const styles = StyleSheet.create({
         borderColor:constants.Colors.danger,
         height:constants.Dimensions.vh(15),
         width:constants.Dimensions.vw(90),
+        borderRadius:30,    
+    },
+    filterButton:{        
+        marginHorizontal:constants.Dimensions.vh(1),
+        borderWidth:1,
+        borderColor:constants.Colors.dark_tint,
+        height:constants.Dimensions.vh(10),
+        width:constants.Dimensions.vw(20),
         borderRadius:30,    
     }
 });

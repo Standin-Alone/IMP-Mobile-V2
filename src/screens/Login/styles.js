@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
         width:constants.Dimensions.vw(95),
         borderRadius:20,
         position:'absolute',
-        top:constants.Dimensions.vh(80),        
+        top:constants.Dimensions.vh(70),        
         alignSelf:'center',
         flexDirection:"column",        
         
@@ -73,6 +73,17 @@ export const styles = StyleSheet.create({
         fontFamily:constants.Fonts.OpenSansBold,
         color:constants.Colors.primary,
         fontSize:18,
-    }
+    },
+    titleContainer:{
+        
+        alignSelf:'center',
+ 
+    },
+    title:{
+        color:constants.Colors.light,
+        fontFamily:constants.Fonts.PoppinsBold,        
+        fontSize:18,
+        textAlign:'center',
+   },
 });
 

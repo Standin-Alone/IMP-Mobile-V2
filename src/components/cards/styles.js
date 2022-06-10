@@ -217,6 +217,15 @@ export const styles = StyleSheet.create({
         justifyContent:'flex-end',    
         right:constants.Dimensions.vw(15),
         bottom:constants.Dimensions.vh(5)
+    },
+    uploadSelectionButton:{
+        paddingVertical:constants.Dimensions.vh(5)
+    },  
+    uploadSelectionText:{        
+        fontFamily:constants.Fonts.PoppinsBold,
+        fontSize:20, 
+        color:constants.Colors.primary,
+        paddingHorizontal:constants.Dimensions.vw(2)
     }
 });
 

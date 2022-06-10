@@ -20,7 +20,8 @@ export const getPayoutBatchList = (payload,setState)=>{
 
             let cleanPayload = {
                 supplierId: await GET_SESSION('USER_ID'),
-                page:payload.page
+                page:payload.page,
+                selectedFilter:payload.selectedFilter
             }
             
             console.warn(cleanPayload);

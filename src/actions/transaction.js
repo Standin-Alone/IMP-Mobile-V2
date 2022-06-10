@@ -7,7 +7,7 @@ import {POST,GET} from '../utils/axios';
 import { GET_SESSION, SET_SESSION } from "../utils/async_storage";
 import { checkAppVersion, getLocation, rotateImage,geotagging, backgroundTime } from "../utils/functions";
 import BackgroundTimer from 'react-native-background-timer';
-import {launchCamera} from 'react-native-image-picker';
+import {launchCamera,launchImageLibrary} from 'react-native-image-picker';
 
 export const scanQrCode =    (payload,setState,props) => {     
     //turn on loading
@@ -341,7 +341,121 @@ export const checkout = (payload,setState,props) => {
 
 
 
-export const openCamera = (payload,setState) => {     
+export const openUploadSelection = (payload,setState) => {     
+    setState({showSelection:true,documentName:payload.documentName});
+  
+    // setState({showProgress:true,loadingTitle:'Opening the camera'});
+    // // Check Internet Connection
+    // NetInfo.fetch().then(async(state)=>{
+            
+    //     // if internet connected
+    //     if(state.isConnected && state.isInternetReachable){
+    //         let checkVersion = await checkAppVersion();
+            
+  
+    //         //Check if the mobile app is latest.
+    //         if(checkVersion.status){
+                
+    //             let checkLocation =    await getLocation();
+             
+    //             //Check if location was turn on
+    //             if(checkLocation){
+                
+    //                 let openUpCamera = await launchCamera({
+    //                     mediaType: 'photo',
+    //                     includeBase64: true, 
+    //                     quality:0.5                   
+    //                 });
+                      
+
+    //                 // camera function
+    //                 if (!openUpCamera.didCancel) {
+
+                        
+    //                     let {assets} = openUpCamera;
+
+    //                     assets.map(async(cameraResponse)=>{
+                            
+    //                         // set latitude longitude
+    //                         setState({latitude:checkLocation.latitude,longitude:checkLocation.longitude,loadingTitle:'Loading'})
+                            
+    //                         // check if image is jpeg format
+    //                         if(cameraResponse.type == 'image/jpeg' || cameraResponse.type == 'image/jpg') {
+    //                             // rotate image
+    //                             let rotatedImage = await rotateImage(cameraResponse.base64);
+    //                             // get geo tag
+    //                             let base64_uri_exif = await geotagging(rotatedImage,checkLocation);
+
+    //                             payload.attachments.map((item, index) => {                
+    //                                 if (payload.documentName == 'Other Documents' && item.name == 'Other Documents') {
+                    
+                                        
+    //                                     let attachmentState = [...payload.attachments];
+    //                                     attachmentState[index].file.push(base64_uri_exif);
+                                        
+    //                                     setState({attachments:attachmentState})
+    //                                 }else if (payload.documentName == item.name) {
+                    
+                                        
+    //                                     let attachmentState = [...payload.attachments];
+    //                                     attachmentState[index].file = base64_uri_exif;
+                                        
+    //                                     setState({attachments:attachmentState})
+    //                                 } else if (payload.documentName == item.name + "(front)") {
+    //                                     //set file of front page of id
+    //                                     let attachmentState = [...payload.attachments];
+    //                                     attachmentState[index].file[0].front = base64_uri_exif;
+                                        
+    //                                     setState({attachments:attachmentState})
+    //                                 } else if (payload.documentName == item.name + "(back)") {
+    //                                     // set file of back page of id
+    //                                     let attachmentState = [...payload.attachments];
+    //                                     attachmentState[index].file[0].back = base64_uri_exif;                
+    //                                     setState({attachments:attachmentState})
+    //                                 }
+    //                             });
+
+    //                             setState({showProgress:false});
+    //                         }else{
+                                
+    //                             Toast.show({
+    //                                 type:'error',
+    //                                 text1:'Warning!',
+    //                                 text1:'Your captured image is not in jpeg format'
+    //                             })                        
+    //                             setState({showProgress:false,loadingTitle:'Loading'});
+    //                         }
+
+    //                     })
+                       
+    //                 }else{
+    //                     setState({showProgress:false,loadingTitle:'Loading'});
+    //                 }
+
+    //             }else{
+    //                 Toast.show({
+    //                     type:'error',
+    //                     text1:'Message!',
+    //                     text1:'Please open your location services.'
+    //                 })  
+    //                 setState({showProgress:false,loadingTitle:'Loading'});
+    //             }
+    //         }
+                        
+    //     }else{
+    //         //  No internet Connection
+    //         Toast.show({
+    //             type:'error',
+    //             text1:'No internet Connection!'
+    //         })
+  
+    //         setState({showProgress:false,loadingTitle:'Loading'});
+    //     }
+    // });
+
+}
+
+export const openCamera = (payload,setState)=>{
     
     setState({showProgress:true,loadingTitle:'Opening the camera'});
     // Check Internet Connection
@@ -414,7 +528,7 @@ export const openCamera = (payload,setState) => {
                                     }
                                 });
 
-                                setState({showProgress:false});
+                                setState({showProgress:false,showSelection:false});
                             }else{
                                 
                                 Toast.show({
@@ -422,13 +536,13 @@ export const openCamera = (payload,setState) => {
                                     text1:'Warning!',
                                     text1:'Your captured image is not in jpeg format'
                                 })                        
-                                setState({showProgress:false,loadingTitle:'Loading'});
+                                setState({showProgress:false,loadingTitle:'Loading',showSelection:false});
                             }
 
                         })
                        
                     }else{
-                        setState({showProgress:false,loadingTitle:'Loading'});
+                        setState({showProgress:false,loadingTitle:'Loading',showSelection:false});
                     }
 
                 }else{
@@ -437,7 +551,7 @@ export const openCamera = (payload,setState) => {
                         text1:'Message!',
                         text1:'Please open your location services.'
                     })  
-                    setState({showProgress:false,loadingTitle:'Loading'});
+                    setState({showProgress:false,loadingTitle:'Loading',showSelection:false});
                 }
             }
                         
@@ -448,14 +562,124 @@ export const openCamera = (payload,setState) => {
                 text1:'No internet Connection!'
             })
   
-            setState({showProgress:false,loadingTitle:'Loading'});
+            setState({showProgress:false,loadingTitle:'Loading',showSelection:false});
         }
     });
-
 }
 
 
 
+export const openGallery = (payload,setState)=>{
+    
+    setState({showProgress:true,loadingTitle:'Opening the gallery'});
+    // Check Internet Connection
+    NetInfo.fetch().then(async(state)=>{
+            
+        // if internet connected
+        if(state.isConnected && state.isInternetReachable){
+            let checkVersion = await checkAppVersion();
+            
+  
+            //Check if the mobile app is latest.
+            if(checkVersion.status){
+                
+                let checkLocation =    await getLocation();
+             
+                //Check if location was turn on
+                if(checkLocation){
+                
+                    let openUpCamera = await launchImageLibrary({
+                        mediaType: 'photo',
+                        includeBase64: true, 
+                        quality:0.5                   
+                    });
+                      
+
+                    // camera function
+                    if (!openUpCamera.didCancel) {
+
+                        
+                        let {assets} = openUpCamera;
+
+                        assets.map(async(cameraResponse)=>{
+                            
+                            // set latitude longitude
+                            setState({latitude:checkLocation.latitude,longitude:checkLocation.longitude,loadingTitle:'Loading'})
+                            
+                            // check if image is jpeg format
+                            if(cameraResponse.type == 'image/jpeg' || cameraResponse.type == 'image/jpg') {
+                                // rotate image
+                                let rotatedImage = await rotateImage(cameraResponse.base64);
+                                // get geo tag
+                                let base64_uri_exif = await geotagging(rotatedImage,checkLocation);
+
+                                payload.attachments.map((item, index) => {                
+                                    if (payload.documentName == 'Other Documents' && item.name == 'Other Documents') {
+                    
+                                        
+                                        let attachmentState = [...payload.attachments];
+                                        attachmentState[index].file.push(base64_uri_exif);
+                                        
+                                        setState({attachments:attachmentState})
+                                    }else if (payload.documentName == item.name) {
+                    
+                                        
+                                        let attachmentState = [...payload.attachments];
+                                        attachmentState[index].file = base64_uri_exif;
+                                        
+                                        setState({attachments:attachmentState})
+                                    } else if (payload.documentName == item.name + "(front)") {
+                                        //set file of front page of id
+                                        let attachmentState = [...payload.attachments];
+                                        attachmentState[index].file[0].front = base64_uri_exif;
+                                        
+                                        setState({attachments:attachmentState})
+                                    } else if (payload.documentName == item.name + "(back)") {
+                                        // set file of back page of id
+                                        let attachmentState = [...payload.attachments];
+                                        attachmentState[index].file[0].back = base64_uri_exif;                
+                                        setState({attachments:attachmentState})
+                                    }
+                                });
+
+                                setState({showProgress:false,showSelection:false});
+                            }else{
+                                
+                                Toast.show({
+                                    type:'error',
+                                    text1:'Warning!',
+                                    text1:'Your captured image is not in jpeg format'
+                                })                        
+                                setState({showProgress:false,loadingTitle:'Loading',showSelection:false});
+                            }
+
+                        })
+                       
+                    }else{
+                        setState({showProgress:false,loadingTitle:'Loading',showSelection:false});
+                    }
+
+                }else{
+                    Toast.show({
+                        type:'error',
+                        text1:'Message!',
+                        text1:'Please open your location services.'
+                    })  
+                    setState({showProgress:false,loadingTitle:'Loading',showSelection:false});
+                }
+            }
+                        
+        }else{
+            //  No internet Connection
+            Toast.show({
+                type:'error',
+                text1:'No internet Connection!'
+            })
+  
+            setState({showProgress:false,loadingTitle:'Loading',showSelection:false});
+        }
+    });
+}
 
 
 export const goToReviewTransaction = (payload,setState,props) => {     

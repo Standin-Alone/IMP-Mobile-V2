@@ -66,6 +66,9 @@ export default class Authentication extends React.Component {
                         blurRadius={2}                        
                     />
 
+                    <View style={styles.titleContainer}>
+                        <Text style={styles.title}>Intervention{'\n'}Management{'\n'}Platform</Text>
+                    </View>
                     <View style={styles.loadingView}>
                         <ActivityIndicator size={'large'} color={constants.Colors.light}/>
                         <Text style={styles.loadingText}>Loading...</Text>

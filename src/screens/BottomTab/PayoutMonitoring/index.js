@@ -14,6 +14,8 @@ export default class PayoutMonitoring extends React.Component {
       super(props);
       this.state = {                    
             payoutBatchList:[],
+            filterButtons:['All','Pending','Approved','Paid'],
+            selectedFilter:'All',
             totalPendingPayout:0,
             page:0,
             isReadyToRender:false,
@@ -121,6 +123,26 @@ export default class PayoutMonitoring extends React.Component {
          }                              
      }
 
+
+    handleFilter = (item)=>{
+        this.setState({selectedFilter:item});
+
+        let parameter = {
+            selectedFilter:this.state.selectedFilter,
+            payoutBatchList:this.state.payoutBatchList,
+            page:this.state.page
+          }
+        getPayoutBatchList(parameter,this.setMyState)
+    }
+
+    renderFilterButtons = ({item})=>(
+        <Components.FilterButtons 
+            title={item} 
+            onPress={()=>this.handleFilter(item)}        
+            isSelected={item == this.state.selectedFilter  ? true : false }
+        />
+    )
+
     render(){
         return(
             <>                
@@ -129,10 +151,15 @@ export default class PayoutMonitoring extends React.Component {
                         <Components.PayoutCard
                             amount={this.state.totalPendingPayout}
                         />    
-                
+                        <FlatList
+                            data={this.state.filterButtons}
+                            renderItem={this.renderFilterButtons}
+                            horizontal
+                        />
                         <View style={{ top:constants.Dimensions.vh(2) }}>
                             <Text style={styles.listText}>List of Batch Payout</Text>
                         </View> 
+             
                     </View>                          
                         {!this.state.isReadyToRender ? (
                                 <View style={{ bottom:constants.Dimensions.vh(50) }}>

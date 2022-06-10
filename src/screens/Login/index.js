@@ -76,7 +76,9 @@ export default class Login extends React.Component {
                     
              
                     <View style={styles.form}>       
-                        
+                        <View style={styles.titleContainer}>
+                            <Text style={styles.title}>Welcome To Intervention Management Platform</Text>
+                        </View>
                         <View>     
                             <Components.PrimaryTextInput
                                     lineColor={constants.Colors.light}

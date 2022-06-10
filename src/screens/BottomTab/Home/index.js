@@ -96,7 +96,7 @@ export default class Home extends React.Component {
     renderFooterComponent = () =>(
 
     
-            this.state.showFooter &&  this.state.transactedVouchers.length > 2 ?
+            this.state.showFooter &&  this.state.transactedVouchers.length > 1 ?
             <Components.FooterLoader message={"Getting more transacted vouchers"}/> :
             <View style={styles.emptyFooter}> 
                 <Text> No transacted vouchers...</Text>
@@ -146,8 +146,9 @@ export default class Home extends React.Component {
                                         ListHeaderComponent = {<Components.ListHeader/>}                                                                  
                                         ListEmptyComponent = {this.renderEmptyComponent}
                                         ListFooterComponent = {this.renderFooterComponent}
-                                        contentContainerStyle={{ paddingBottom:constants.Dimensions.vh(50) }}
+                                        contentContainerStyle={{ paddingBottom:constants.Dimensions.vh(50),paddingHorizontal:constants.Dimensions.vw(5) }}
                                         style={{paddingleft:constants.Dimensions.vw(10) }}
+                                        
                                         
                                         nestedScrollEnabled
                                         refreshControl = {
@@ -163,10 +164,10 @@ export default class Home extends React.Component {
                                         }
                                         onEndReachedThreshold={0.1} // so when you are at 5 pixel from the bottom react run onEndReached function
                                         onEndReached={async ({distanceFromEnd}) => {     
-                                                      
-                                           if (distanceFromEnd > 0  && this.state.transactedVouchers.length - 2 == this.state.page ) 
+                                             
+                                           if (distanceFromEnd > 0   ) 
                                             {                               
-                                             await this.setState({showFooter:true});   
+                                                this.setState({showFooter:true});            
                                               await this.setState((prevState) => ({page:prevState.page + 2}));
                                               let parameter = {
                                                 transactedVouchers:this.state.transactedVouchers,

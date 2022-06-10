@@ -3,7 +3,7 @@ import { View,Text,FlatList} from 'react-native';
 import constants from '../../../constants';
 import {styles} from './styles'
 import Components from '../../../components';
-import { goToReviewTransaction, openCamera } from '../../../actions/transaction';
+import { goToReviewTransaction, openUploadSelection,openCamera, openGallery } from '../../../actions/transaction';
 
 export default class UploadAttachments extends React.Component {
     constructor(props) {
@@ -35,6 +35,7 @@ export default class UploadAttachments extends React.Component {
               file: [],
             },                    
           ],
+          showSelection:false,
           latitude:'',
           longitude:''
           
@@ -45,13 +46,13 @@ export default class UploadAttachments extends React.Component {
     setMyState = (value)=>this.setState(value);
 
 
-    openCamera = (documentName)=>{
+    openUploadSelection = (documentName)=>{
         
         let parameter = {
             documentName:documentName,
             attachments:this.state.attachments
         }
-        return openCamera(parameter,this.setMyState);        
+        return openUploadSelection(parameter,this.setMyState);        
     }
 
 
@@ -88,7 +89,7 @@ export default class UploadAttachments extends React.Component {
                                 iconName={"camera-plus"}
                                 iconColor={constants.Colors.primary}
                                 iconSize= {40}
-                                onPress={()=>this.openCamera(item.name)}
+                                onPress={()=>this.openUploadSelection(item.name)}
                                 title={"Press to add photo."}
                             />
                             <View style={{ left:constants.Dimensions.vh(5) }}>                         
@@ -102,7 +103,7 @@ export default class UploadAttachments extends React.Component {
                                 <View style={{ left:constants.Dimensions.vh(5),marginVertical:constants.Dimensions.vh(4)}}>                                    
                                     <Components.ImageCard
                                         image={image}
-                                        onChangeImage={()=>this.openCamera(item.name)}
+                                        onChangeImage={()=>this.openUploadSelection(item.name)}
                                         onViewImage={()=>this.showImage(item.file)}
                                     />
                              
@@ -114,7 +115,7 @@ export default class UploadAttachments extends React.Component {
                                             iconName={"camera-plus"}
                                             iconColor={constants.Colors.primary}
                                             iconSize= {40}
-                                            onPress={()=>this.openCamera(item.name)}
+                                            onPress={()=>this.openUploadSelection(item.name)}
                                             title={"Press to add photo."}
                                         />                                                                                  
                                     </View>  
@@ -137,7 +138,7 @@ export default class UploadAttachments extends React.Component {
                                     iconName={"camera-plus"}
                                     iconColor={constants.Colors.primary}
                                     iconSize= {40}
-                                    onPress={()=>this.openCamera(item.name  + "(front)")}
+                                    onPress={()=>this.openUploadSelection(item.name  + "(front)")}
                                     title={"Press to add photo of valid ID (Front)."}
                                     
                                 />
@@ -147,7 +148,7 @@ export default class UploadAttachments extends React.Component {
                                 <View style={{ left:constants.Dimensions.vh(5) }}>                                    
                                     <Components.ImageCard
                                         image={item.file[0].front}
-                                        onChangeImage={()=>this.openCamera(item.name  + "(front)")}
+                                        onChangeImage={()=>this.openUploadSelection(item.name  + "(front)")}
                                         onViewImage={()=>this.showImage(item.file[0]?.front)}
                                     />
                                 </View>
@@ -159,7 +160,7 @@ export default class UploadAttachments extends React.Component {
                                     iconName={"camera-plus"}
                                     iconColor={constants.Colors.primary}
                                     iconSize= {40}
-                                    onPress={()=>this.openCamera(item.name  + "(back)")}
+                                    onPress={()=>this.openUploadSelection(item.name  + "(back)")}
                                     title={"Press to add photo of valid ID (Back)."}
                                     
                                 />
@@ -169,7 +170,7 @@ export default class UploadAttachments extends React.Component {
                                 <View style={{ left:constants.Dimensions.vh(5),marginVertical:constants.Dimensions.vh(4)}}>                                    
                                     <Components.ImageCard
                                         image={item.file[0].back}
-                                        onChangeImage={()=>this.openCamera(item.name  + "(back)")}
+                                        onChangeImage={()=>this.openUploadSelection(item.name  + "(back)")}
                                         onViewImage={()=>this.showImage(item.file[0].back)}
                                         
                                     />
@@ -187,7 +188,7 @@ export default class UploadAttachments extends React.Component {
                         iconName={"camera-plus"}
                         iconColor={constants.Colors.primary}
                         iconSize= {40}
-                        onPress={()=>this.openCamera(item.name)}
+                        onPress={()=>this.openUploadSelection(item.name)}
                         title={"Press to add photo."}
                     />
                 </View>  
@@ -199,7 +200,7 @@ export default class UploadAttachments extends React.Component {
                         <Text style={styles.label} adjustsFontSizeToFit>{item.name}</Text>                        
                         <Components.ImageCard
                             image={item.file}
-                            onChangeImage={()=>this.openCamera(item.name)}
+                            onChangeImage={()=>this.openUploadSelection(item.name)}
                             onViewImage={()=>this.showImage(item.file)}
                         />
                     </View>
@@ -223,9 +224,34 @@ export default class UploadAttachments extends React.Component {
                         
                 />
 
-               
+                <Components.UploadingSelectionCard
+                    showPanel={this.state.showSelection}
+                    onDismiss = {()=>this.setState({showSelection:false})}
+                    onPressTakePhoto={()=>{
+                            
+                        let parameter = {
+                            documentName:this.state.documentName,
+                            attachments:this.state.attachments
+                        }
 
-                 <Components.ImageModal
+                        return openCamera(parameter,this.setMyState)
+                    }}
+
+                    onPressOpenGallery={()=>{
+                            
+                        let parameter = {
+                            documentName:this.state.documentName,
+                            attachments:this.state.attachments
+                        }
+
+                        return openGallery(parameter,this.setMyState)
+                    }}
+                    
+                    
+                    
+                />
+
+                <Components.ImageModal
                     showImage={this.state.showImage}
                     image={{ url: "data:image/jpeg;base64," + this.state.imageUri}}
                     onRequestClose={()=>this.setState({showImage:false})}

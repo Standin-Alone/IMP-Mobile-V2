@@ -3,7 +3,8 @@ import {
     PrimaryButton,
     PrimaryButtonOutline,
     SecondaryButton,
-    TertiaryButton
+    TertiaryButton,
+    FilterButtons
     } from "./buttons";
 
 import { 
@@ -19,7 +20,8 @@ import {
         HomePrimaryCard,
         ViewTransactionCommodityCard,
         PayoutCard,
-        PayoutBatchCard
+        PayoutBatchCard,
+        UploadingSelectionCard
     } from "./cards";
 
 import { 
@@ -52,6 +54,7 @@ export default {
     PrimaryButtonOutline,
     SecondaryButton,
     TertiaryButton,
+    FilterButtons,
 
 
     PrimaryTextInput,
@@ -76,6 +79,7 @@ export default {
     PayoutBatchCard,
     ViewTransactionCommodityCard,
     PayoutCard,
+    UploadingSelectionCard,
 
     ImageModal,
     ConfirmModal,

@@ -128,3 +128,14 @@ export const TertiaryButton = ({
 
 
 
+export const FilterButtons = ({
+    onPress,     
+    title,
+    isSelected
+})=>(     
+    <TouchableOpacity  onPress={onPress}  style={[styles.filterButton,{borderColor:isSelected ? constants.Colors.primary : constants.Colors.dark_tint}]}>
+        <View style={{ flexDirection:'column',top:constants.Dimensions.vh(2)}} >                
+            <Text style={{ textAlign:'center',color:isSelected ? constants.Colors.primary : constants.Colors.dark_tint }}>{title}</Text>
+        </View>
+    </TouchableOpacity>  
+);
