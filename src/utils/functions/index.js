@@ -33,7 +33,7 @@ export const backgroundTime = (timer,props)=>{
 )}
 
 export const checkAppVersion = async ()=>{
-
+    
    
     let  result = false;
 
@@ -109,8 +109,7 @@ export const  rotateImage = async (uri) =>{
   
 export const  getLocation = async (uri) =>{
     return new Promise((resolve, reject) => {
-        Geolocation.getCurrentPosition((position) =>{
-            console.warn(position)
+        Geolocation.getCurrentPosition((position) =>{            
             const {latitude, longitude,altitude} = position.coords;
             resolve({
                 latitude:latitude,

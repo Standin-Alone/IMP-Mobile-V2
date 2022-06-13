@@ -29,6 +29,7 @@ const ScreenNames = {
     HOME_STACK:{
         HOME:'HomeScreen',
         VIEW_TRANSACTION:'ViewTransaction',
+        SEARCH_VOUCHER:'SearchVoucher',
         
     }
 

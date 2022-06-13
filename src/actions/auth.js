@@ -21,12 +21,14 @@ export const authenticate = async (setstate,props)=>{
         if(state.isConnected && state.isInternetReachable){
             
             let checkVersion = await checkAppVersion();
-            console.warn('checkVersion',checkVersion)
+            
+            console.warn(checkVersion.status);
+
             if(checkVersion.status){
-                console.warn(checkLocation?.latitude)
+                
                 setTimeout(()=>{
                     if(checkLocation?.latitude && checkLocation?.longitude ){
-
+                    
                         if(checkSession){            
             
                             props.navigation.replace(constants.ScreenNames.APP_STACK.MAIN_TAB);

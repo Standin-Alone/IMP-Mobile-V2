@@ -58,6 +58,21 @@ export const styles = StyleSheet.create({
         height:constants.Dimensions.vh(10),
         width:constants.Dimensions.vw(20),
         borderRadius:30,    
+    },
+    searchButton:{
+        backgroundColor:constants.Colors.light,
+        height:constants.Dimensions.vh(12),
+        width:constants.Dimensions.vh(90),
+        paddingVertical:constants.Dimensions.vh(2),
+        paddingHorizontal:constants.Dimensions.vh(2),
+        elevation:2,
+        borderRadius:15,
+    },
+    searchPlaceholder:{
+      
+        fontSize:16,
+        fontFamily:constants.Fonts.GothamBold,        
+        color:constants.Colors.dark_tint
     }
 });
 

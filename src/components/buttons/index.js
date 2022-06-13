@@ -139,3 +139,28 @@ export const FilterButtons = ({
         </View>
     </TouchableOpacity>  
 );
+
+
+
+
+export const SearchButton = ({
+  onPress
+ })=>(   
+    <>  
+         <TouchableOpacity style={styles.searchButton} onPress={onPress}>
+            <View style={{ flexDirection:'row' }}>
+                <View style={styles.icon}>
+                <constants.Icons.Ionicons
+                    name="search"
+                    size={30}
+                    color={constants.Colors.dark_tint}
+                    
+                />
+                </View>
+                <View>
+                    <Text style={styles.searchPlaceholder} adjustsFontSizeToFit>Search here...</Text>
+                </View>                
+            </View>
+         </TouchableOpacity>             
+    </>
+ );

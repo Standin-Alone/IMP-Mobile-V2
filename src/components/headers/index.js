@@ -66,30 +66,26 @@ export const PrimaryHeader = ({
 export const PrimaryHeaderSearch = ({
     onChangeText,
     onBlur,
-    onFocus,
-    isFocus,
+    onFocus,    
+    onGoBack,
     value
  })=>(   
-    <>  
+
+        <View style={[styles.primaryContainer,{backgroundColor:constants.Colors.primary}]}>
          <View style={styles.headerSearchContainer}>
             <View style={{ flexDirection:'row' }}>
-                <View style={styles.icon}>
-                <constants.Icons.Ionicons
-                    name="search"
-                    size={30}
-                    color={constants.Colors.dark_tint}
-                    
-                />
-                </View>
-                <View>
+                <TouchableOpacity onPress={onGoBack}>
+                    <MaterialIcons 
+                        name="chevron-left" 
+                        size={55} 
+                        color={constants.Colors.light}
+                    />
+                </TouchableOpacity>
+                <View style={{ top:constants.Dimensions.vh(2)}}>
                     <TextInput 
-                        style={[styles.searchInput, {borderColor: isFocus ? 
-                        constants.Colors.primary 
-                        :                     
-                        constants.Colors.gray
-                        }]}                        
-                        placeholder="Search here by name or reference #"
-                        
+                        style={[styles.searchInput]}                        
+                        placeholder="Search"                        
+                        placeholderTextColor={constants.Colors.light}
                         onChangeText={onChangeText}
                         onFocus={onFocus} 
                         onBlur={onBlur} 
@@ -97,10 +93,12 @@ export const PrimaryHeaderSearch = ({
                         adjustsFontSizeToFit
                     />
                 </View>                
+   
             </View>
          </View>             
-    </>
+        </View>   
  );
+
 
 
  

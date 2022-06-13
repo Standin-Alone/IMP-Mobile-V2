@@ -68,7 +68,7 @@ export const getTransactedVouchers = (payload,setState)=>{
                     
 
                     if(newData.length ==  0){ 
-                        setState({showFooter:false,isRefreshing:false})
+                        setState({showFooter:false,isRefreshing:false,isReadyToRender:true})
                     }
 
 
@@ -105,6 +105,75 @@ export const getTransactedVouchers = (payload,setState)=>{
             })
              // turn off loading
              setState({isReadyToRender:true,isRefreshing:false})
+         }
+    });
+
+}
+
+
+
+
+
+
+export const searchVoucher = (payload,setState)=>{
+    
+    setState({searchValue:payload.searchValue,isSearching:true})
+    // Check Internet Connection
+    NetInfo.fetch().then(async (state)=>{
+        
+         // if internet connected
+         if(state.isConnected && state.isInternetReachable){
+            
+
+
+            let cleanPayload = {
+                supplierId: await GET_SESSION('USER_ID'),
+                searchValue:payload.searchValue
+                
+            }
+            
+            // console.warn(cleanPayload);
+            // POST REQUEST
+            POST(`${getBaseUrl().accesspoint}${constants.EndPoints.SEARCH_VOUCHER}`,cleanPayload).then((response)=>{       
+                console.warn(response.data);
+                if(response.data.status == true){
+                    
+
+                    setState({data:response.data.data,isSearching:false});
+                    
+                }else{
+                    
+                console.warn( response.data.errorMessage);
+                    Toast.show({
+                        type:'error',
+                        text1:'Message',  
+                        text2: response.data.errorMessage
+                    });
+                    setState({isSearching:false})
+                }
+                
+            }).catch((error)=>{
+                    
+                console.warn(error.response);
+                Toast.show({
+                    type:'error',
+                    text1:'Something went wrong!',                     
+                    text2:error.response
+                });
+                
+                // turn off loading
+                setState({isSearching:false})
+            });
+
+
+         }else{
+             //  No internet Connection
+            Toast.show({
+                type:'error',
+                text1:'No internet Connection!'
+            })
+             // turn off loading
+             setState({isSearching:false})
          }
     });
 

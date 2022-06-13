@@ -3,7 +3,7 @@ import React from 'react';
 import constants from '../constants';
 import Home from '../screens/BottomTab/Home';
 import ViewTransaction from '../screens/Home/ViewTransaction';
-
+import SearchVoucher from '../screens/Home/SearchVoucher';
 
 const HomeStack = createStackNavigator();
 
@@ -30,7 +30,13 @@ export const HomeStackComponent= (props) => {
             <HomeStack.Screen
                 component={ViewTransaction}
                 name={constants.ScreenNames.HOME_STACK.VIEW_TRANSACTION}
-                options={{              cardStyleInterpolator:CardStyleInterpolators.forRevealFromBottomAndroid}}                
+                options={{cardStyleInterpolator:CardStyleInterpolators.forRevealFromBottomAndroid}}                
+            />  
+
+            <HomeStack.Screen
+                component={SearchVoucher}
+                name={constants.ScreenNames.HOME_STACK.SEARCH_VOUCHER}
+                options={{cardStyleInterpolator:CardStyleInterpolators.forRevealFromBottomAndroid}}                
             />  
 
 

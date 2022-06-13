@@ -87,7 +87,7 @@ export default class Home extends React.Component {
             transactedVouchers:this.state.transactedVouchers,
             page:0
         }
-
+        this.setState({isReadyToRender:false});
         getTransactedVouchers(parameter,this.setMyState)
     }
 
@@ -122,10 +122,14 @@ export default class Home extends React.Component {
                  
                     <View style={styles.contentContainer}>
                         <View style={styles.searchContainer}>
-                                <Components.PrimaryHeaderSearch
+                                {/* <Components.PrimaryHeaderSearch
                                     onFocus={()=>this.setState({search:{...this.state.search,focus:true}})}
                                     onBlur={()=>this.setState({search:{...this.state.search,focus:false}})}                                    
                                     onChangeText={(value)=>this.setState({search:{...this.state.search,value:value,error:false}})}                                
+                                /> */}
+
+                                <Components.SearchButton
+                                    onPress={()=>this.props.navigation.navigate(constants.ScreenNames.HOME_STACK.SEARCH_VOUCHER)}
                                 />
                         </View>
 

@@ -4,7 +4,8 @@ import {
     PrimaryButtonOutline,
     SecondaryButton,
     TertiaryButton,
-    FilterButtons
+    FilterButtons,
+    SearchButton
     } from "./buttons";
 
 import { 
@@ -55,7 +56,7 @@ export default {
     SecondaryButton,
     TertiaryButton,
     FilterButtons,
-
+    SearchButton,
 
     PrimaryTextInput,
     AmountInput,

@@ -12,7 +12,7 @@ export const Loader = ({
    if (isLoading) {
        return (
            <SafeAreaView style={[styles.overlay, { alignItems: 'center', justifyContent: 'center',zIndex:1000 }]}>
-               <View style={{ borderRadius: 10, backgroundColor: 'transparent', paddingHorizontal: 25, paddingVertical: 15,top:constants.Dimensions.vh(90) }}>                 
+               <View style={{ borderRadius: 10,paddingHorizontal: 25, paddingVertical: 15,top:constants.Dimensions.vh(90) }}>                 
                    <ActivityIndicator size="large" color={constants.Colors.primary}/>               
                </View>
            </SafeAreaView>
@@ -32,9 +32,7 @@ export const FooterLoader = ({
             <View style={{ flexDirection:'row' }}>
                 <ActivityIndicator size="small" color={constants.Colors.primary}/>               
                 <Text style={styles.loaderText}>  {message}</Text>
-            </View>
-            
-                
+            </View>                            
         </SafeAreaView>
         )
 }

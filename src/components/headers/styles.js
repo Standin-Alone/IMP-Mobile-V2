@@ -19,16 +19,19 @@ export const styles = StyleSheet.create({
         color:constants.Colors.primary
     },
     headerSearchContainer:{
-        backgroundColor:'transparent',        
+        
     },
     searchInput:{
-        backgroundColor:constants.Colors.light,
-        width:constants.Dimensions.vw(90),
-        fontSize:14,      
+        
+        backgroundColor:'rgba(0,0,0,0.2)',
+        width:constants.Dimensions.vw(80),
+        height:constants.Dimensions.vh(11),
+        color:constants.Colors.light,
+        fontSize:15,      
         fontFamily:constants.Fonts.PoppinsRegular,  
-        borderRadius:14,
-        paddingHorizontal:constants.Dimensions.vw(10),
-        elevation:10
+        borderRadius:20,
+        paddingHorizontal:constants.Dimensions.vw(4),
+
     },
     searchPlaceholder:{
         width:constants.Dimensions.vh(10),
@@ -37,7 +40,7 @@ export const styles = StyleSheet.create({
         elevation:100,   
         position:'absolute',
         top:constants.Dimensions.vh(1),
-        left:10
+        left:constants.Dimensions.vw(80),
     },
     listHeaderText:{
         fontFamily:constants.Fonts.PoppinsLight,
