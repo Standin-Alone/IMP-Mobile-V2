@@ -68,7 +68,13 @@ export const styles = StyleSheet.create({
         fontFamily:constants.Fonts.PoppinsBold,
         color:constants.Colors.danger,
         fontSize:14,
-    }
+    },
+    address:{
+        fontFamily:constants.Fonts.PoppinsRegular,
+        color:constants.Colors.light,
+        fontSize:14,
+        textAlign:'center'
+    },
     
 
 });

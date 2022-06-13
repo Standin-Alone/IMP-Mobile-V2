@@ -86,7 +86,7 @@ export const BottomTabNavigator = ()=>(
                 tabBarStyle:{display:getTabBarVisibility(route)},           
                 tabBarShowLabel:false,                    
                 tabBarIcon: ({color})=>(
-                    <constants.Icons.Octicons name="home" size={40} color={color}/>
+                    <constants.Icons.Octicons name="home" size={25} color={color} adjustsFontSizeToFit/>
                 )
              })}
         />
@@ -98,7 +98,7 @@ export const BottomTabNavigator = ()=>(
                 tabBarStyle:{display:getTabBarVisibility(route)},     
                 tabBarShowLabel:false,                    
                 tabBarIcon: ({color})=>(
-                    <constants.Icons.MaterialCommunityIcons name="qrcode-scan" size={40} color={color}/>
+                    <constants.Icons.MaterialCommunityIcons name="qrcode-scan" size={25} color={color} adjustsFontSizeToFit/>
                 )
              })}
         />
@@ -109,7 +109,7 @@ export const BottomTabNavigator = ()=>(
                 tabBarStyle:{display:getTabBarVisibility(route)},     
                 tabBarShowLabel:false,
                 tabBarIcon: ({color})=>(
-                    <constants.Icons.MaterialIcons name="payments" size={40} color={color}/>
+                    <constants.Icons.MaterialIcons name="payments" size={25} color={color} adjustsFontSizeToFit/>
                 )
              })}
         />
@@ -122,7 +122,7 @@ export const BottomTabNavigator = ()=>(
                 tabBarStyle:{display:getTabBarVisibility(route)},     
                 tabBarShowLabel:false,
                 tabBarIcon: ({color})=>(
-                    <constants.Icons.Octicons name="person-fill" size={40} color={color}/>
+                    <constants.Icons.Octicons name="person-fill" size={25} color={color} adjustsFontSizeToFit/>
                 )
              })}
         />

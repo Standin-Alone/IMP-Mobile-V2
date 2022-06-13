@@ -1,5 +1,5 @@
 import React from 'react';
-import { View,Text,Image} from 'react-native';
+import { View,Text,Image,BackHandler} from 'react-native';
 import constants from '../../../constants';
 import {styles} from './styles'
 import Components from '../../../components';
@@ -7,7 +7,7 @@ import { Loader } from '../../../components/loaders';
 import { GET_SESSION } from '../../../utils/async_storage';
 import NumberFormat from 'react-number-format';
 import { goToAddCommodities } from '../../../actions/transaction';
-
+import BackgroundTimer from 'react-native-background-timer';
 export default class FarmerProfile extends React.Component {
     constructor(props) {
       super(props);
@@ -21,8 +21,10 @@ export default class FarmerProfile extends React.Component {
 
     setMyState = (value)=>this.setState(value);
 
-    componentDidMount(){
-        
+    componentDidMount(){    
+        BackHandler.addEventListener("hardwareBackPress",()=>{
+            BackgroundTimer.clearTimeout(this.props.route.params.timer);  
+        })
     }
 
     handleStartTransaction = ()=>{
@@ -39,7 +41,12 @@ export default class FarmerProfile extends React.Component {
             <>  
             
                 <Components.PrimaryHeader                    
-                        onGoBack = {()=>this.props.navigation.goBack()}
+                        onGoBack = {()=>{
+                            
+                            BackgroundTimer.clearTimeout(this.props.route.params.timer);  
+                            this.props.navigation.goBack()
+                        
+                        }}
                         backIconWhite={true}
                         title={"Review Farmer Profile"}
                         

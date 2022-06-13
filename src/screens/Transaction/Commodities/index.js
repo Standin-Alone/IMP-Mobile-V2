@@ -112,7 +112,7 @@ export default class Commodities extends React.Component {
                     <View style={{ left: constants.Dimensions.vh(4) }}>
                         <Components.PrimaryButton  
                             onPress={this.handleGoToCheckout}                      
-                            title={` ${this.state.cart.length} items • P${this.state.cart.reduce((prev, current) => prev + parseFloat(current.totalAmount), 0).toFixed(2)}`}                                             
+                            title={ <Text>{`${this.state.cart.length} items •`} <Components.AmountText amountStyle={styles.amountText} value={this.state.cart.reduce((prev, current) => prev + parseFloat(current.totalAmount), 0).toFixed(2)}/></Text>}                                             
                         />
                     </View>
                 </View>            

@@ -30,7 +30,13 @@ export const styles = StyleSheet.create({
         color:constants.Colors.danger,
         fontSize:16,
       
-    }
+    },
+    amountText:{        
+        textAlign:'center',
+        fontSize:20,
+        fontFamily:constants.Fonts.GothamBold,        
+        color:constants.Colors.light
+    },
 
 });
 
