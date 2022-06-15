@@ -76,8 +76,8 @@ export default class SearchVoucher extends React.Component {
                         onChangeText={this.handleSearch}                    
                         value={this.state.searchValue}
                 />
-                <View style={{ alignSelf:'center' }}>
-
+            <View style={{flex:1, backgroundColor:constants.Colors.light }}>
+                <View style={{flex:1, alignSelf:'center',backgroundColor:constants.Colors.light }}>
                     {this.state.isSearching ? (
                                 <View style={{ bottom:constants.Dimensions.vh(50) }}>
                                     <Components.Loader isLoading={true}/>
@@ -90,7 +90,8 @@ export default class SearchVoucher extends React.Component {
                             ListEmptyComponent={this.renderEmptyComponent}
                         />    
                     )}
-                </View>         
+                </View>       
+            </View>  
             </>
         )
         

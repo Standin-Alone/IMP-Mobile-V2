@@ -5,7 +5,7 @@ import { styles } from "./styles";
 import LinearGradient from 'react-native-linear-gradient';
 import constants from "../../constants";
 import  MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-
+import LottieView from 'lottie-react-native';
 
 export const HomeHeader = ({
     title,    
@@ -13,11 +13,16 @@ export const HomeHeader = ({
  })=>(   
     <>  
          <View style={[styles.primaryContainer,{backgroundColor:constants.Colors.primary,bottom:constants.Dimensions.vh(2)}]}>             
+            
              <View>
-                 <Text style={[styles.primaryTitle,{color:constants.Colors.light,fontSize:30,left:constants.Dimensions.vw(2) }]}>
+                <LottieView source={constants.Images.hello}  autoPlay  style={styles.hello} resizeMode="contain" />
+                 {/* <Text style={[styles.primaryTitle,{color:constants.Colors.light,fontSize:30,left:constants.Dimensions.vw(2) }]}>
                      {title}
-                 </Text>
+                     
+                 </Text> */}
+              
              </View>         
+             
          </View>             
     </>
  );
@@ -81,11 +86,11 @@ export const PrimaryHeaderSearch = ({
                         color={constants.Colors.light}
                     />
                 </TouchableOpacity>
-                <View style={{ top:constants.Dimensions.vh(2)}}>
+                <View style={{ top:constants.Dimensions.vh(1.5)}}>
                     <TextInput 
                         style={[styles.searchInput]}                        
                         placeholder="Search"                        
-                        placeholderTextColor={constants.Colors.light}
+                        placeholderTextColor={constants.Colors.light}                        
                         onChangeText={onChangeText}
                         onFocus={onFocus} 
                         onBlur={onBlur} 

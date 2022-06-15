@@ -104,7 +104,7 @@ export default class ViewTransaction extends React.Component {
                                     <View style={{ flexDirection:'row' }} >                                        
                                         <Text style={styles.voucherAmountLabel}>Program:</Text>
                                     </View>
-                                    <View style={{ flexDirection:'column',left:constants.Dimensions.vh(5) }}>                                                                                
+                                    <View style={{ flexDirection:'column',left:constants.Dimensions.vh(5),backgroundColor: this.state.transactionInfo.shortname == 'RFDV' ? constants.Colors.brown : constants.Colors.secondary,borderRadius:20,paddingHorizontal:constants.Dimensions.vw(2)}}>                                                                                
                                         <Text style={styles.voucherAmount}>{this.state.transactionInfo.program_title}</Text>                                        
                                     </View>                                    
                                 </View>                                

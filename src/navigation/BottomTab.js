@@ -15,6 +15,7 @@ import { PayoutMonitoringStackComponent } from './PayoutMonitoringStack';
 const BottomTab = createBottomTabNavigator();
 
 
+
 export function getTabBarVisibility(route) {   
     
     const routeName = getFocusedRouteNameFromRoute(route);
@@ -43,40 +44,7 @@ export const BottomTabNavigator = ()=>(
             
         })}
 
-        // tabBar={(props) => (
-        //     <BottomFabBar
-        //       // Add Shadow for active tab bar button
-        //       focusedButtonStyle={{
-                
-        //         shadowColor: '#000',
-        //         shadowOffset: {
-        //           width: 0,
-        //           height: 7,
-        //         },
-                
-        //         shadowOpacity: 0.41,
-        //         shadowRadius: 9.11,
-        //         elevation: 14,
-                
-        //       }}
-        //       // - You can add the style below to show content screen under the tab-bar
-        //       // - It will makes the "transparent tab bar" effect.
-              
-              
-    
-        //       bottomBarContainerStyle={{     
-                
-        //         display:getTabBarVisibility(props.state.routes),
-        //         position: 'absolute',           
-        //         bottom: 0,
-        //         left: 0,
-        //         right: 0,
-        //       }}
 
-              
-        //       {...props}
-        //     />
-        //   )}
           
      >
         <BottomTab.Screen 

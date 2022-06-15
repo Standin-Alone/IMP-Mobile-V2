@@ -10,6 +10,7 @@ export const styles = StyleSheet.create({
     noDataBg:{
         height:constants.Dimensions.vh(100),    
         width:constants.Dimensions.vw(100),
+        right:constants.Dimensions.vw(2)
     },
 });
 

@@ -115,7 +115,7 @@ export default class Checkout extends React.Component {
                         </View>   
                         <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
                             <Text style={styles.label}>Cart Total Amount</Text>
-                            <Components.AmountText  amountStyle={styles.cashAdded} value={this.state.cartTotalAmount}/>                                    
+                             <Components.AmountText  amountStyle={styles.cashAdded} value={this.state.cartTotalAmount}/>                                    
                         </View>                                           
                         <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
                             <Text style={styles.label} >Total Cash Added By Farmer</Text>

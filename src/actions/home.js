@@ -10,7 +10,7 @@ import { GET_SESSION, SET_SESSION } from "../utils/async_storage";
 
 
 export const goToViewTransaction = (payload,setState,props)=>{
-    setState({isLoading:true,loadingText:'Viewing the transaction...'})
+   
     // Check Internet Connection
     NetInfo.fetch().then(async (state)=>{
 

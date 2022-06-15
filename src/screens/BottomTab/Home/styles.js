@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
         backgroundColor:constants.Colors.primary        
     },
     contentContainer:{
-         top:constants.Dimensions.vw(20),
+         top:constants.Dimensions.vw(30),
          flex:1,
          backgroundColor:constants.Colors.light,     
          height:constants.Dimensions.vh(100),    

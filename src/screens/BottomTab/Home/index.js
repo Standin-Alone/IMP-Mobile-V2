@@ -7,8 +7,6 @@ import { getTransactedVouchers, goToViewTransaction } from '../../../actions/hom
 import { createFilter } from "react-native-search-filter";
 
 
-const KEYS_TO_FILTERS = ["reference_no", "fullname"];
-
 export default class Home extends React.Component {
     constructor(props) {
       super(props);
@@ -49,7 +47,7 @@ export default class Home extends React.Component {
             transactionInfo:item,
             
         };
-
+        this.setState({isLoading:true,loadingText:'Viewing the transaction...'})
         
         return goToViewTransaction(payload,this.setMyState,this.props);    
     }
@@ -104,9 +102,7 @@ export default class Home extends React.Component {
     )
     
     render(){
-        const filteredVouchers = this.state.transactedVouchers.filter(
-            createFilter(this.state.search.value, KEYS_TO_FILTERS)
-        );
+     
         return(
             <>  
             
@@ -114,7 +110,7 @@ export default class Home extends React.Component {
                 <Components.ProgressModal
                         showProgress={this.state.isLoading}    
                         title={this.state.loadingText}                
-                    />
+                />
    
                     <Components.HomeHeader
                         title={'IMP'}
@@ -122,12 +118,7 @@ export default class Home extends React.Component {
                  
                     <View style={styles.contentContainer}>
                         <View style={styles.searchContainer}>
-                                {/* <Components.PrimaryHeaderSearch
-                                    onFocus={()=>this.setState({search:{...this.state.search,focus:true}})}
-                                    onBlur={()=>this.setState({search:{...this.state.search,focus:false}})}                                    
-                                    onChangeText={(value)=>this.setState({search:{...this.state.search,value:value,error:false}})}                                
-                                /> */}
-
+                    
                                 <Components.SearchButton
                                     onPress={()=>this.props.navigation.navigate(constants.ScreenNames.HOME_STACK.SEARCH_VOUCHER)}
                                 />
@@ -144,7 +135,7 @@ export default class Home extends React.Component {
 
                                     
                                     <FlatList
-                                        data={this.state.transactedVouchers ? filteredVouchers : null}
+                                        data={this.state.transactedVouchers}
                                         extraData={this.state.transactedVouchers}
                                         renderItem={this.renderItem}          
                                         ListHeaderComponent = {<Components.ListHeader/>}                                                                  

@@ -51,14 +51,22 @@ export const styles = StyleSheet.create({
     },
     programTitle:{
         fontFamily:constants.Fonts.PoppinsMedium,
-        color:constants.Colors.dark_tint,
+        color:constants.Colors.light,
         fontSize:14,        
         
     },
     programShortName:{
         fontFamily:constants.Fonts.PoppinsBold,
-        color:constants.Colors.dark_tint,
+        color:constants.Colors.light,
         fontSize:14,        
         
+    },
+    programContainer:{ 
+        flexDirection:'row',
+        justifyContent:'space-between',
+        marginHorizontal:constants.Dimensions.vw(10),
+        borderRadius:20,
+        paddingHorizontal:constants.Dimensions.vw(2),
+        marginVertical:constants.Dimensions.vh(2)
     }
 });

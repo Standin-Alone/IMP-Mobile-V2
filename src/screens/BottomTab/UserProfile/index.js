@@ -78,9 +78,9 @@ export default class UserProfile extends React.Component {
                         <View >
                         {this.state.programs.map((item)=>{
                                 return (
-                                    <View style={{ flexDirection:'row',justifyContent:'space-between',marginHorizontal:constants.Dimensions.vw(10) }}>
-                                        <Text style={styles.programTitle}>{item.title}</Text>
-                                        <Text style={styles.programShortName}>{item.shortname}</Text>
+                                    <View style={[styles.programContainer,{backgroundColor: item.shortname == 'RFDV' ? constants.Colors.brown : constants.Colors.secondary}]}>                                                                           
+                                            <Text style={styles.programTitle}>{item.title}</Text>
+                                            <Text style={styles.programShortName}>{item.shortname}</Text>                                       
                                     </View>
                                 )
                             })

@@ -9,6 +9,7 @@ const daLogoWhite =  require('./images/da-logo-with-title-white.png');
 const noData =  require('./images/no-data-bg.jpg'); 
 const otpBg =  require('./images/otp-bg.jpg'); 
 const batch = require('./images/batch.png');
+const hello = require('./images/hello.json');
 export default {
 
     loginCover : loginCover,
@@ -19,7 +20,8 @@ export default {
     daLogoWhite:daLogoWhite,
     noData:noData,
     otpBg:otpBg,
-    batch
+    batch:batch,
+    hello:hello
     
     
 }

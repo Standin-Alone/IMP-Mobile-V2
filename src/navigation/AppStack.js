@@ -15,13 +15,13 @@ import constants from "../constants";
 import ForgotPassword from "../screens/ForgotPassword";
 
 
-LogBox.ignoreLogs([
-  "[react-native-gesture-handler] Seems like you\'re using an old API with gesture components, check out new Gestures system!",
+// LogBox.ignoreLogs([
+//   "[react-native-gesture-handler] Seems like you\'re using an old API with gesture components, check out new Gestures system!",
   
-]);
+// ]);
 
   
-
+// LogBox.ignoreAllLogs()
 
 
 

@@ -7,7 +7,7 @@ import constants from '../../constants';
 
 export const styles = StyleSheet.create({  
     primaryContainer:{
-        
+        elevation:100,
         flexDirection:'row',
         backgroundColor:'transparent',
         
@@ -45,6 +45,14 @@ export const styles = StyleSheet.create({
     listHeaderText:{
         fontFamily:constants.Fonts.PoppinsLight,
         fontSize:14,
+    },
+    
+    hello:{
+        bottom:constants.Dimensions.vh(-16),
+        right:constants.Dimensions.vw(-18),
+        width:constants.Dimensions.vw(45),
+        height:constants.Dimensions.vw(45),
+        position:'absolute'
     }
   
 });
