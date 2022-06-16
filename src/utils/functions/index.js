@@ -42,7 +42,7 @@ export const checkAppVersion = async ()=>{
         version:DeviceInfo.getVersion()
     };
 
-
+    
 
     // Check Internet Connection
     await  NetInfo.fetch().then(async (state)=>{

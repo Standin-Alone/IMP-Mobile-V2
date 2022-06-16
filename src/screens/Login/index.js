@@ -122,6 +122,7 @@ export default class Login extends React.Component {
                                     onPress={this.handleLogin}                      
                                     title={"Log In"}                                
                                     isLoading={this.state.isLoading}
+                                    
                                 />
                             </View>
                         </View>                                                                                                

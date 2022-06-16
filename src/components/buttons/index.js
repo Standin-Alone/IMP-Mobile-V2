@@ -21,7 +21,7 @@ export const PrimaryButton = ({
     colors={[constants.Colors.primary, constants.Colors.secondary]}
     style={[styles.primaryButton,moreStyle]}
     >
-        <TouchableOpacity  onPress={onPress}  style={{ justifyContent: "center",alignItems: "center", paddingVertical:constants.Dimensions.vh(3) }} >
+        <TouchableOpacity  onPress={onPress}  style={{ justifyContent: "center",alignItems: "center", paddingVertical:constants.Dimensions.vh(3) }} disabled={isLoading} >
             <View style={{ flexDirection:'row' }}>
       
 

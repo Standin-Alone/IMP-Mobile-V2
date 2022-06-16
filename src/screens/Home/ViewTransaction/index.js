@@ -17,23 +17,19 @@ export default class ViewTransaction extends React.Component {
       };
     }
 
-
-    componentDidMount(){
-        
-        console.warn(this.state.transactionInfo.commodities.reduce((prev, current) => prev + parseFloat(parseFloat(current.total_amount) +  parseFloat(current.cash_added)  ), 0))
-    }
+    
 
     setMyState = (value)=>this.setState(value);
 
 
     renderCommodities = ({item,index}) => {
-        
+            
         return(
             <Components.ViewTransactionCommodityCard
                 commodityName={item.item_name}
                 category={item.item_category}
                 subCategory={item.item_sub_category}
-                amount={item.total_amount +  item.cash_added }
+                amount={parseFloat(item.total_amount) + parseFloat(item.cash_added) }
                 quantity={`x${item.quantity}`}
 
             />
@@ -85,37 +81,37 @@ export default class ViewTransaction extends React.Component {
                                 <View style={{ flexDirection:'column' ,left:constants.Dimensions.vh(5),marginVertical:constants.Dimensions.vh(5)}}>
                                     <View style={{ flexDirection:'row' }} >
                                         <constants.Icons.Fontisto name="ticket-alt" size={18} color={constants.Colors.secondary}/>
-                                        <Text style={styles.referenceNumberLabel}>Reference Number:</Text>
+                                        <Text style={styles.referenceNumberLabel} adjustsFontSizeToFit>Reference Number:</Text>
                                     </View>
                                     <View style={{ flexDirection:'column',left:constants.Dimensions.vh(5) }}>                                                                                
-                                        <Text style={styles.referenceNumber}>{this.state.transactionInfo.reference_no}</Text>
+                                        <Text style={styles.referenceNumber} adjustsFontSizeToFit>{this.state.transactionInfo.reference_no}</Text>
                                     </View>                                    
                                 </View>
 
                                 <View style={{ flexDirection:'row' ,left:constants.Dimensions.vh(5),marginVertical:constants.Dimensions.vh(1)}}>
                                     <View style={{ flexDirection:'row' }} >                                        
-                                        <Text style={styles.voucherAmountLabel}>Name:</Text>
+                                        <Text style={styles.voucherAmountLabel} adjustsFontSizeToFit>Name:</Text>
                                     </View>
                                     <View style={{ flexDirection:'column',left:constants.Dimensions.vh(5) }}>                                                                                
-                                        <Text style={styles.voucherAmount}>{this.state.transactionInfo.fullname}</Text>                                        
+                                        <Text style={styles.voucherAmount} adjustsFontSizeToFit>{this.state.transactionInfo.fullname}</Text>                                        
                                     </View>                                    
                                 </View>                                
 
                                 <View style={{ flexDirection:'row' ,left:constants.Dimensions.vh(5),marginVertical:constants.Dimensions.vh(1)}}>
                                     <View style={{ flexDirection:'row' }} >                                        
-                                        <Text style={styles.voucherAmountLabel}>Program:</Text>
+                                        <Text style={styles.voucherAmountLabel} adjustsFontSizeToFit>Program:</Text>
                                     </View>
                                     <View style={{ flexDirection:'column',left:constants.Dimensions.vh(5),backgroundColor: this.state.transactionInfo.shortname == 'RFDV' ? constants.Colors.brown : constants.Colors.secondary,borderRadius:20,paddingHorizontal:constants.Dimensions.vw(2)}}>                                                                                
-                                        <Text style={styles.voucherAmount}>{this.state.transactionInfo.program_title}</Text>                                        
+                                        <Text style={styles.voucherAmount} adjustsFontSizeToFit>{this.state.transactionInfo.program_title}</Text>                                        
                                     </View>                                    
                                 </View>                                
 
                                 <View style={{ flexDirection:'row' ,left:constants.Dimensions.vh(5),marginVertical:constants.Dimensions.vh(1)}}>
                                     <View style={{ flexDirection:'row' }} >                                        
-                                        <Text style={styles.voucherAmountLabel}>Voucher Amount:</Text>
+                                        <Text style={styles.voucherAmountLabel} adjustsFontSizeToFit>Voucher Amount:</Text>
                                     </View>
                                     <View style={{ flexDirection:'column',left:constants.Dimensions.vh(5) }}>                                                                                
-                                        <Text style={styles.voucherAmount}><Components.AmountText value={this.state.transactionInfo.default_balance}/></Text>                                        
+                                        <Text style={styles.voucherAmount} adjustsFontSizeToFit><Components.AmountText value={this.state.transactionInfo.default_balance}/></Text>                                        
                                     </View>                                    
                                 </View>                                
                         </View>
@@ -137,17 +133,17 @@ export default class ViewTransaction extends React.Component {
                             <View style={{ flexDirection:'column',bottom:constants.Dimensions.vh(4),marginHorizontal:constants.Dimensions.vw(7)}}>
                                 <Components.Divider style={{width:constants.Dimensions.vw(85)}}/>
                                     <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
-                                        <Text style={styles.label}>Total Amount</Text>
+                                        <Text style={styles.label} adjustsFontSizeToFit>Total Amount</Text>
                                         <Components.AmountText  amountStyle={styles.cashAdded} value={this.state.transactionInfo.commodities.reduce((prev, current) => prev + parseFloat(parseFloat(current.total_amount) +  parseFloat(current.cash_added)  ), 0)}/>                                    
                                     </View>                                                                    
                                     <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
-                                        <Text style={styles.label}>Total Cash Added</Text>
+                                        <Text style={styles.label} adjustsFontSizeToFit>Total Cash Added</Text>
                                         <Text>
                                             -<Components.AmountText  amountStyle={styles.cashAdded} value={this.state.transactionInfo.commodities.reduce((prev, current) => prev + parseFloat(current.cash_added)  , 0)}/>                                                                           
                                         </Text>
                                     </View>                                  
                                     <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
-                                        <Text style={styles.label}>Total Amount Paid By Voucher</Text>
+                                        <Text style={styles.label} adjustsFontSizeToFit>Total Amount Paid By Voucher</Text>
                                         <Text>
                                             <Components.AmountText  amountStyle={styles.cashAdded} value={this.state.transactionInfo.commodities.reduce((prev, current) => prev + parseFloat(parseFloat(current.total_amount) +  parseFloat(current.cash_added)  ), 0) - this.state.transactionInfo.commodities.reduce((prev, current) => prev + parseFloat(current.cash_added)  , 0)}/>                                                                           
                                         </Text>
@@ -161,7 +157,7 @@ export default class ViewTransaction extends React.Component {
 
                         <View style={styles.card}>
                             <View style={{ flexDirection:'column',marginVertical:constants.Dimensions.vh(5)}}>
-                                <Text style={styles.cardHeader}>Attachments</Text>
+                                <Text style={styles.cardHeader} adjustsFontSizeToFit>Attachments</Text>
                                     <FlatList 
                                         data={this.state.transactionInfo.base64} 
                                         renderItem={this.renderAttachments}

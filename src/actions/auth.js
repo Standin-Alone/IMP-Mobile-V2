@@ -13,7 +13,7 @@ export const authenticate = async (setstate,props)=>{
     setstate({showConfirm:false,loadingText:'Loading...'});
     let checkSession = await GET_SESSION('USER_ID');
     let checkLocation =  await   getLocation();
-  
+
     // Check Internet Connection
     NetInfo.fetch().then(async (state)=>{
 
@@ -22,7 +22,7 @@ export const authenticate = async (setstate,props)=>{
             
             let checkVersion = await checkAppVersion();
             
-            console.warn(checkVersion.status);
+            
 
             if(checkVersion.status){
                 

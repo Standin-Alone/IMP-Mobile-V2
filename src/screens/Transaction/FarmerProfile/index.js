@@ -68,20 +68,20 @@ export default class FarmerProfile extends React.Component {
                 <View style={styles.infoContainer}>
                     <View style={{ flexDirection:'column',marginHorizontal:constants.Dimensions.vh(5) , top:constants.Dimensions.vh(10)}}>
                         <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
-                            <Text style={styles.label}>Reference Number</Text>
-                            <Text style={styles.value}>{this.state.voucherInfo.reference_no}</Text>
+                            <Text style={styles.label} adjustsFontSizeToFit>Reference Number</Text>
+                            <Text style={styles.value} adjustsFontSizeToFit>{this.state.voucherInfo.reference_no}</Text>
                         </View>
                         <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
-                            <Text style={styles.label}>Program</Text>
-                            <Text style={styles.value}>{this.state.voucherInfo.shortname}</Text>
+                            <Text style={styles.label} adjustsFontSizeToFit>Program</Text>
+                            <Text style={styles.value} adjustsFontSizeToFit>{this.state.voucherInfo.shortname}</Text>
                         </View>
                         <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
-                            <Text style={styles.label}>Birthday</Text>
-                            <Text style={styles.value}>{this.state.voucherInfo.birthday}</Text>
+                            <Text style={styles.label} adjustsFontSizeToFit>Birthday</Text>
+                            <Text style={styles.value} adjustsFontSizeToFit>{this.state.voucherInfo.birthday}</Text>
                         </View>
                         <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
-                            <Text style={styles.label}>Voucher Amount</Text>
-                            <Text style={styles.value}>P{this.state.voucherInfo.amount_val}</Text>
+                            <Text style={styles.label} adjustsFontSizeToFit>Voucher Amount</Text>
+                            <Text style={styles.value} adjustsFontSizeToFit>P{this.state.voucherInfo.amount_val}</Text>
                         </View>
                     </View>
                 </View>
