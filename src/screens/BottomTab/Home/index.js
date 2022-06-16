@@ -125,14 +125,16 @@ export default class Home extends React.Component {
                         </View>
 
                         <View style={styles.body}>
-
+                            <View style={{ left:constants.Dimensions.vw(2) }} >
+                                <Text style={styles.transactionLabel}>List of Transactions</Text>
+                            </View>
                             {!this.state.isReadyToRender ? (
                                 <View style={{ bottom:constants.Dimensions.vh(50) }}>
                                     <Components.Loader isLoading={true}/>
                                 </View>
                             ) : (
                                 <View style={{ top:0 }}>                               
-
+                                    
                                     
                                     <FlatList
                                         data={this.state.transactedVouchers}
@@ -141,7 +143,7 @@ export default class Home extends React.Component {
                                         ListHeaderComponent = {<Components.ListHeader/>}                                                                  
                                         ListEmptyComponent = {this.renderEmptyComponent}
                                         ListFooterComponent = {this.renderFooterComponent}
-                                        contentContainerStyle={{ paddingBottom:constants.Dimensions.vh(50),paddingHorizontal:constants.Dimensions.vw(5) }}
+                                        contentContainerStyle={{ paddingBottom:constants.Dimensions.vh(70),paddingHorizontal:constants.Dimensions.vw(5) }}
                                         style={{paddingleft:constants.Dimensions.vw(10) }}
                                         
                                         

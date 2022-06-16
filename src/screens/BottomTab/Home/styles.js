@@ -26,17 +26,18 @@ export const styles = StyleSheet.create({
         bottom:constants.Dimensions.vh(10),
         backgroundColor:'transparent'        
     },
-    body:{
-        
-        alignSelf:'center'
-        
-    },
+   
     noDataBg:{
         height:constants.Dimensions.vh(100),    
         width:constants.Dimensions.vw(100),
     },
     emptyFooter:{
         alignSelf:'center'
+    },
+    transactionLabel:{
+        fontFamily:constants.Fonts.PoppinsBold,
+        fontSize:16,
+        color:constants.Colors.dark
     }
 });
 

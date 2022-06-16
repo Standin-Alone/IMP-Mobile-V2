@@ -15,10 +15,12 @@ import constants from "../constants";
 import ForgotPassword from "../screens/ForgotPassword";
 
 
-// LogBox.ignoreLogs([
-//   "[react-native-gesture-handler] Seems like you\'re using an old API with gesture components, check out new Gestures system!",
+LogBox.ignoreLogs([
+  "[react-native-gesture-handler] Seems like you\'re using an old API with gesture components, check out new Gestures system!",
+  '`new NativeEventEmitter()` was called with a non-null argument without the required `addListener` method.',
+  'Require cycle: src\components\index.js -> src\components\cards\index.js -> src\components\index.js'
   
-// ]);
+]);
 
   
 // LogBox.ignoreAllLogs()

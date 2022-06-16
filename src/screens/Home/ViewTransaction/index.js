@@ -19,7 +19,8 @@ export default class ViewTransaction extends React.Component {
 
 
     componentDidMount(){
-        console.warn(this.state.transactionInfo)
+        
+        console.warn(this.state.transactionInfo.commodities.reduce((prev, current) => prev + parseFloat(parseFloat(current.total_amount) +  parseFloat(current.cash_added)  ), 0))
     }
 
     setMyState = (value)=>this.setState(value);
@@ -32,7 +33,7 @@ export default class ViewTransaction extends React.Component {
                 commodityName={item.item_name}
                 category={item.item_category}
                 subCategory={item.item_sub_category}
-                amount={item.total_amount}
+                amount={item.total_amount +  item.cash_added }
                 quantity={`x${item.quantity}`}
 
             />
@@ -47,7 +48,7 @@ export default class ViewTransaction extends React.Component {
 
 
     renderAttachments = ({item,index})=>{
-            console.warn(this.state.transactionInfo.commodities.reduce((prev, current) => prev + parseFloat(current.total_amount +  parseFloat(current.cash_added))))
+            
         return(        
             <Components.PrimaryCard
                 image={{uri:`data:image/jpeg;base64,${item.image}` }}
@@ -128,18 +129,33 @@ export default class ViewTransaction extends React.Component {
                                         nestedScrollEnabled
                                         style={{ height:constants.Dimensions.vh(45) }}
                                         
-                                        contentContainerStyle={{ paddingBottom:constants.Dimensions.vh(40)}}
+                                        contentContainerStyle={{ paddingBottom:constants.Dimensions.vh(15)}}
                                     />                                    
                                    
                             </View>
 
-                            <View style={{ flexDirection:'column',top:constants.Dimensions.vh(6),marginHorizontal:constants.Dimensions.vw(7)}}>
-                                        <Components.Divider style={{width:constants.Dimensions.vw(85)}}/>
-                                           <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
-                                                <Text style={styles.label}>Total Amount</Text>
-                                                <Components.AmountText  amountStyle={styles.cashAdded} value={this.state.transactionInfo.commodities.reduce((prev, current) => prev + parseFloat(current.total_amount +  parseFloat(current.cash_added)  ), 0)}/>                                    
-                                            </View>                                                                    
+                            <View style={{ flexDirection:'column',bottom:constants.Dimensions.vh(4),marginHorizontal:constants.Dimensions.vw(7)}}>
+                                <Components.Divider style={{width:constants.Dimensions.vw(85)}}/>
+                                    <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
+                                        <Text style={styles.label}>Total Amount</Text>
+                                        <Components.AmountText  amountStyle={styles.cashAdded} value={this.state.transactionInfo.commodities.reduce((prev, current) => prev + parseFloat(parseFloat(current.total_amount) +  parseFloat(current.cash_added)  ), 0)}/>                                    
+                                    </View>                                                                    
+                                    <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
+                                        <Text style={styles.label}>Total Cash Added</Text>
+                                        <Text>
+                                            -<Components.AmountText  amountStyle={styles.cashAdded} value={this.state.transactionInfo.commodities.reduce((prev, current) => prev + parseFloat(current.cash_added)  , 0)}/>                                                                           
+                                        </Text>
+                                    </View>                                  
+                                    <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
+                                        <Text style={styles.label}>Total Amount Paid By Voucher</Text>
+                                        <Text>
+                                            <Components.AmountText  amountStyle={styles.cashAdded} value={this.state.transactionInfo.commodities.reduce((prev, current) => prev + parseFloat(parseFloat(current.total_amount) +  parseFloat(current.cash_added)  ), 0) - this.state.transactionInfo.commodities.reduce((prev, current) => prev + parseFloat(current.cash_added)  , 0)}/>                                                                           
+                                        </Text>
+                                    </View>                                                                    
                             </View>
+
+                            
+                            
                             
                         </View>
 

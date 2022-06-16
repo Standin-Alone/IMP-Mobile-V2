@@ -681,7 +681,7 @@ export const transact = (payload,setState,props) => {
                 })
 
                 payload.cart = cleanCart;
-                payload.transactionTotalAmount = cleanCart.reduce((prev, current) => prev + parseFloat(current.totalAmount + current.cashAdded), 0).toFixed(2);
+                payload.transactionTotalAmount = cleanCart.reduce((prev, current) => prev + parseFloat(parseFloat(current.totalAmount) + parseFloat(current.cashAdded)), 0).toFixed(2);
 
 
                 console.warn(payload.longitude);
