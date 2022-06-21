@@ -31,7 +31,7 @@ export const HomeStackComponent= (props) => {
             <HomeStack.Screen
                 component={ViewTransaction}
                 name={constants.ScreenNames.HOME_STACK.VIEW_TRANSACTION}
-                options={{cardStyleInterpolator:CardStyleInterpolators.forRevealFromBottomAndroid}}                
+                options={{cardStyleInterpolator:CardStyleInterpolators.forScaleFromCenterAndroid}}                
             />  
 
             <HomeStack.Screen

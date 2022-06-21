@@ -8,7 +8,7 @@ import constants from '../../../constants';
 export const styles = StyleSheet.create({
    
     card:{
-        top:constants.Dimensions.vh(2),        
+        top:constants.Dimensions.vh(1),        
         backgroundColor:constants.Colors.light,        
         height:'auto',    
         marginVertical:constants.Dimensions.vh(2)

@@ -3,7 +3,7 @@ import { View,Text,TouchableOpacity, FlatList} from 'react-native';
 import constants from '../../../constants';
 import {styles} from './styles'
 import Components from '../../../components';
-import { goToEditCart } from '../../../actions/transaction';
+import { goToEditCart,goToEditAttachments } from '../../../actions/transaction';
 
 export default class ViewTransaction extends React.Component {
     constructor(props) {
@@ -19,7 +19,7 @@ export default class ViewTransaction extends React.Component {
     }
 
     componentDidMount(){
-        console.warn(this.state.transactionInfo.commodities)
+        
     }
 
     
@@ -90,6 +90,15 @@ export default class ViewTransaction extends React.Component {
        
        return goToEditCart(parameters,this.setMyState,this.props)
     }
+
+    handleGoToEditAttachments = ()=>{
+        let parameters = {
+            voucherInfo:this.state.transactionInfo,
+            cart:this.state.transactionInfo.commodities           
+        }
+       
+       return goToEditAttachments(parameters,this.setMyState,this.props)
+    }
     
     render(){
         return(
@@ -156,7 +165,7 @@ export default class ViewTransaction extends React.Component {
                             <View style={{ flexDirection:'column',marginVertical:constants.Dimensions.vh(5)}}>
                                 <View style={{ flexDirection:'row',justifyContent:'space-between' }}>
                                     <Text style={styles.cardHeader}>Commodities</Text>
-                                    <View style={{ right:constants.Dimensions.vw(5) }}>
+                                    {/* <View style={{ right:constants.Dimensions.vw(5) }}>
                                         <TouchableOpacity onPress={this.handleGoToEditCart}>
                                             <constants.Icons.MaterialCommunityIcons
                                                 name="square-edit-outline"
@@ -164,7 +173,7 @@ export default class ViewTransaction extends React.Component {
                                                 color={constants.Colors.warning}
                                             />
                                         </TouchableOpacity> 
-                                    </View>
+                                    </View> */}
                                 </View>
                                 
                                     <FlatList 
@@ -204,8 +213,19 @@ export default class ViewTransaction extends React.Component {
                         </View>
 
                         <View style={styles.card}>
-                            <View style={{ flexDirection:'column',marginVertical:constants.Dimensions.vh(5)}}>
-                                <Text style={styles.cardHeader} adjustsFontSizeToFit>Attachments</Text>
+                            <View style={{ flexDirection:'column',marginVertical:constants.Dimensions.vh(4)}}>
+                            <View style={{ flexDirection:'row',justifyContent:'space-between',marginBottom:constants.Dimensions.vh(2)}}>
+                                    <Text style={styles.cardHeader}>Attachments</Text>
+                                    <View style={{ right:constants.Dimensions.vw(5) }}>
+                                        {/* <TouchableOpacity onPress={this.handleGoToEditAttachments}>
+                                            <constants.Icons.MaterialCommunityIcons
+                                                name="square-edit-outline"
+                                                size={20}
+                                                color={constants.Colors.warning}
+                                            />
+                                        </TouchableOpacity>  */}
+                                    </View>
+                                </View>
                                     <FlatList 
                                         data={this.state.transactionInfo.base64} 
                                         renderItem={this.renderAttachments}

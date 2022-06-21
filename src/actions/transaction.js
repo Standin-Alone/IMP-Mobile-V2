@@ -466,6 +466,48 @@ export const goToEditCart = (payload,setState,props) => {
 
 
 
+
+
+export const goToEditAttachments = (payload,setState,props) => {     
+    
+    setState({isLoading:true})
+    // Check Internet Connection
+    NetInfo.fetch().then(async(state)=>{
+            
+        // if internet connected
+        if(state.isConnected && state.isInternetReachable){
+            let checkVersion = await checkAppVersion();
+            
+  
+
+
+            //Check if the mobile app is latest.
+            if(checkVersion.status){
+
+                
+  
+            }else{
+                
+                setState({isLoading:false})
+            }
+                        
+        }else{
+            //  No internet Connection
+            Toast.show({
+                type:'error',
+                text1:'No internet Connection!'
+            })
+               
+            setState({isLoading:false})
+  
+        }
+    });
+
+}
+
+
+
+
 export const checkout = (payload,setState,props) => {     
         
     setState({isLoading:true})

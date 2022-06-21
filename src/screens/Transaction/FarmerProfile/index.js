@@ -24,6 +24,7 @@ export default class FarmerProfile extends React.Component {
     componentDidMount(){    
         BackHandler.addEventListener("hardwareBackPress",()=>{
             BackgroundTimer.clearTimeout(this.props.route.params.timer);  
+            
         })
     }
 

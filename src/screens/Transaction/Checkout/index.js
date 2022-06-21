@@ -26,10 +26,11 @@ export default class Checkout extends React.Component {
     componentDidMount(){
 
        
-        // BackHandler.addEventListener("hardwareBackPress", ()=>{
-        //     this.state.parameters.handleUpdateCart(this.state.cart);
-        //     this.props.navigation.goBack()
-        // })
+        BackHandler.addEventListener("hardwareBackPress", ()=>{
+            this.state.parameters.handleUpdateCart(this.state.cart);
+            this.props.navigation.goBack();
+            return true;
+        })
 
 
         this.setState({cartTotalAmount:  Number(this.state.cart.reduce((prev, current) => prev + parseFloat(current.totalAmount), 0)).toFixed(2)});    
@@ -67,11 +68,9 @@ export default class Checkout extends React.Component {
           let newCart = this.state.cart;
           
           // remove delete 
-          newCart.splice(index, index + 1);
+          newCart.splice(index, 1);
 
         
-
-
           this.setState({cartTotalAmount:  Number(this.state.cart.reduce((prev, current) => prev + parseFloat(current.totalAmount), 0)).toFixed(2)})
 
           if(newCart.length  == 0){

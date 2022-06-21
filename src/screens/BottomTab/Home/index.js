@@ -47,7 +47,7 @@ export default class Home extends React.Component {
             transactionInfo:item,
             
         };
-        this.setState({isLoading:true,loadingText:'Viewing the transaction...'})
+        this.setState({isLoading:true,loadingText:'Viewing transaction...'})
         
         return goToViewTransaction(payload,this.setMyState,this.props);    
     }
