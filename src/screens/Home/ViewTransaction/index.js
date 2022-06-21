@@ -1,8 +1,9 @@
 import React from 'react';
-import { View,Text,Image, FlatList} from 'react-native';
+import { View,Text,TouchableOpacity, FlatList} from 'react-native';
 import constants from '../../../constants';
 import {styles} from './styles'
 import Components from '../../../components';
+import { goToEditCart } from '../../../actions/transaction';
 
 export default class ViewTransaction extends React.Component {
     constructor(props) {
@@ -17,20 +18,45 @@ export default class ViewTransaction extends React.Component {
       };
     }
 
+    componentDidMount(){
+        console.warn(this.state.transactionInfo.commodities)
+    }
+
     
+    refreshInfo = (transaction_info)=>{
+        this.setState({transaction_info:transaction_info})
+    }
 
     setMyState = (value)=>this.setState(value);
 
 
+    goToEditCommodityDetails = (item)=>{
+        
+        let parameters = {
+            commodityInfo:item,
+            voucherInfo:this.state.transactionInfo,
+            cart:this.state.transactionInfo.commodities,                        
+            cartTotalAmount:parseFloat(this.state.transactionInfo.commodities.reduce((prev, current) => prev + parseFloat(parseFloat(current.total_amount) +  parseFloat(current.cash_added)  ), 0)),
+            refreshInfo:this.refreshInfo,            
+        };
+        
+
+        this.props.navigation.navigate(constants.ScreenNames.HOME_STACK.EDIT_COMMODITY_DETAILS,parameters);        
+    }
+
+
     renderCommodities = ({item,index}) => {
-            
+        console.warn(item)
         return(
             <Components.ViewTransactionCommodityCard
+                image={item.commodityBase64}
                 commodityName={item.item_name}
                 category={item.item_category}
                 subCategory={item.item_sub_category}
                 amount={parseFloat(item.total_amount) + parseFloat(item.cash_added) }
                 quantity={`x${item.quantity}`}
+            
+                
 
             />
 
@@ -55,6 +81,16 @@ export default class ViewTransaction extends React.Component {
             />
         )
     }
+
+    handleGoToEditCart = ()=>{
+        let parameters = {
+            voucherInfo:this.state.transactionInfo,
+            cart:this.state.transactionInfo.commodities           
+        }
+       
+       return goToEditCart(parameters,this.setMyState,this.props)
+    }
+    
     render(){
         return(
             <>  
@@ -118,7 +154,19 @@ export default class ViewTransaction extends React.Component {
 
                         <View style={[styles.card,{height:constants.Dimensions.vh(75)}]}>
                             <View style={{ flexDirection:'column',marginVertical:constants.Dimensions.vh(5)}}>
-                                <Text style={styles.cardHeader}>Commodities</Text>
+                                <View style={{ flexDirection:'row',justifyContent:'space-between' }}>
+                                    <Text style={styles.cardHeader}>Commodities</Text>
+                                    <View style={{ right:constants.Dimensions.vw(5) }}>
+                                        <TouchableOpacity onPress={this.handleGoToEditCart}>
+                                            <constants.Icons.MaterialCommunityIcons
+                                                name="square-edit-outline"
+                                                size={20}
+                                                color={constants.Colors.warning}
+                                            />
+                                        </TouchableOpacity> 
+                                    </View>
+                                </View>
+                                
                                     <FlatList 
                                         data={this.state.transactionInfo.commodities} 
                                         renderItem={this.renderCommodities}

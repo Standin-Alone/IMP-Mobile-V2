@@ -22,6 +22,7 @@ const ScreenNames = {
         FARMER_PROFILE:'FarmerProfile',
         COMMODITIES:'Commodities',
         SET_COMMODITY_DETAILS:'SetCommodityDetails',
+        EDIT_COMMODITY_DETAILS:'TransactionEditCommodityDetails',
         CHECKOUT:'Checkout',
         UPLOAD_ATTACHMENTS:'UploadAttachments',
         REVIEW_TRANSACTION:'ReviewTransaction',
@@ -30,6 +31,8 @@ const ScreenNames = {
         HOME:'HomeScreen',
         VIEW_TRANSACTION:'ViewTransaction',
         SEARCH_VOUCHER:'SearchVoucher',
+        EDIT_COMMODITY_DETAILS:'EditCommodityDetails',
+        EDIT_CART:'EditCart'
         
     }
 

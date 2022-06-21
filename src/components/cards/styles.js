@@ -88,7 +88,7 @@ export const styles = StyleSheet.create({
     commodityName:{
         
         fontFamily:constants.Fonts.PoppinsBold,
-        fontSize:20
+        fontSize:16
     },
     category:{
         

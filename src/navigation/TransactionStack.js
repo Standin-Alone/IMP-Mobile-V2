@@ -8,6 +8,7 @@ import SetCommodityDetails from '../screens/Transaction/SetCommodityDetails';
 import Checkout from '../screens/Transaction/Checkout';
 import UploadAttachments from '../screens/Transaction/UploadAttachments';
 import ReviewTransaction from '../screens/Transaction/ReviewTransaction';
+import EditCommodityDetails from '../screens/Transaction/EditCommodityDetails';
 
 
 const TransactionStack = createStackNavigator();
@@ -70,6 +71,14 @@ export const TransactionStackComponent= (props) => {
                 name={constants.ScreenNames.TRANSACTION_STACK.REVIEW_TRANSACTION}
                 
             />  
+
+            <TransactionStack.Screen
+                component={EditCommodityDetails}
+                name={constants.ScreenNames.TRANSACTION_STACK.EDIT_COMMODITY_DETAILS}                
+            />  
+
+
+            
 
 
         </TransactionStack.Navigator>

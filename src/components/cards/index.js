@@ -92,7 +92,8 @@ export const ViewTransactionCommodityCard = ({
     category,
     subCategory,
     amount,
-    quantity
+    quantity,
+    onEdit
 
 })=>(   
     <View>
@@ -103,7 +104,7 @@ export const ViewTransactionCommodityCard = ({
                     style={styles.commodityImage}
                     source={{ uri:`data:image/jpeg;base64,${image}` }}
                     resizeMode={FastImage.resizeMode.cover}    
-                />          
+                />                          
             </View>
             <View style={{ flexDirection:'row',justifyContent:'space-between',marginHorizontal:constants.Dimensions.vw(5)}}>                
                 <Text style={styles.commodityLabel}>{category}</Text>                
@@ -170,8 +171,11 @@ export const CommodityCard = ({
     quantity,
     unitMeasurement,
     totalAmount,
+    cashAdded,
     showCommodityInfo,
-    
+
+    showEditButton,
+    onEdit
 
 })=>(   
     <View style={styles.commodityCard}>       
@@ -187,7 +191,7 @@ export const CommodityCard = ({
                     resizeMode={FastImage.resizeMode.contain}    
                 />
                 <View style={styles.commodityDetails}>
-                    <Text style={styles.commodityName} adjustsFontSizeToFit>{commodityName}</Text>
+                    <Text style={styles.commodityName} >{commodityName}</Text>
 
                     {showCommodityInfo  && (
                         <>
@@ -195,9 +199,17 @@ export const CommodityCard = ({
                             <Text style={styles.category} adjustsFontSizeToFit>{subCategory}</Text>
                             <Text style={styles.category} adjustsFontSizeToFit>Total Amount: 
                                     <Components.AmountText  amountStyle={styles.category} value={totalAmount}/>
+                                    
+                            </Text>
+                            <Text style={styles.category} adjustsFontSizeToFit>Cash Added: 
+                                    <Components.AmountText  amountStyle={styles.category} value={cashAdded}/>
+                                    
                             </Text>
 
-                            <Text style={styles.category} adjustsFontSizeToFit>Quantity: {quantity} ({unitMeasurement})</Text>
+                            
+                            <Text style={styles.category} adjustsFontSizeToFit>Quantity: <Components.AmountText  amountStyle={styles.category} value={quantity}/>({unitMeasurement})
+                            </Text>
+                           
                         </>
                         )
                     }
@@ -213,7 +225,16 @@ export const CommodityCard = ({
                     }
                 </View>
             </View>  
+                
 
+            {showEditButton &&
+                <View style={{ flexDirection:'row',justifyContent:'flex-start',marginHorizontal:constants.Dimensions.vw(2)}}>
+                        <TouchableOpacity onPress={onEdit}>
+                            <constants.Icons.Ionicons name="create-outline" size={18} color={constants.Colors.warning}/>
+                        </TouchableOpacity>
+                </View>      
+            }
+            
             {showRemoveButton &&
                 <View style={{ flexDirection:'row',justifyContent:'flex-start',marginHorizontal:constants.Dimensions.vw(2)}}>
                         <TouchableOpacity onPress={onRemove}>
@@ -221,6 +242,8 @@ export const CommodityCard = ({
                         </TouchableOpacity>
                 </View>      
             }
+
+        
         </View>    
     </View>
 

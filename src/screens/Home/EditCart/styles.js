@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
         position: 'absolute',
         left:0,
         right:0,
-        bottom:0,
+        bottom:2,
         backgroundColor:constants.Colors.light,
         paddingTop:constants.Dimensions.vh(15),
         borderTopWidth:0.2,

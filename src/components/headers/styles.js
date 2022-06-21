@@ -7,13 +7,15 @@ import constants from '../../constants';
 
 export const styles = StyleSheet.create({  
     primaryContainer:{
-        elevation:100,
+        
         flexDirection:'row',
         backgroundColor:'transparent',
         
+        
+        
     },
     primaryTitle:{
-        fontFamily:constants.Fonts.GothamBold,
+        fontFamily:constants.Fonts.GothamMedium,
         fontSize:20,
         top:constants.Dimensions.vh(4),
         color:constants.Colors.primary

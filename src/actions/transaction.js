@@ -29,10 +29,10 @@ export const scanQrCode =    (payload,setState,props) => {
                     reference_number:payload.scanResult,
                     user_id:  payload.userId,
                 }
-                console.warn('scanned');                
+                           
                 // POST REQUEST
                 POST(`${getBaseUrl().accesspoint}${constants.EndPoints.SCAN_QR_CODE}`,clean_payload).then((response)=>{  
-                   
+                    console.warn(response.data.fullyClaimed);  
                     if(response.data.status == true){
                          
 
@@ -46,6 +46,18 @@ export const scanQrCode =    (payload,setState,props) => {
                          props.navigation.navigate(constants.ScreenNames.TRANSACTION_STACK.FARMER_PROFILE,parameters)
                          
                         
+                    }else if(response.data.fullyClaimed == true){
+                        
+                        let parameters = {
+                            
+                            transactionInfo:response.data.voucherInfo[0],
+                            
+                        };
+
+                        setState({isLoading:false,isScanning:true});
+                        
+                        // NAVIGATE TO VIEW TRANSACTION
+                        props.navigation.navigate(constants.ScreenNames.HOME_STACK.VIEW_TRANSACTION,parameters)                                    
                     }else{
                         Toast.show({
                             type:'error',
@@ -53,7 +65,7 @@ export const scanQrCode =    (payload,setState,props) => {
                             text2:response.data.message ? response.data.message : response.data.errorMessage,
                         });
 
-                        console.warn()
+                      
                         
                         setState({isLoading:false,isScanning:true});
                       
@@ -66,7 +78,7 @@ export const scanQrCode =    (payload,setState,props) => {
                     Toast.show({
                         type:'error',
                         text1:'Something went wrong!',
-                        text2:error
+                        text2:error.response
                     });                   
                     setState({isLoading:false,isScanning:true});
                 });
@@ -161,6 +173,135 @@ export const addToCart = (payload,setState,props) => {
                 if((item != 'subCategory' && item != 'cashAdded'  && item != 'subCategories' )   ){          
                     
                     if((payload[item] == '' || payload[item] === null)  || payload[item] === undefined  ||  payload[item] == 0 ){                        
+                        // console.warn(item)
+                        setState({[item]:{...payload[item],error:true,errorMessage:`Please enter your ${item}.`}})      
+                        countError++;
+                    } 
+                }
+
+                // sub category validation
+                if(item == 'category'){
+
+                    if(payload.subCategories.length  > 0){
+                        if(payload['subCategory'] == ''){
+                          
+                            setState({['subCategory']:{...payload['subCategory'],error:true,errorMessage:`Please enter your sub category.`}})      
+                            countError++;
+                        }
+                    }                        
+
+                }
+            
+
+            })          
+                
+            // console.warn(payload);
+            
+            if(countError == 0){
+                props.route.params.addToCart(payload);
+                props.navigation.goBack();
+            }
+            
+
+                        
+        }else{
+            //  No internet Connection
+            Toast.show({
+                type:'error',
+                text1:'Message!',
+                text2:'No internet Connection!'
+            })
+            
+        }
+    });
+
+}
+
+
+
+export const editCart = (payload,setState,props) => {     
+ 
+
+    // Check Internet Connection
+    NetInfo.fetch().then(async(state)=>{
+            
+        // if internet connected
+        if(state.isConnected && state.isInternetReachable){
+            
+            let countError = 0;
+            // validate payload
+
+            
+           
+            Object.keys(payload).map((item,index)=>{                         
+                                
+                if((item != 'subCategory' && item != 'cashAdded'  && item != 'subCategories' )   ){          
+                    
+                    if((payload[item] == '' || payload[item] === null)  || payload[item] === undefined  ||  payload[item] == 0 ){                        
+                        // console.warn(item)
+                        setState({[item]:{...payload[item],error:true,errorMessage:`Please enter your ${item}.`}})      
+                        countError++;
+                    } 
+                }
+
+                // sub category validation
+                if(item == 'category'){
+
+                    if(payload.subCategories.length  > 0){
+                        if(payload['subCategory'] == ''){
+                          
+                            setState({['subCategory']:{...payload['subCategory'],error:true,errorMessage:`Please enter your sub category.`}})      
+                            countError++;
+                        }
+                    }                        
+
+                }
+            
+
+            })          
+                
+            // console.warn(payload);
+            
+            if(countError == 0){
+                props.route.params.changeCart(payload);
+                props.navigation.goBack();
+            }
+            
+
+                        
+        }else{
+            //  No internet Connection
+            Toast.show({
+                type:'error',
+                text1:'Message!',
+                text2:'No internet Connection!'
+            })
+            
+        }
+    });
+
+}
+
+
+export const editTransactionCart = (payload,setState,props) => {     
+ 
+
+    // Check Internet Connection
+    NetInfo.fetch().then(async(state)=>{
+            
+        // if internet connected
+        if(state.isConnected && state.isInternetReachable){
+            
+            let countError = 0;
+            // validate payload
+
+            
+           
+            Object.keys(payload).map((item,index)=>{                         
+                                
+                if((item != 'subCategory' && item != 'cashAdded'  && item != 'subCategories' && item != 'index' )   ){          
+                    
+                    if((payload[item] == '' || payload[item] === null)  || payload[item] === undefined  ||  payload[item] == 0 ){                        
                         console.warn(item)
                         setState({[item]:{...payload[item],error:true,errorMessage:`Please enter your ${item}.`}})      
                         countError++;
@@ -186,7 +327,7 @@ export const addToCart = (payload,setState,props) => {
             console.warn(countError);
             
             if(countError == 0){
-                props.route.params.addToCart(payload);
+                props.route.params.changeCart(payload);
                 props.navigation.goBack();
             }
             
@@ -204,8 +345,6 @@ export const addToCart = (payload,setState,props) => {
     });
 
 }
-
-
 
 export const goToCheckout = (payload,setState,props) => {     
     
@@ -273,6 +412,57 @@ export const goToCheckout = (payload,setState,props) => {
 
 }
 
+
+
+
+export const goToEditCart = (payload,setState,props) => {     
+    
+    setState({isLoading:true})
+    // Check Internet Connection
+    NetInfo.fetch().then(async(state)=>{
+            
+        // if internet connected
+        if(state.isConnected && state.isInternetReachable){
+            let checkVersion = await checkAppVersion();
+            
+  
+
+
+            //Check if the mobile app is latest.
+            if(checkVersion.status){
+
+                if(payload.cart.length > 0){                     
+                    
+                    props.navigation.navigate(constants.ScreenNames.HOME_STACK.EDIT_CART,payload)
+                                       
+
+                }else{
+                    Toast.show({
+                        type:'error',
+                        text1:'Message!',
+                        text2:'You have no items on your cart.'
+                    })
+                    setState({isLoading:false})
+                }
+  
+            }else{
+                
+                setState({isLoading:false})
+            }
+                        
+        }else{
+            //  No internet Connection
+            Toast.show({
+                type:'error',
+                text1:'No internet Connection!'
+            })
+               
+            setState({isLoading:false})
+  
+        }
+    });
+
+}
 
 
 

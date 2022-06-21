@@ -1,5 +1,5 @@
 import React from 'react';
-import { View,Text,FlatList} from 'react-native';
+import { View,Text,FlatList,BackHandler} from 'react-native';
 import constants from '../../../constants';
 import {styles} from './styles'
 import Components from '../../../components';
@@ -24,10 +24,44 @@ export default class Checkout extends React.Component {
     setMyState = (value)=>this.setState(value);
 
     componentDidMount(){
-        
+
+       
+        // BackHandler.addEventListener("hardwareBackPress", ()=>{
+        //     this.state.parameters.handleUpdateCart(this.state.cart);
+        //     this.props.navigation.goBack()
+        // })
+
+
         this.setState({cartTotalAmount:  Number(this.state.cart.reduce((prev, current) => prev + parseFloat(current.totalAmount), 0)).toFixed(2)});    
     }
 
+    changeCart = (commodityInfo)=>{
+
+
+      console.warn('COMMODITY INFO',commodityInfo)
+        
+        this.setState((prevState)=>({
+
+            cart: prevState.cart.map((commodity,index)=>
+                        commodityInfo.index == index ? {
+                                ...commodity,                
+                                sub_id: commodityInfo.sub_id,
+                                image: commodityInfo.image,
+                                name: commodityInfo.name,
+                                unitMeasurement:commodityInfo.unitMeasurement,
+                                totalAmount:commodityInfo.totalAmount,
+                                quantity: commodityInfo.quantity,
+                                category: commodityInfo.category,
+                                subCategory: commodityInfo.subCategory,                            
+                                cashAdded: commodityInfo.cashAdded,                            
+                            }
+                            : commodity                            
+                        )
+        }));
+        
+        this.setState({cartTotalAmount:  Number(this.state.cart.reduce((prev, current) => prev + parseFloat(current.totalAmount), 0)).toFixed(2)});    
+
+    }
 
     handleRemoveItem = (index)=>{
           let newCart = this.state.cart;
@@ -35,13 +69,36 @@ export default class Checkout extends React.Component {
           // remove delete 
           newCart.splice(index, index + 1);
 
-          this.setState({newCart:newCart,cartTotalAmount:  Number(newCart.reduce((prev, current) => prev + parseFloat(current.totalAmount), 0)).toFixed(2)})
+        
+
+
+          this.setState({cartTotalAmount:  Number(this.state.cart.reduce((prev, current) => prev + parseFloat(current.totalAmount), 0)).toFixed(2)})
 
           if(newCart.length  == 0){
             this.state.parameters.handleUpdateCart(newCart);
             this.props.navigation.goBack();
           }
     }
+
+    goToEditCommodityDetails = (item,index)=>{
+        
+        item.index = index;
+
+        let parameters = {           
+            commodityInfo:item,
+            voucherInfo:this.state.voucherInfo,
+            cart:this.state.cart,                        
+            cartTotalAmount:parseFloat(this.state.cart.reduce((prev, current,currentIndex) =>  prev +   (currentIndex != index ? parseFloat(current.totalAmount)  -  parseFloat(current.cashAdded) : 0 ) , 0)),                          
+            changeCart:this.changeCart     
+        };
+        
+        
+        
+
+        this.props.navigation.navigate(constants.ScreenNames.TRANSACTION_STACK.EDIT_COMMODITY_DETAILS,parameters);        
+    }
+
+
 
 
     renderItem = (item,index) =>{
@@ -58,9 +115,12 @@ export default class Checkout extends React.Component {
             quantity={item.quantity}     
             unitMeasurement={unitMeasurement}
             totalAmount={item.totalAmount}     
+            cashAdded={item.cashAdded}     
             showRemoveButton
+            showEditButton
             showCommodityInfo
             onRemove={()=>this.handleRemoveItem(index)}  
+            onEdit={()=>this.goToEditCommodityDetails(item,index)}
         />
     )}
     
@@ -94,8 +154,11 @@ export default class Checkout extends React.Component {
                 <Components.ProgressModal
                     showProgress={this.state.isLoading}    
                     title={"Loading..."}                
-                />
+                />  
 
+                <View style={{ left:constants.Dimensions.vw(2) }}>  
+                    <Text>{this.state.cart.length} Items</Text>
+                </View>
 
                 <FlatList
                     data={this.state.cart}
