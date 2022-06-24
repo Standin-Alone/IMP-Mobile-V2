@@ -3,7 +3,8 @@ import { View,Text,FlatList} from 'react-native';
 import constants from '../../../constants';
 import {styles} from './styles'
 import Components from '../../../components';
-import { checkout } from '../../../actions/transaction';
+import { updateCart } from '../../../actions/transaction';
+import { GET_SESSION } from '../../../utils/async_storage';
 
 export default class EditCart extends React.Component {
     constructor(props) {
@@ -51,12 +52,29 @@ export default class EditCart extends React.Component {
     changeCart = (commodityInfo)=>{
 
 
-        let newCart = [...this.state.cart];
+       
 
-        // newCart.map((commodity)=>{
-        //     if(commodity.voucher_details_id == commodity)
-        // })
-        console.warn('NEW COIMMODITY INFO',commodityInfo)
+        console.warn('commodity INfo',commodityInfo.voucher_details_id);
+    
+        this.setState({cart:this.state.cart.map((item)=>{
+            if(item.voucher_details_id == commodityInfo.voucher_details_id){
+                return  {
+                    sub_id:commodityInfo.sub_id,
+                    commodityBase64:commodityInfo.image,
+                    voucher_details_id:commodityInfo.voucher_details_id,
+                    item_name:commodityInfo.name,
+                    total_amount:parseFloat(commodityInfo.totalAmount),
+                    unit_type_id:commodityInfo.unitMeasurement,
+                    unit_type:commodityInfo.unitMeasurement,
+                    quantity:parseFloat(commodityInfo.quantity),
+                    item_category:commodityInfo.category,
+                    item_sub_category:commodityInfo.subCategory,
+                    cash_added:parseFloat(commodityInfo.cashAdded),
+                }
+            }else{
+                return item
+            }
+        })})
 
 
     }
@@ -68,11 +86,11 @@ export default class EditCart extends React.Component {
             commodityInfo:item,
             voucherInfo:this.state.voucherInfo,
             cart:this.state.cart,                        
-            cartTotalAmount:parseFloat(this.state.voucherInfo.commodities.reduce((prev, current) =>  prev + (current.voucher_details_id != item.voucher_details_id ?  parseFloat(parseFloat(current.total_amount) +  parseFloat(current.cash_added)  ) : 0), 0)),
+            cartTotalAmount:parseFloat(this.state.voucherInfo.commodities.reduce((prev, current) =>  prev + (current.voucher_details_id != item.voucher_details_id ?  parseFloat(parseFloat(current.total_amount) ) : 0), 0)),
             refreshInfo:this.refreshInfo,   
             changeCart:this.changeCart         
         };
-        
+
         
         this.props.navigation.navigate(constants.ScreenNames.HOME_STACK.EDIT_COMMODITY_DETAILS,parameters);        
     }
@@ -80,9 +98,9 @@ export default class EditCart extends React.Component {
 
     renderItem = (item,index) =>{
         
-        let categoryName = item.item_category;
-        let unitMeasurement = this.state.voucherInfo.unit_measurements.filter((info)=>item.unit_type == info.label)[0]?.label;
-
+        
+        let categoryName = this.state.voucherInfo.fertilizer_categories.filter((info)=>info.label === item.item_category  ? (info.label === item.item_category) : (info.value == item.item_category))[0]?.label;
+        let unitMeasurement = this.state.voucherInfo.unit_measurements.filter((info)=>item.unit_type == info.label || item.unit_type == info.value)[0]?.label;
         
         return (
         <Components.CommodityCard
@@ -92,6 +110,7 @@ export default class EditCart extends React.Component {
             subCategory={item.subCategory} 
             quantity={item.quantity}     
             unitMeasurement={unitMeasurement}
+            cashAdded={item.cash_added}     
             totalAmount={parseFloat(item.total_amount) + parseFloat(item.cash_added)}     
             showRemoveButton
             showCommodityInfo
@@ -102,17 +121,17 @@ export default class EditCart extends React.Component {
     )}
     
 
-    handleCheckout = ()=>{
-
+    handleUpdateCart = async()=>{
+        
         let parameters = {           
             voucherInfo:this.state.voucherInfo,
             cart:this.state.cart,  
-            timer:this.state.timer,            
+            supplierId: await GET_SESSION('USER_ID'),
+            supplierName: await GET_SESSION('FULL_NAME')
         }
 
-        
-        
-
+        console.warn('MY CART',this.state.cart);
+        updateCart(parameters,this.setMyState,this.props)
     }
 
 
@@ -165,7 +184,7 @@ export default class EditCart extends React.Component {
                     </View>
                     <View style={{ left: constants.Dimensions.vh(4),bottom:constants.Dimensions.vh(2) }}>
                         <Components.PrimaryButton  
-                            onPress={this.handleCheckout}                      
+                            onPress={this.handleUpdateCart}                      
                             title={`Save`}                                
                             isLoading={this.state.isLoading}                                                        
                         />

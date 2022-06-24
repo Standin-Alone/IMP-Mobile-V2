@@ -78,6 +78,23 @@ export default class UploadAttachments extends React.Component {
 
     }
 
+    removeImage = (delete_index)=>{
+
+        
+        let new_data = this.state.attachments;
+
+        new_data.map((item_result)=>{
+          if(item_result.name == 'Other Documents'){
+            // remove file of other documents
+            
+            item_result.file.splice(delete_index, 1);
+          }
+        });
+
+        this.setState({attachments:new_data})
+    }
+
+
     renderItem = ({item,index})=>{
         return( 
             item.name == 'Other Documents' ?   
@@ -105,6 +122,8 @@ export default class UploadAttachments extends React.Component {
                                         image={image}
                                         onChangeImage={()=>this.openUploadSelection(item.name)}
                                         onViewImage={()=>this.showImage(item.file)}
+                                        showRemoveButton
+                                        onRemove={()=>this.removeImage(index)}
                                     />
                              
                                 </View>

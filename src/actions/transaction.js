@@ -219,7 +219,7 @@ export const addToCart = (payload,setState,props) => {
 
 
 
-export const editCart = (payload,setState,props) => {     
+export const editCart = (payload,setState,props,state) => {     
  
 
     // Check Internet Connection
@@ -235,7 +235,7 @@ export const editCart = (payload,setState,props) => {
            
             Object.keys(payload).map((item,index)=>{                         
                                 
-                if((item != 'subCategory' && item != 'cashAdded'  && item != 'subCategories' )   ){          
+                if((item != 'subCategory' && item != 'cashAdded'  && item != 'subCategories'  && item != 'remainingBalance' )   ){          
                     
                     if((payload[item] == '' || payload[item] === null)  || payload[item] === undefined  ||  payload[item] == 0 ){                        
                         // console.warn(item)
@@ -259,12 +259,25 @@ export const editCart = (payload,setState,props) => {
             
 
             })          
+
+
                 
-            // console.warn(payload);
-            
+            console.warn(countError);
+            console.warn(payload.remainingBalance);
+
             if(countError == 0){
-                props.route.params.changeCart(payload);
-                props.navigation.goBack();
+                
+                if(payload.remainingBalance > 0){
+                    Toast.show({
+                        type:'error',
+                        text1:'Message!',
+                        text2:'Please consume the remaining balance.'
+                    })
+                }else{
+                    props.route.params.changeCart(payload);
+                    props.navigation.goBack();
+                }
+                
             }
             
 
@@ -483,9 +496,41 @@ export const goToEditAttachments = (payload,setState,props) => {
 
             //Check if the mobile app is latest.
             if(checkVersion.status){
+                
+                POST(`${getBaseUrl().accesspoint}${constants.EndPoints.CHECK_IN_BATCH}`,payload).then((response)=>{  
+                    
+                    
+
+                    if(response.data.status == true){
+                        
+                                                        
+                        props.navigation.navigate(constants.ScreenNames.HOME_STACK.EDIT_UPLOAD_ATTACHMENTS,payload)
+                        
+                        
+                    }else{
+
+                        //  No internet Connection
+                        Toast.show({
+                            type:'error',
+                            text1:'Message',
+                            text2: response.data.message
+                        })
+                        
+                    }
+                    
+                }).catch((error)=>{
+                    console.warn(error.response)
+                     //  No internet Connection
+                    Toast.show({
+                        type:'error',
+                        text1:'error!',
+                        text2:error.response
+                    })
+                    
+                });
+
 
                 
-  
             }else{
                 
                 setState({isLoading:false})
@@ -574,7 +619,8 @@ export const checkout = (payload,setState,props) => {
 
 
 export const openUploadSelection = (payload,setState) => {     
-    setState({showSelection:true,documentName:payload.documentName});  
+    // console.warn(payload);
+    setState({showSelection:true,documentName:payload.documentName,otherAttachmentId:payload.otherAttachmentId,type:payload.type});  
 }
 
 export const openCamera = (payload,setState)=>{
@@ -691,6 +737,142 @@ export const openCamera = (payload,setState)=>{
 
 
 
+// VIEW TRANSACTION SCREEN
+export const openCameraInEdit = (payload,setState)=>{
+    
+    setState({showProgress:true,loadingTitle:'Opening the camera'});
+    // Check Internet Connection
+    NetInfo.fetch().then(async(state)=>{
+            
+        // if internet connected
+        if(state.isConnected && state.isInternetReachable){
+            let checkVersion = await checkAppVersion();
+            
+  
+            //Check if the mobile app is latest.
+            if(checkVersion.status){
+                
+                let checkLocation =    await getLocation();
+             
+                //Check if location was turn on
+                if(checkLocation){
+                
+                    let openUpCamera = await launchCamera({
+                        mediaType: 'photo',
+                        includeBase64: true, 
+                        quality:0.5                   
+                    });
+                      
+
+                    // camera function
+                    if (!openUpCamera.didCancel) {
+
+                        
+                        let {assets} = openUpCamera;
+
+                        assets.map(async(cameraResponse)=>{
+                            
+                            // set latitude longitude
+                            setState({latitude:checkLocation.latitude,longitude:checkLocation.longitude,loadingTitle:'Loading'})
+                            
+                            // check if image is jpeg format
+                            if(cameraResponse.type == 'image/jpeg' || cameraResponse.type == 'image/jpg') {
+                                // rotate image
+                                let rotatedImage = await rotateImage(cameraResponse.base64);
+                                // get geo tag
+                                let base64_uri_exif = await geotagging(rotatedImage,checkLocation);
+
+                                payload.attachments.map((item, index) => {                
+                                    if (payload.documentName == 'Other Documents' && item.name == 'Other Documents') {
+                    
+                                        
+                                        let attachmentState = [...payload.attachments];
+                                        let addedAttachmentsState = [...payload.addedAttachments];
+
+                                        console.warn(payload.attachments );
+                                        let attachment_id_temp =   Math.random().toFixed(13).substr(`-13`);
+
+                                        item.file.some((other_doc_item,fileIndex)=>{
+                                            
+                                            if(other_doc_item?.attachment_id == payload.otherAttachmentId ) {
+
+                                                console.warn('TRUE')
+                                                other_doc_item.file = base64_uri_exif;                                                
+                                                
+                                            }                                                                                                                                        
+                                        })
+
+                                        // add new attachment in added attachment state
+                                        if(payload.type == 'add'){
+                                            attachmentState[index].file.push({attachment_id:attachment_id_temp,file:base64_uri_exif});                                                
+                                            addedAttachmentsState.push({file:base64_uri_exif,name:item.name});
+                                        }
+                                        
+                                        
+
+                                        setState({attachments:attachmentState,addedAttachments:addedAttachmentsState})
+
+                                    }else if (payload.documentName == item.name) {
+                    
+                                        
+                                        let attachmentState = [...payload.attachments];
+                                        attachmentState[index].file = base64_uri_exif;
+                                        
+                                        setState({attachments:attachmentState})
+                                    } else if (payload.documentName == item.name + "(front)") {
+                                        //set file of front page of id
+                                        let attachmentState = [...payload.attachments];
+                                        attachmentState[index].file[0].front = base64_uri_exif;
+                                        
+                                        setState({attachments:attachmentState})
+                                    } else if (payload.documentName == item.name + "(back)") {
+                                        // set file of back page of id
+                                        let attachmentState = [...payload.attachments];
+                                        attachmentState[index].file[0].back = base64_uri_exif;                
+                                        setState({attachments:attachmentState})
+                                    }
+                                });
+
+                                setState({showProgress:false,showSelection:false,otherAttachmentId:''});
+                            }else{
+                                
+                                Toast.show({
+                                    type:'error',
+                                    text1:'Warning!',
+                                    text1:'Your captured image is not in jpeg format'
+                                })                        
+                                setState({showProgress:false,loadingTitle:'Loading',showSelection:false,otherAttachmentId:''});
+                            }
+
+                        })
+                       
+                    }else{
+                        setState({showProgress:false,loadingTitle:'Loading',showSelection:false,otherAttachmentId:''});
+                    }
+
+                }else{
+                    Toast.show({
+                        type:'error',
+                        text1:'Message!',
+                        text1:'Please open your location services.'
+                    })  
+                    setState({showProgress:false,loadingTitle:'Loading',showSelection:false,otherAttachmentId:''});
+                }
+            }
+                        
+        }else{
+            //  No internet Connection
+            Toast.show({
+                type:'error',
+                text1:'No internet Connection!'
+            })
+  
+            setState({showProgress:false,loadingTitle:'Loading',showSelection:false,otherAttachmentId:''});
+        }
+    });
+}
+
+
 export const openGallery = (payload,setState)=>{
     
     setState({showProgress:true,loadingTitle:'Opening the gallery'});
@@ -803,7 +985,140 @@ export const openGallery = (payload,setState)=>{
     });
 }
 
+// VIEW TRANSACTION
+export const openGalleryInEdit = (payload,setState)=>{
+    
+    setState({showProgress:true,loadingTitle:'Opening the gallery'});
+    // Check Internet Connection
+    NetInfo.fetch().then(async(state)=>{
+            
+        // if internet connected
+        if(state.isConnected && state.isInternetReachable){
+            let checkVersion = await checkAppVersion();
+            
+  
+            //Check if the mobile app is latest.
+            if(checkVersion.status){
+                
+                let checkLocation =    await getLocation();
+             
+                //Check if location was turn on
+                if(checkLocation){
+                
+                    let openUpCamera = await launchImageLibrary({
+                        mediaType: 'photo',
+                        includeBase64: true, 
+                        quality:0.5                   
+                    });
+                      
 
+                    // camera function
+                    if (!openUpCamera.didCancel) {
+
+                        
+                        let {assets} = openUpCamera;
+
+                        assets.map(async(cameraResponse)=>{
+                            
+                            // set latitude longitude
+                            setState({latitude:checkLocation.latitude,longitude:checkLocation.longitude,loadingTitle:'Loading'})
+                            
+                            // check if image is jpeg format
+                            if(cameraResponse.type == 'image/jpeg' || cameraResponse.type == 'image/jpg') {
+                                // rotate image
+                                let rotatedImage = await rotateImage(cameraResponse.base64);
+                                // get geo tag
+                                let base64_uri_exif = await geotagging(rotatedImage,checkLocation);
+
+                                payload.attachments.map((item, index) => {                
+                                    if (payload.documentName == 'Other Documents' && item.name == 'Other Documents') {
+                    
+                                        
+                                         
+                                        let attachmentState = [...payload.attachments];
+                                        let addedAttachmentsState = [...payload.addedAttachments];
+
+                                        console.warn(payload.attachments );
+                                        let attachment_id_temp =   Math.random().toFixed(13).substr(`-13`);
+
+                                        item.file.some((other_doc_item,fileIndex)=>{
+                                            
+                                            if(other_doc_item?.attachment_id == payload.otherAttachmentId ) {
+                                                
+                                                other_doc_item.file = base64_uri_exif;                                                
+                                                
+                                            }                                                                                                                                        
+                                        })
+
+                                      
+                                        // add new attachment in added attachment state
+                                        if(payload.type == 'add'){
+                                            attachmentState[index].file.push({attachment_id:attachment_id_temp,file:base64_uri_exif});                                                
+                                            addedAttachmentsState.push({file:base64_uri_exif,name:item.name});
+                                        }
+                                        
+                                                                                
+                                        
+                                        setState({attachments:attachmentState,addedAttachments:addedAttachmentsState})
+                                    }else if (payload.documentName == item.name) {
+                    
+                                        
+                                        let attachmentState = [...payload.attachments];
+                                        attachmentState[index].file = base64_uri_exif;
+                                        
+                                        setState({attachments:attachmentState})
+                                    } else if (payload.documentName == item.name + "(front)") {
+                                        //set file of front page of id
+                                        let attachmentState = [...payload.attachments];
+                                        attachmentState[index].file[0].front = base64_uri_exif;
+                                        
+                                        setState({attachments:attachmentState})
+                                    } else if (payload.documentName == item.name + "(back)") {
+                                        // set file of back page of id
+                                        let attachmentState = [...payload.attachments];
+                                        attachmentState[index].file[0].back = base64_uri_exif;                
+                                        setState({attachments:attachmentState})
+                                    }
+                                });
+
+                                setState({showProgress:false,showSelection:false,otherAttachmentId:''});
+                            }else{
+                                
+                                Toast.show({
+                                    type:'error',
+                                    text1:'Warning!',
+                                    text1:'Your captured image is not in jpeg format'
+                                })                        
+                                setState({showProgress:false,loadingTitle:'Loading',showSelection:false,otherAttachmentId:''});
+                            }
+
+                        })
+                       
+                    }else{
+                        setState({showProgress:false,loadingTitle:'Loading',showSelection:false,otherAttachmentId:''});
+                    }
+
+                }else{
+                    Toast.show({
+                        type:'error',
+                        text1:'Message!',
+                        text1:'Please open your location services.'
+                    })  
+                    setState({showProgress:false,loadingTitle:'Loading',showSelection:false,otherAttachmentId:''});
+                }
+            }
+                        
+        }else{
+            //  No internet Connection
+            Toast.show({
+                type:'error',
+                text1:'No internet Connection!'
+            })
+  
+            setState({showProgress:false,loadingTitle:'Loading',showSelection:false,otherAttachmentId:''});
+        }
+    });
+}
 export const goToReviewTransaction = (payload,setState,props) => {     
     setState({showProgress:true});
 
@@ -981,6 +1296,136 @@ export const transact = (payload,setState,props) => {
             setState({showConfirm:false,showProgress:false});
   
         }
+    });
+
+}
+
+
+
+
+export const updateAttachments = (payload,setState,props)=>{
+    setState({isLoading:true});
+
+    // Check Internet Connection
+    NetInfo.fetch().then((state)=>{
+
+         // if internet connected
+         if(state.isConnected && state.isInternetReachable){
+            
+            // POST REQUEST
+            POST(`${getBaseUrl().accesspoint}${constants.EndPoints.UPDATE_ATTACHMENTS}`,payload).then((response)=>{       
+                
+                if(response.data.status == true){
+
+                    Toast.show({
+                            type:'success',
+                            text1:'Success',                    
+                            text2: response.data.message
+                    });                                                                                                    
+
+                    props.route.params.updateAttachmentList( response.data.updatedAttachments);
+                    props.navigation.goBack();
+                    return true;
+                }else{
+                    Toast.show({
+                        type:'error',
+                        text1:'Message',  
+                        text2: response.data.errorMessage
+                    });
+
+                }
+
+                // turn off loading
+                setState({isLoading:false});
+            }).catch((error)=>{
+                    
+                console.warn(error);
+                Toast.show({
+                    type:'error',
+                    text1:'Something went wrong!',                     
+                    text2:error.response
+                });
+                
+                // turn off loading
+                setState({isLoading:false});
+            });
+
+
+         }else{
+             //  No internet Connection
+            Toast.show({
+                type:'error',
+                text1:'No internet Connection!'
+            })
+             // turn off loading
+            setState({isLoading:false});
+         }
+    });
+
+}
+
+
+
+
+
+
+export const updateCart = (payload,setState,props)=>{
+    setState({isLoading:true});
+    
+    // Check Internet Connection
+    NetInfo.fetch().then((state)=>{
+     
+         // if internet connected
+         if(state.isConnected && state.isInternetReachable){
+            
+            // POST REQUEST
+            POST(`${getBaseUrl().accesspoint}${constants.EndPoints.UPDATE_CART}`,payload).then((response)=>{       
+                console.warn('RESPONSE',response.data);
+                if(response.data.status == true){
+
+                    Toast.show({
+                            type:'success',
+                            text1:'Success',                    
+                            text2: response.data.message
+                    });                                                                                                    
+
+                    
+                    props.navigation.goBack();
+
+                }else{
+                    Toast.show({
+                        type:'error',
+                        text1:'Message',  
+                        text2: response.data.errorMessage
+                    });
+
+                }
+
+                // turn off loading
+                setState({isLoading:false});
+            }).catch((error)=>{
+                    
+                console.warn(error.response);
+                Toast.show({
+                    type:'error',
+                    text1:'Something went wrong!',                     
+                    text2:error.response
+                });
+                
+                // turn off loading
+                setState({isLoading:false});
+            });
+
+
+         }else{
+             //  No internet Connection
+            Toast.show({
+                type:'error',
+                text1:'No internet Connection!'
+            })
+             // turn off loading
+            setState({isLoading:false});
+         }
     });
 
 }

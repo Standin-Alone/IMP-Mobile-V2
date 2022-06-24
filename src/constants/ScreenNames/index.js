@@ -32,7 +32,8 @@ const ScreenNames = {
         VIEW_TRANSACTION:'ViewTransaction',
         SEARCH_VOUCHER:'SearchVoucher',
         EDIT_COMMODITY_DETAILS:'EditCommodityDetails',
-        EDIT_CART:'EditCart'
+        EDIT_CART:'EditCart',
+        EDIT_UPLOAD_ATTACHMENTS:'EditUploadAttachments',
         
     }
 

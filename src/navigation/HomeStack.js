@@ -6,6 +6,7 @@ import ViewTransaction from '../screens/Home/ViewTransaction';
 import SearchVoucher from '../screens/Home/SearchVoucher';
 import EditCommodityDetails from '../screens/Home/EditCommodityDetails';
 import EditCart from '../screens/Home/EditCart';
+import EditUploadAttachments from '../screens/Home/EditUploadAttachments';
 const HomeStack = createStackNavigator();
 
 export const HomeStackComponent= (props) => {
@@ -49,6 +50,12 @@ export const HomeStackComponent= (props) => {
             <HomeStack.Screen
                 component={EditCart}
                 name={constants.ScreenNames.HOME_STACK.EDIT_CART}
+                options={{cardStyleInterpolator:CardStyleInterpolators.forHorizontalIOS}}                
+            />  
+
+            <HomeStack.Screen
+                component={EditUploadAttachments}
+                name={constants.ScreenNames.HOME_STACK.EDIT_UPLOAD_ATTACHMENTS}
                 options={{cardStyleInterpolator:CardStyleInterpolators.forHorizontalIOS}}                
             />  
 

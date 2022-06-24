@@ -20,12 +20,12 @@ export default class EditCommodityDetails extends React.Component {
           cart:this.props.route.params.cart,
           subCategories:[],
           subTotalAmount:parseFloat(this.props.route.params.commodityInfo.total_amount) + parseFloat(this.props.route.params.commodityInfo.cash_added),
-          cashAdded:this.props.route.params.commodityInfo.cash_added,
+          cashAdded:this.props.route.params.cart.reduce((prev, current) =>  prev + parseFloat(current.cash_added)),
           totalAmount:{
             focus:false,
             error:false,
             errorMessage:'',
-            value:parseFloat(this.props.route.params.commodityInfo.total_amount) + parseFloat(this.props.route.params.commodityInfo.cash_added),
+            value: parseFloat(this.props.route.params.commodityInfo.total_amount) + parseFloat(this.props.route.params.commodityInfo.cash_added)  ,
             isAmountExceed:false
           },  
           quantity:{
@@ -45,13 +45,13 @@ export default class EditCommodityDetails extends React.Component {
             focus:false,
             error:false,
             errorMessage:'',
-            value:this.props.route.params.commodityInfo.fertilizer_category_id,        
+            value:this.props.route.params.commodityInfo.fertilizer_category_id ? this.props.route.params.commodityInfo.fertilizer_category_id : this.props.route.params.commodityInfo.item_category  ,        
           },  
           subCategory:{
             focus:false,
             error:false,
             errorMessage:'',
-            value:this.props.route.params.commodityInfo.item_sub_category,        
+            value:this.props.route.params.commodityInfo.item_sub_category ?  this.props.route.params.commodityInfo.item_sub_category : this.props.route.params.commodityInfo.item_sub_category  ,        
           },  
           
           subCategories:[]
@@ -62,7 +62,8 @@ export default class EditCommodityDetails extends React.Component {
     
     componentDidMount(){
 
-        console.warn(this.state.parameters.cartTotalAmount)                
+   
+        console.warn(this.state.cart.reduce((prev, current) =>prev + current.cash_added))
         
     }
 
@@ -77,7 +78,7 @@ export default class EditCommodityDetails extends React.Component {
 
     handleEditCommodity = (commodity)=>{
         // console.warn((this.state.voucherInfo.current_balance - this.state.parameters.cartTotalAmount) - this.state.totalAmount.value)
-        
+        console.warn('VOUCHER_DETAILS_ID',commodity?.voucher_details_id);
         
         let parameter = {
             voucher_details_id:commodity?.voucher_details_id,
@@ -90,13 +91,14 @@ export default class EditCommodityDetails extends React.Component {
             quantity: this.state.quantity.value,                        
             category: this.state.category.value,
             subCategory: this.state.subCategory.value,            
-            cashAdded: (this.state.voucherInfo.default_balance - this.state.parameters.cartTotalAmount) -  this.state.totalAmount.value < 0 ?  this.state.totalAmount.value - (this.state.voucherInfo.default_balance - this.state.parameters.cartTotalAmount) : 0
+            cashAdded: (this.state.voucherInfo.default_balance - this.state.parameters.cartTotalAmount) -  this.state.totalAmount.value < 0 ?  this.state.totalAmount.value - (this.state.voucherInfo.default_balance - this.state.parameters.cartTotalAmount) : 0,
+            remainingBalance:(parseFloat(this.state.voucherInfo.default_balance) - parseFloat(this.state.parameters.cartTotalAmount)) - parseFloat(this.state.totalAmount.value) <= 0 ? 0 : (parseFloat(this.state.voucherInfo.default_balance) - parseFloat(this.state.parameters.cartTotalAmount)) - parseFloat(this.state.totalAmount.value) 
         }
         
 
         
         
-        return editCart(parameter,this.setMyState,this.props)
+        return editCart(parameter,this.setMyState,this.props,this.state)
     }
 
     handleChangeCategory = (value)=>{                           
@@ -240,13 +242,14 @@ export default class EditCommodityDetails extends React.Component {
                         <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
                             <Text style={styles.detailsLabel}>Remaining balance</Text>
                             {/* <Components.AmountText  amountStyle={styles.remainingBalance} value={this.state.subTotalAmount - this.state.totalAmount.value <= 0 ? 0 : (parseFloat(this.state.subTotalAmount) -  parseFloat(this.state.cashAdded)) - this.state.totalAmount.value }/>                                     */}
-                            <Components.AmountText  amountStyle={styles.remainingBalance} value={(parseFloat(this.state.voucherInfo.default_balance) - parseFloat(this.state.parameters.cartTotalAmount)) - parseFloat(this.state.totalAmount.value) < 0 ? 0 : (parseFloat(this.state.voucherInfo.default_balance) - parseFloat(this.state.parameters.cartTotalAmount)) - parseFloat(this.state.totalAmount.value) }/> 
+                            
+                            <Components.AmountText  amountStyle={styles.remainingBalance} value={(parseFloat(this.state.voucherInfo.default_balance) - parseFloat(this.state.parameters.cartTotalAmount)) - parseFloat(this.state.totalAmount.value) <= 0 ? 0 :((parseFloat(this.state.voucherInfo.default_balance) - parseFloat(this.state.parameters.cartTotalAmount)) - parseFloat(this.state.totalAmount.value) )  - parseFloat(this.state.cashAdded)}/> 
                         </View>
 
 
                         <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
-                            <Text style={styles.detailsLabel}>Cash Added</Text>
-                            <Components.AmountText  amountStyle={styles.cashAdded} value={(this.state.voucherInfo.default_balance - this.state.parameters.cartTotalAmount) -  this.state.totalAmount.value < 0 ?  this.state.totalAmount.value - (this.state.voucherInfo.default_balance - this.state.parameters.cartTotalAmount) : 0}/>                                    
+                            <Text style={styles.detailsLabel}>Cash Added</Text>                                                  
+                            <Components.AmountText  amountStyle={styles.cashAdded} value={(parseFloat(this.state.voucherInfo.default_balance) - parseFloat(this.state.parameters.cartTotalAmount)) -  parseFloat(this.state.totalAmount.value) <= 0 ?  parseFloat(this.state.totalAmount.value) - (parseFloat(this.state.voucherInfo.default_balance) - parseFloat(this.state.parameters.cartTotalAmount)) : 0}/>                                    
                         </View>
                     </View>
                 </View>

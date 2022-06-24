@@ -3,36 +3,45 @@ import { View,Text,FlatList} from 'react-native';
 import constants from '../../../constants';
 import {styles} from './styles'
 import Components from '../../../components';
-import { goToReviewTransaction, openUploadSelection,openCamera, openGallery } from '../../../actions/transaction';
+import { updateAttachments, openUploadSelection,openCameraInEdit, openGalleryInEdit } from '../../../actions/transaction';
 
-export default class UploadAttachments extends React.Component {
+export default class EditUploadAttachments extends React.Component {
     constructor(props) {
       super(props);
       this.state = {        
           parameters:this.props.route.params,
-          voucherInfo:this.props.route.params.voucherInfo,
-          cart:this.props.route.params.cart,   
-          timer:this.props.route.params.timer,      
+          voucherInfo:this.props.route.params.voucherInfo,          
           showImage:false,  
           showProgress:false,              
           imageUri:'',      
           loadingTitle:'',
+          otherAttachmentId:'',
+          addedAttachments:[],
+          deletedAttachments:[],
+          type:'',
           attachments:[
-            {
+            {   
+              attachment_id:this.props.route.params.voucherInfo.base64.filter((item)=>item.name == 'Beneficiary with Commodity')[0].attachment_id,
               name: "Beneficiary with Commodity",
-              file: null,
+              file: this.props.route.params.voucherInfo.base64.filter((item)=>item.name == 'Beneficiary with Commodity')[0].image,
             },
-            {
+            {   
               name: "Valid ID",
-              file: [{ front: null, back: null }],
+              file: [{ 
+                  front_attachment_id: this.props.route.params.voucherInfo.base64.filter((item)=>item.name == 'Valid ID')[0].attachment_id,
+                  front: this.props.route.params.voucherInfo.base64.filter((item)=>item.name == 'Valid ID')[0].image,
+                  back_attachment_id: this.props.route.params.voucherInfo.base64.filter((item)=>item.name == 'Valid ID')[1].attachment_id,
+                  back: this.props.route.params.voucherInfo.base64.filter((item)=>item.name == 'Valid ID')[1].image 
+                }],
             },
-            {
+            {   
+              attachment_id:this.props.route.params.voucherInfo.base64.filter((item)=>item.name == 'Receipt')[0].attachment_id,
               name: "Receipt",
-              file: null,
+              file: this.props.route.params.voucherInfo.base64.filter((item)=>item.name == 'Receipt')[0].image,
             },
             {
               name: "Other Documents",
-              file: [],
+              file: this.props.route.params.voucherInfo.base64.map((item)=> item.name == 'Other Documents' && ({attachment_id:item.attachment_id,file:item.image})).filter((item)=>item),
             },                    
           ],
           showSelection:false,
@@ -45,37 +54,68 @@ export default class UploadAttachments extends React.Component {
 
     setMyState = (value)=>this.setState(value);
 
+    componentDidMount(){
+        
+    }
 
-    openUploadSelection = (documentName)=>{
+    openUploadSelection = (documentName,otherDocumentId,type)=>{
         
         let parameter = {
             documentName:documentName,
-            attachments:this.state.attachments
+            attachments:this.state.attachments,
+            otherAttachmentId: otherDocumentId,
+            type:type
         }
+
+        
         return openUploadSelection(parameter,this.setMyState);        
     }
 
 
     showImage = (image)=>{
+
+        
         this.setState({showImage:true,imageUri:image})
     }
 
+    // EXECUTE UPDATE ATTACHMENTS
+    handleUpdateAttachments = ()=>{
 
-    handleReviewTransaction = ()=>{
-
-        let parameters = {           
-            voucherInfo:this.state.voucherInfo,
-            cart:this.state.cart,            
-            attachments:this.state.attachments,
-            timer:this.state.timer,
-            latitude:this.state.latitude,
-            longitude:this.state.longitude
+        let parameters = {                       
+            attachments:this.state.attachments,       
+            addedAttachments:this.state.addedAttachments,            
+            deletedAttachments:this.state.deletedAttachments,       
+            voucherInfo:this.state.voucherInfo,            
         }   
 
-      
+        
+        return updateAttachments(parameters,this.setMyState,this.props)
+    }
 
-        return goToReviewTransaction(parameters,this.setMyState,this.props)
+    removeImage = (delete_index,attachmentId)=>{
 
+        
+        let new_data = this.state.attachments;
+        let addedAttachments = this.state.addedAttachments;
+
+        new_data.map((item_result)=>{
+          if(item_result.name == 'Other Documents'){
+            // remove file of other documents
+            
+            this.setState({deletedAttachments:[...this.state.deletedAttachments,item_result.file[delete_index].attachment_id]});
+
+            item_result.file.splice(delete_index, 1);
+          }
+        });
+
+        addedAttachments.map((item_result,index)=>{
+            if(item_result.attachment_id == attachmentId){
+                addedAttachments.splice(index,1)   
+            }
+        })
+
+       
+        this.setState({attachments:new_data,addedAttachments:addedAttachments})
     }
 
     renderItem = ({item,index})=>{
@@ -89,7 +129,7 @@ export default class UploadAttachments extends React.Component {
                                 iconName={"camera-plus"}
                                 iconColor={constants.Colors.primary}
                                 iconSize= {40}
-                                onPress={()=>this.openUploadSelection(item.name)}
+                                onPress={()=>this.openUploadSelection(item.name,'','add')}
                                 title={"Press to add photo."}
                             />
                             <View style={{ left:constants.Dimensions.vh(5) }}>                         
@@ -102,9 +142,11 @@ export default class UploadAttachments extends React.Component {
                             <View style={{ flexDirection:'column',justifyContent:'flex-start'}}>
                                 <View style={{ left:constants.Dimensions.vh(5),marginVertical:constants.Dimensions.vh(4)}}>                                    
                                     <Components.ImageCard
-                                        image={image}
-                                        onChangeImage={()=>this.openUploadSelection(item.name)}
-                                        onViewImage={()=>this.showImage(item.file)}
+                                        image={image.file}
+                                        onChangeImage={()=>this.openUploadSelection(item.name,image.attachment_id,'update')}
+                                        onViewImage={()=>this.showImage(image.file)}
+                                        showRemoveButton
+                                        onRemove={()=>this.removeImage(index,image.attachment_id)}
                                     />
                              
                                 </View>
@@ -115,7 +157,7 @@ export default class UploadAttachments extends React.Component {
                                             iconName={"camera-plus"}
                                             iconColor={constants.Colors.primary}
                                             iconSize= {40}
-                                            onPress={()=>this.openUploadSelection(item.name)}
+                                            onPress={()=>this.openUploadSelection(item.name,'','add')}
                                             title={"Press to add photo."}
                                         />                                                                                  
                                     </View>  
@@ -220,7 +262,7 @@ export default class UploadAttachments extends React.Component {
                 <Components.PrimaryHeader                    
                         onGoBack = {()=>this.props.navigation.goBack()}
                  
-                        title={"Upload Attachments"}
+                        title={"Edit Upload Attachments"}
                         
                 />
 
@@ -229,22 +271,28 @@ export default class UploadAttachments extends React.Component {
                     onDismiss = {()=>this.setState({showSelection:false})}
                     onPressTakePhoto={()=>{
                             
-                        let parameter = {
+                        let parameter = {                            
                             documentName:this.state.documentName,
-                            attachments:this.state.attachments
+                            attachments:this.state.attachments,
+                            otherAttachmentId:this.state.otherAttachmentId,
+                            addedAttachments:this.state.addedAttachments,                            
+                            type:this.state.type
                         }
-
-                        return openCamera(parameter,this.setMyState)
+                        
+                        return openCameraInEdit(parameter,this.setMyState)
                     }}
 
                     onPressOpenGallery={()=>{
                             
                         let parameter = {
                             documentName:this.state.documentName,
-                            attachments:this.state.attachments
+                            attachments:this.state.attachments,
+                            otherAttachmentId:this.state.otherAttachmentId,
+                            addedAttachments:this.state.addedAttachments,                            
+                            type:this.state.type
                         }
 
-                        return openGallery(parameter,this.setMyState)
+                        return openGalleryInEdit(parameter,this.setMyState)
                     }}
                     
                     
@@ -269,8 +317,8 @@ export default class UploadAttachments extends React.Component {
                 
                 <View style={{position: 'absolute', left: constants.Dimensions.vh(4), right: 0, bottom: constants.Dimensions.vh(5)}}>
                     <Components.PrimaryButton  
-                        onPress={this.handleReviewTransaction}                      
-                        title={"Review Transaction"}                                
+                        onPress={this.handleUpdateAttachments}                      
+                        title={"Update Attachments"}                                
                         isLoading={this.state.isLoading}
                     />
                 </View>

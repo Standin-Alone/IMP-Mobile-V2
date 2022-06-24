@@ -131,7 +131,8 @@ export const ImageCard = ({
     image,
     onViewImage,
     onChangeImage,
-    
+    showRemoveButton,
+    onRemove
 })=>(   
     <View style={styles.imageCard}>
         <View style={styles.imageContainer}>
@@ -150,6 +151,12 @@ export const ImageCard = ({
                     <TouchableOpacity onPress={onViewImage}>
                         <constants.Icons.Ionicons name ="eye" color={constants.Colors.light}  size={40} />
                     </TouchableOpacity>
+                    {showRemoveButton &&
+                        <TouchableOpacity onPress={onRemove}>
+                        <constants.Icons.Ionicons name ="ios-remove-circle" color={constants.Colors.danger}  size={40} />
+                        </TouchableOpacity>
+
+                    }
                 </View>
             </View>                
             </FastImage>
