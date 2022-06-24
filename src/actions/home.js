@@ -51,7 +51,7 @@ export const getTransactedVouchers = (payload,setState)=>{
                 page:payload.page
             }
             
-            console.warn(cleanPayload);
+            
             // POST REQUEST
             POST(`${getBaseUrl().accesspoint}${constants.EndPoints.GET_TRANSACTED_VOUCHERS}`,cleanPayload).then((response)=>{       
                 
@@ -135,7 +135,7 @@ export const searchVoucher = (payload,setState)=>{
             // console.warn(cleanPayload);
             // POST REQUEST
             POST(`${getBaseUrl().accesspoint}${constants.EndPoints.SEARCH_VOUCHER}`,cleanPayload).then((response)=>{       
-                console.warn(response.data);
+                
                 if(response.data.status == true){
                     
 

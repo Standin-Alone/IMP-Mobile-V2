@@ -78,7 +78,7 @@ export const sendResetPasswordLink = (payload,setState,props) => {
              // validate payload
              Object.keys(payload).map((item,index)=>{                         
                 if(payload[item] !== undefined || payload[item] != '' ){  
-                    console.warn(payload[item]);
+                    
                     if(payload[item] == '' || payload[item] === undefined || payload[item] === null ){
                         setState({[item]:{...payload[item],error:true,errorMessage:`Please enter your ${item}.`}})      
                         countError++;
@@ -92,7 +92,7 @@ export const sendResetPasswordLink = (payload,setState,props) => {
                 let clean_payload = {
                     email : payload.email,                    
                 }
-                console.warn(`${getBaseUrl().accesspoint}${constants.EndPoints.SEND_RESET_PASSWORD_LINK}`)
+                
                 // POST REQUEST
                 POST(`${getBaseUrl().accesspoint}${constants.EndPoints.SEND_RESET_PASSWORD_LINK}`,clean_payload).then((response)=>{                    
                     
@@ -182,7 +182,7 @@ export const login = (payload,setState,props) => {
                     
                     if(response.data.status == true){                    
 
-                        console.warn(response.data.data);
+                        
                         let params = {
                             userId: response.data.data.user_id,
                             email:response.data.data.email,

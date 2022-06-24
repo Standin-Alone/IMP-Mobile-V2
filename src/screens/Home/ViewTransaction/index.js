@@ -19,7 +19,7 @@ export default class ViewTransaction extends React.Component {
     }
 
     componentDidMount(){
-        
+        console.warn(this.state.transactionInfo.base64);
     }
 
     
@@ -64,8 +64,17 @@ export default class ViewTransaction extends React.Component {
 
     }
 
-    showImage = (image)=>{
-        this.setState({showImage:true,imageUri:image})
+    showImage = (attachments)=>{
+
+        let getImages =[];
+        
+        attachments.map((item)=>{
+            
+            getImages.push({url:`data:image/jpeg;base64,${item.image}`})            
+
+        })
+
+        this.setState({showImage:true,imageUri:getImages})
     }
 
 
@@ -77,7 +86,7 @@ export default class ViewTransaction extends React.Component {
                 imageStyle={styles.image}
                 title={item.name}
                 buttonStyle={styles.commodityButtonImage}
-                onPress={()=>this.showImage(item.image)}
+                onPress={()=>this.showImage(this.state.transactionInfo.base64)}
             />
         )
     }
@@ -118,7 +127,7 @@ export default class ViewTransaction extends React.Component {
 
                 <Components.ImageModal
                     showImage={this.state.showImage}
-                    image={{ url: "data:image/jpeg;base64," + this.state.imageUri}}
+                    image={ this.state.imageUri}
                     onRequestClose={()=>this.setState({showImage:false})}
                 />
 

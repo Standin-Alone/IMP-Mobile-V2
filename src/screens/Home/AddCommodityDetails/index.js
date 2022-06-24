@@ -1,16 +1,13 @@
 import React from 'react';
-import { View,Text,Image, FlatList, ScrollView} from 'react-native';
+import { View,Text, ScrollView} from 'react-native';
 import constants from '../../../constants';
 import {styles} from './styles'
 import Components from '../../../components';
-import { Divider, Loader } from '../../../components/loaders';
-import { GET_SESSION } from '../../../utils/async_storage';
-import NumberFormat from 'react-number-format';
 import FastImage  from 'react-native-fast-image'
-import { editCart } from '../../../actions/transaction';
+import { addToEditCart } from '../../../actions/transaction';
 
 
-export default class EditCommodityDetails extends React.Component {
+export default class AddCommodityDetails extends React.Component {
     constructor(props) {
       super(props);
       this.state = {        
@@ -19,39 +16,37 @@ export default class EditCommodityDetails extends React.Component {
           voucherInfo:this.props.route.params.voucherInfo,
           cart:this.props.route.params.cart,
           subCategories:[],
-          subTotalAmount:parseFloat(this.props.route.params.commodityInfo.total_amount) + parseFloat(this.props.route.params.commodityInfo.cash_added),
-          cashAdded:this.props.route.params.cart.reduce((prev, current) =>  prev + parseFloat(current.cash_added)),
           totalAmount:{
             focus:false,
             error:false,
             errorMessage:'',
-            value:  !this.props.route.params.commodityInfo.isChange ? parseFloat(this.props.route.params.commodityInfo.total_amount) + parseFloat(this.props.route.params.commodityInfo.cash_added)  : parseFloat(this.props.route.params.commodityInfo.total_amount) ,
+            value:0.00,
             isAmountExceed:false
           },  
           quantity:{
             focus:false,
             error:false,
             errorMessage:'',
-            value:this.props.route.params.commodityInfo.quantity,
+            value:0.00,
             isAmountExceed:false
           },  
           unitMeasurement:{
             focus:false,
             error:false,
             errorMessage:'',
-            value:this.props.route.params.commodityInfo.unit_type_id,        
+            value:'',        
           },  
           category:{
             focus:false,
             error:false,
             errorMessage:'',
-            value:this.props.route.params.commodityInfo.fertilizer_category_id ? this.props.route.params.commodityInfo.fertilizer_category_id : this.props.route.params.commodityInfo.item_category  ,        
+            value:'',        
           },  
           subCategory:{
             focus:false,
             error:false,
             errorMessage:'',
-            value:this.props.route.params.commodityInfo.item_sub_category ?  this.props.route.params.commodityInfo.item_sub_category : this.props.route.params.commodityInfo.item_sub_category  ,        
+            value:'',        
           },  
           
           subCategories:[]
@@ -62,8 +57,9 @@ export default class EditCommodityDetails extends React.Component {
     
     componentDidMount(){
 
-   
-        console.warn(this.state.cart.reduce((prev, current) =>prev + current.cash_added))
+        
+        
+        
         
     }
 
@@ -71,20 +67,18 @@ export default class EditCommodityDetails extends React.Component {
     setMyState = (value)=>this.setState(value);
 
     handleChangeTotalAmount = (value)=>{                                              
-        
-        this.setState({totalAmount:{...this.state.totalAmount,value:value === null ? 0 : Math.abs(value) ,error:false,isAmountExceed:(value + this.state.totalAmount.value) <= this.state.voucherInfo.current_balance  ? false :true}})      
+        console.warn(value)
+        this.setState({totalAmount:{...this.state.totalAmount,value:value === null ? 0 : Math.abs(value) ,error:false,isAmountExceed:(value + this.state.totalAmount.value) <= this.state.voucherInfo.default_balance  ? false :true}})      
 
     }   
 
-    handleEditCommodity = (commodity)=>{
-        // console.warn((this.state.voucherInfo.current_balance - this.state.parameters.cartTotalAmount) - this.state.totalAmount.value)
-        console.warn('VOUCHER_DETAILS_ID',commodity?.voucher_details_id);
-        
+    handleAddToCart = (commodity)=>{
+        // console.warn((this.state.voucherInfo.default_balance - this.state.parameters.cartTotalAmount) - this.state.totalAmount.value)
+        console.warn(commodity);
         let parameter = {
-            voucher_details_id:commodity?.voucher_details_id,
             subCategories:this.state.subCategories,
             sub_id: commodity.sub_id,
-            image: commodity.commodityBase64,
+            image: commodity.base64,
             name: commodity.item_name,
             unitMeasurement: this.state.unitMeasurement.value,            
             totalAmount: Math.abs(this.state.totalAmount.value),
@@ -92,13 +86,13 @@ export default class EditCommodityDetails extends React.Component {
             category: this.state.category.value,
             subCategory: this.state.subCategory.value,            
             cashAdded: (this.state.voucherInfo.default_balance - this.state.parameters.cartTotalAmount) -  this.state.totalAmount.value < 0 ?  this.state.totalAmount.value - (this.state.voucherInfo.default_balance - this.state.parameters.cartTotalAmount) : 0,
-            remainingBalance:(parseFloat(this.state.voucherInfo.default_balance) - parseFloat(this.state.parameters.cartTotalAmount)) - parseFloat(this.state.totalAmount.value) <= 0 ? 0 : (parseFloat(this.state.voucherInfo.default_balance) - parseFloat(this.state.parameters.cartTotalAmount)) - parseFloat(this.state.totalAmount.value) 
+            isChange:true
         }
         
 
+
         
-        
-        return editCart(parameter,this.setMyState,this.props,this.state)
+        return addToEditCart(parameter,this.setMyState,this.props)
     }
 
     handleChangeCategory = (value)=>{                           
@@ -129,11 +123,19 @@ export default class EditCommodityDetails extends React.Component {
             <View style={{backgroundColor:constants.Colors.light,flex:1 }}>
                 <Components.PrimaryHeader                    
                         onGoBack = {()=>this.props.navigation.goBack()}                        
-                        title={"Edit Commodity Details"}
+                        title={"Set Commodity Details"}
                         showAddToCartButton={true}        
-                        onAddToCart={()=>this.handleEditCommodity(this.state.commodityInfo)}               
+                        onAddToCart={()=>this.handleAddToCart(this.state.commodityInfo)}               
                 />       
-                <ScrollView style={{ flexGrow:0 }} >                    
+                <ScrollView style={{ flexGrow:0 }} >         
+                 <FastImage
+                    style={styles.commodity}
+                    source={{
+                        uri: `data:image/jpg;base64, ${this.state.commodityInfo.base64}`                        
+                    }}
+                    resizeMode={FastImage.resizeMode.contain}    
+                />
+
 
                
                     <View style={styles.scrollView}>
@@ -241,15 +243,11 @@ export default class EditCommodityDetails extends React.Component {
                     <View style={{ flexDirection:'column',marginHorizontal:constants.Dimensions.vh(5) }}>
                         <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
                             <Text style={styles.detailsLabel}>Remaining balance</Text>
-                            {/* <Components.AmountText  amountStyle={styles.remainingBalance} value={this.state.subTotalAmount - this.state.totalAmount.value <= 0 ? 0 : (parseFloat(this.state.subTotalAmount) -  parseFloat(this.state.cashAdded)) - this.state.totalAmount.value }/>                                     */}
-                            
-                            <Components.AmountText  amountStyle={styles.remainingBalance} value={(parseFloat(this.state.voucherInfo.default_balance) - parseFloat(this.state.parameters.cartTotalAmount)) - parseFloat(this.state.totalAmount.value) <= 0 ? 0 : (parseFloat(this.state.voucherInfo.default_balance) - parseFloat(this.state.parameters.cartTotalAmount)) - parseFloat(this.state.totalAmount.value) }/> 
+                            <Components.AmountText  amountStyle={styles.remainingBalance} value={(this.state.voucherInfo.default_balance - this.state.parameters.cartTotalAmount) - this.state.totalAmount.value < 0 ? 0 : (this.state.voucherInfo.default_balance - this.state.parameters.cartTotalAmount) - this.state.totalAmount.value }/>                                    
                         </View>
-
-
                         <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
-                            <Text style={styles.detailsLabel}>Cash Added</Text>                                                  
-                            <Components.AmountText  amountStyle={styles.cashAdded} value={(parseFloat(this.state.voucherInfo.default_balance) - parseFloat(this.state.parameters.cartTotalAmount)) -  parseFloat(this.state.totalAmount.value) <= 0 ?  parseFloat(this.state.totalAmount.value) - (parseFloat(this.state.voucherInfo.default_balance) - parseFloat(this.state.parameters.cartTotalAmount)) : 0}/>                                    
+                            <Text style={styles.detailsLabel}>Cash Added</Text>
+                            <Components.AmountText  amountStyle={styles.cashAdded} value={(this.state.voucherInfo.default_balance - this.state.parameters.cartTotalAmount) -  this.state.totalAmount.value < 0 ?  this.state.totalAmount.value - (this.state.voucherInfo.default_balance - this.state.parameters.cartTotalAmount) : 0}/>                                    
                         </View>
                     </View>
                 </View>

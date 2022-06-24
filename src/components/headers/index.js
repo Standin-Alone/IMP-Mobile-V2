@@ -34,7 +34,9 @@ export const PrimaryHeader = ({
    onGoBack,
    backIconWhite,   
    showAddToCartButton,
-   onAddToCart
+   onAddToCart,
+   showGoToCommoditiesButton,
+   onGoToCommodities
 })=>(   
    <>  
         <View style={[styles.primaryContainer,{backgroundColor:backIconWhite ? constants.Colors.primary: 'transparent'}]}>
@@ -50,6 +52,18 @@ export const PrimaryHeader = ({
                     {title}
                 </Text>
             </View>        
+            
+            {showGoToCommoditiesButton && (
+                <View style={{left:constants.Dimensions.vw(50),top:constants.Dimensions.vh(2) }}>
+                    <TouchableOpacity onPress={onGoToCommodities}  >
+                        <MaterialIcons 
+                            name="shopping-bag" 
+                            size={40} 
+                            color={backIconWhite ? constants.Colors.light : constants.Colors.primary}
+                        />
+                    </TouchableOpacity>
+                </View>
+            )}
 
             {showAddToCartButton && (
                 <View style={{left:constants.Dimensions.vw(12),top:constants.Dimensions.vh(2) }}>

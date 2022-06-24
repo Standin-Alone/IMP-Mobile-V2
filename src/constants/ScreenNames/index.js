@@ -34,6 +34,8 @@ const ScreenNames = {
         EDIT_COMMODITY_DETAILS:'EditCommodityDetails',
         EDIT_CART:'EditCart',
         EDIT_UPLOAD_ATTACHMENTS:'EditUploadAttachments',
+        EDIT_COMMODITIES:'EditCommodities',
+        ADD_COMMODITY_DETAILS:'AddCommodityDetails',
         
     }
 

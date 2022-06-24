@@ -1,6 +1,6 @@
 
 import React from "react";
-import { View,SafeAreaView,ActivityIndicator,Modal } from "react-native";
+import { View,Text,Modal } from "react-native";
 import { styles } from "./styles";
 import ImageViewer from "react-native-image-zoom-viewer";
 import constants from "../../constants";
@@ -11,6 +11,7 @@ export const ImageModal = ({
    
    showImage,
    image,
+   imageName,
    onRequestClose 
 
 }) =>(
@@ -23,8 +24,8 @@ export const ImageModal = ({
     animationType="fade"
     >
     <ImageViewer
-        imageUrls={[image]}
-        index={0}
+        imageUrls={image}
+        index={0}       
     />
     </Modal>
 )

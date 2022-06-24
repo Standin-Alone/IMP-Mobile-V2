@@ -219,6 +219,72 @@ export const addToCart = (payload,setState,props) => {
 
 
 
+// ADD EDIT CART 
+export const addToEditCart = (payload,setState,props) => {     
+ 
+
+    // Check Internet Connection
+    NetInfo.fetch().then(async(state)=>{
+            
+        // if internet connected
+        if(state.isConnected && state.isInternetReachable){
+            
+            let countError = 0;
+            // validate payload
+
+            
+           
+            Object.keys(payload).map((item,index)=>{                         
+                                
+                if((item != 'subCategory' && item != 'cashAdded'  && item != 'subCategories' )   ){          
+                    
+                    if((payload[item] == '' || payload[item] === null)  || payload[item] === undefined  ||  payload[item] == 0 ){                        
+                        // console.warn(item)
+                        setState({[item]:{...payload[item],error:true,errorMessage:`Please enter your ${item}.`}})      
+                        countError++;
+                    } 
+                }
+
+                // sub category validation
+                if(item == 'category'){
+
+                    if(payload.subCategories.length  > 0){
+                        if(payload['subCategory'] == ''){
+                          
+                            setState({['subCategory']:{...payload['subCategory'],error:true,errorMessage:`Please enter your sub category.`}})      
+                            countError++;
+                        }
+                    }                        
+
+                }
+            
+
+            })          
+                
+            console.warn(countError);
+            
+            if(countError == 0){
+                props.route.params.addToCart(payload);
+                props.navigation.goBack();
+            }
+            
+
+                        
+        }else{
+            //  No internet Connection
+            Toast.show({
+                type:'error',
+                text1:'Message!',
+                text2:'No internet Connection!'
+            })
+            
+        }
+    });
+
+}
+
+
+
 export const editCart = (payload,setState,props,state) => {     
  
 
@@ -426,6 +492,141 @@ export const goToCheckout = (payload,setState,props) => {
 }
 
 
+
+export const goToEditCheckout = (payload,setState,props) => {     
+    
+    setState({isLoading:true})
+    // Check Internet Connection
+    NetInfo.fetch().then(async(state)=>{
+            
+        // if internet connected
+        if(state.isConnected && state.isInternetReachable){
+            let checkVersion = await checkAppVersion();
+            
+  
+
+
+            //Check if the mobile app is latest.
+            if(checkVersion.status){
+
+                if(payload.cart.length > 0){
+                    let cartTotal = payload.cart.reduce((prev, current) => prev + parseFloat(current.total_amount ? current.total_amount : current.totalAmount), 0);
+                    let checkBalance = payload.voucherInfo.default_balance  - cartTotal;
+                    
+                     // FOR ONE TIME TRANSACTION ONLY
+                    if(payload.voucherInfo.one_time_transaction == '1'){
+                        if(checkBalance <=  0){
+                            setState({isLoading:false})
+                            props.route.params.addToCart(payload.cart);
+                            props.navigation.goBack();
+                            
+                        }else{
+                            Toast.show({
+                                type:'error',
+                                text1:'Message!',
+                                text2:`Please consume the full amount of the voucher.`
+                            })
+                            setState({isLoading:false})
+                        }
+                    }else{
+                        setState({isLoading:false})
+                        props.navigation.navigate(constants.ScreenNames.HOME_STACK.EDIT_CART,payload)
+                    }
+
+                }else{
+                    Toast.show({
+                        type:'error',
+                        text1:'Message!',
+                        text2:'You have no items on your cart.'
+                    })
+                    setState({isLoading:false})
+                }
+  
+            }else{
+                
+                setState({isLoading:false})
+            }
+                        
+        }else{
+            //  No internet Connection
+            Toast.show({
+                type:'error',
+                text1:'No internet Connection!'
+            })
+               
+            setState({isLoading:false})
+  
+        }
+    });
+
+}
+
+
+export const gotoUpdateCart = (payload,setState,props) => {     
+    
+    setState({isLoading:true})
+    // Check Internet Connection
+    NetInfo.fetch().then(async(state)=>{
+            
+        // if internet connected
+        if(state.isConnected && state.isInternetReachable){
+            let checkVersion = await checkAppVersion();
+            
+  
+
+
+            //Check if the mobile app is latest.
+            if(checkVersion.status){
+
+                if(payload.cart.length > 0){
+                    let cartTotal = payload.cart.reduce((prev, current) => prev + parseFloat(current.totalAmount), 0);
+                    let checkBalance = payload.voucherInfo.amount_val  - cartTotal;
+                    
+                     // FOR ONE TIME TRANSACTION ONLY
+                    if(payload.voucherInfo.one_time_transaction == '1'){
+                        if(checkBalance <=  0){
+                            setState({isLoading:false})
+                            props.navigation.navigate(constants.ScreenNames.HOME_STACK.EDIT_COMMODITY_DETAILS,payload)
+                        }else{
+                            Toast.show({
+                                type:'error',
+                                text1:'Message!',
+                                text2:`Please consume the full amount of the voucher.`
+                            })
+                            setState({isLoading:false})
+                        }
+                    }else{
+                        setState({isLoading:false})
+                        props.navigation.navigate(constants.ScreenNames.TRANSACTION_STACK.CHECKOUT,payload)
+                    }
+
+                }else{
+                    Toast.show({
+                        type:'error',
+                        text1:'Message!',
+                        text2:'You have no items on your cart.'
+                    })
+                    setState({isLoading:false})
+                }
+  
+            }else{
+                
+                setState({isLoading:false})
+            }
+                        
+        }else{
+            //  No internet Connection
+            Toast.show({
+                type:'error',
+                text1:'No internet Connection!'
+            })
+               
+            setState({isLoading:false})
+  
+        }
+    });
+
+}
 
 
 export const goToEditCart = (payload,setState,props) => {     
@@ -1377,7 +1578,14 @@ export const updateCart = (payload,setState,props)=>{
      
          // if internet connected
          if(state.isConnected && state.isInternetReachable){
-            
+
+        let  cartTotalAmount = payload.cart.reduce((prev,current) => prev + !current.isChange ? (parseFloat(current.total_amount) + parseFloat(current.cash_added)) : parseFloat(current.total_amount) );
+
+
+        if(cartTotalAmount >= payload.voucherInfo.default_balance ){
+
+
+        
             // POST REQUEST
             POST(`${getBaseUrl().accesspoint}${constants.EndPoints.UPDATE_CART}`,payload).then((response)=>{       
                 console.warn('RESPONSE',response.data);
@@ -1415,7 +1623,13 @@ export const updateCart = (payload,setState,props)=>{
                 // turn off loading
                 setState({isLoading:false});
             });
-
+        }else{
+            Toast.show({
+                type:'error',
+                text1:'Message',
+                text2:'Please consume the full amount of the voucher'
+            })
+        }
 
          }else{
              //  No internet Connection
