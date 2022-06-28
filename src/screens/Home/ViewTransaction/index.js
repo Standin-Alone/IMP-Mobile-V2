@@ -92,9 +92,12 @@ export default class ViewTransaction extends React.Component {
     }
 
     handleGoToEditCart = ()=>{
+
+        let addIndexToCart = this.state.transactionInfo.commodities.map((cartItem,cartIndex)=>({...cartItem, index: cartIndex}));
+
         let parameters = {
             voucherInfo:this.state.transactionInfo,
-            cart:this.state.transactionInfo.commodities           
+            cart:addIndexToCart
         }
        
        return goToEditCart(parameters,this.setMyState,this.props)

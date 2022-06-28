@@ -73,9 +73,10 @@ export default class AddCommodityDetails extends React.Component {
     }   
 
     handleAddToCart = (commodity)=>{
-        // console.warn((this.state.voucherInfo.default_balance - this.state.parameters.cartTotalAmount) - this.state.totalAmount.value)
-        console.warn(commodity);
+
         let parameter = {
+            index: this.props.route.params.cart.length,
+            voucher_details_id: commodity.voucher_details_id,
             subCategories:this.state.subCategories,
             sub_id: commodity.sub_id,
             image: commodity.base64,
@@ -90,6 +91,8 @@ export default class AddCommodityDetails extends React.Component {
         }
         
 
+        
+        
 
         
         return addToEditCart(parameter,this.setMyState,this.props)

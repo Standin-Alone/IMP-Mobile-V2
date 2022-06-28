@@ -14,6 +14,7 @@ export default class EditCart extends React.Component {
           voucherInfo:this.props.route.params.voucherInfo,
           cart:this.props.route.params.cart,
           timer:this.props.route.params.timer,
+          removedFromCart: this.props.route.params.removedFromCart ? this.props.route.params.removedFromCart : [], //voucher_details_id only
           newCart:[],
           cartTotalAmount:0,
           isLoading:false,
@@ -27,24 +28,26 @@ export default class EditCart extends React.Component {
     setMyState = (value)=>this.setState(value);
 
 
-    addToCart = (commodityInfo) => {
-        console.warn('EDIT ADD TO CART',commodityInfo);
-       
+    addToCart = (commodityInfo) => {        
+
+        console.warn(commodityInfo[1]);
+        // console.warn('EDIT CART COMODITY INFO', commodityInfo.map((item)=>item.cashAdded ||  item.cash_added ));
+        
         let cleanCommodityInfo = commodityInfo.map((item)=>({
-             
+            index:item.index,
+            voucher_details_id:item.voucher_details_id, 
             sub_id:item.sub_id,
-            commodityBase64:item.image,
+            commodityBase64:item.image ? item.image : item.commodityBase64,
             voucher_details_id:item.voucher_details_id,
-            item_name:item.name,
-            total_amount:parseFloat(item.totalAmount),
-            unit_type_id:item.unitMeasurement,
-            unit_type:item.unitMeasurement,
+            item_name:item.name ? item.name : item.item_name,
+            total_amount:parseFloat(item.totalAmount ? item.totalAmount :   item.total_amount  ),
+            unit_type_id:item.unitMeasurement ? item.unitMeasurement : item.unit_type_id,
+            unit_type:item.unitMeasurement ? item.unitMeasurement : item.unit_type,
             quantity:parseFloat(item.quantity),
-            item_category:item.category,
-            item_sub_category:item.subCategory,
-            cash_added:parseFloat(item.cashAdded),
-            isChange:true
-                   
+            item_category:item.category ? item.category : item.item_category ,
+            item_sub_category: (item.subCategory ? item.subCategory : item.item_sub_category),
+            cash_added:item.cash_added ? item.cash_added : item.cashAdded,
+            isChange:item.isChange                   
 
         }));
 
@@ -59,24 +62,31 @@ export default class EditCart extends React.Component {
 
 
     componentDidMount(){
-        console.warn('NEW CART',this.state.cart);
-        this.setState({cartTotalAmount:  Number(this.state.cart.reduce((prev, current) => prev + !current.isChange ? (parseFloat(current.total_amount) + parseFloat(current.cash_added)) :  parseFloat(current.total_amount), 0)).toFixed(2)});    
+        
+        this.setState({cartTotalAmount:  Number(this.state.cart.reduce((prev, current) => prev + (!current.isChange ? (parseFloat(current.total_amount) + parseFloat(current.cash_added)) :  parseFloat(current.total_amount)), 0))});    
     }
 
 
-    handleRemoveItem = (index)=>{
+    handleRemoveItem = (voucher_details_id,index)=>{
           let newCart = this.state.cart;
           
           // remove delete 
           newCart.splice(index, index + 1);
 
-          this.setState({newCart:newCart,cartTotalAmount:  Number(newCart.reduce((prev, current) => prev + !current.isChange ? (parseFloat(current.total_amount) + parseFloat(current.cash_added)) :parseFloat(current.total_amount) , 0)).toFixed(2)})
+          this.setState({newCart:newCart,cart:newCart,cartTotalAmount:  Number(newCart.reduce((prev, current) => prev + (!current.isChange ? (parseFloat(current.total_amount) + parseFloat(current.cash_added)) :parseFloat(current.total_amount)) , 0)).toFixed(2)})
+
+          if(voucher_details_id){
+
+            this.setState({removedFromCart:[...this.state.removedFromCart,voucher_details_id]});
+          }
+
 
           if(newCart.length  == 0){
-            // this.state.parameters.handleUpdateCart(newCart);
+            
             
             
             this.state.parameters.addToCart = this.addToCart;
+            this.state.parameters.removedFromCart = this.state.removedFromCart;
 
                             
             this.props.navigation.navigate(constants.ScreenNames.HOME_STACK.EDIT_COMMODITIES,this.state.parameters)
@@ -90,43 +100,44 @@ export default class EditCart extends React.Component {
 
     changeCart = (commodityInfo)=>{
 
-        console.warn('commodity INfo',commodityInfo.voucher_details_id);
-    
-        this.setState({cart:this.state.cart.map((item)=>{
-            if(item.voucher_details_id == commodityInfo.voucher_details_id){
-                return  {
-                    sub_id:commodityInfo.sub_id,
-                    commodityBase64:commodityInfo.image,
-                    voucher_details_id:commodityInfo.voucher_details_id,
-                    item_name:commodityInfo.name,
-                    total_amount:parseFloat(commodityInfo.totalAmount),
-                    unit_type_id:commodityInfo.unitMeasurement,
-                    unit_type:commodityInfo.unitMeasurement,
-                    quantity:parseFloat(commodityInfo.quantity),
-                    item_category:commodityInfo.category,
-                    item_sub_category:commodityInfo.subCategory,
-                    cash_added:parseFloat(commodityInfo.cashAdded),
-                    isChange:true
-                }
-            }else{
-                return item
-            }
-        })})
 
-        this.setState({cartTotalAmount:  Number(this.state.cart.reduce((prev, current) => prev +  !current.isChange  ? (parseFloat(current.total_amount) + parseFloat(current.cash_added)): parseFloat(current.total_amount), 0)).toFixed(2)});    
+        let getCart = [...this.state.cart];
+
+        getCart[commodityInfo.index] = {
+            index:commodityInfo?.index,
+            sub_id:commodityInfo.sub_id,
+            commodityBase64:commodityInfo.image,
+            voucher_details_id:commodityInfo.voucher_details_id,
+            item_name:commodityInfo.name,
+            total_amount:parseFloat(commodityInfo.totalAmount),
+            unit_type_id:commodityInfo.unitMeasurement,
+            unit_type:commodityInfo.unitMeasurement,
+            quantity:parseFloat(commodityInfo.quantity),
+            item_category:commodityInfo.category,
+            item_sub_category:commodityInfo.subCategory,
+            cash_added:parseFloat(commodityInfo.cashAdded),
+            isChange:true
+        }
+
+        this.setState({cart:getCart});
+        
+        this.setState({cartTotalAmount:  Number(getCart.reduce((prev, current) => prev +  parseFloat(current.total_amount), 0))});    
     }
 
 
     
 
 
-    goToEditCommodityDetails = (item)=>{
+    goToEditCommodityDetails = (item,index)=>{
+        
+
+
         
         let parameters = {
             commodityInfo:item,
             voucherInfo:this.state.voucherInfo,
             cart:this.state.cart,                        
-            cartTotalAmount:parseFloat(this.state.voucherInfo.commodities.reduce((prev, current) =>  prev + (current.voucher_details_id != item.voucher_details_id ?  parseFloat(parseFloat(current.total_amount) ) : 0), 0)),
+            cartTotalAmount:parseFloat(this.state.cart.reduce((prev, current,currentIndex) =>  prev + (index  != currentIndex ?  parseFloat(parseFloat(current.total_amount)- parseFloat(current.cash_added)) : 0), 0)),
             refreshInfo:this.refreshInfo,   
             changeCart:this.changeCart   
         };
@@ -138,7 +149,7 @@ export default class EditCart extends React.Component {
 
     renderItem = (item,index) =>{
         
-        
+        console.warn(`render item ${index}`,item);
         let categoryName = this.state.voucherInfo.fertilizer_categories.filter((info)=>info.label === item.item_category  ? (info.label === item.item_category) : (info.value == item.item_category))[0]?.label;
         let unitMeasurement = this.state.voucherInfo.unit_measurements.filter((info)=>item.unit_type == info.label || item.unit_type == info.value)[0]?.label;
         
@@ -151,12 +162,12 @@ export default class EditCart extends React.Component {
             quantity={item.quantity}     
             unitMeasurement={unitMeasurement}
             cashAdded={item.cash_added}     
-            totalAmount={!item.isChange ? parseFloat(item.total_amount) + parseFloat(item.cash_added) : parseFloat(item.total_amount)}      
+            totalAmount={!item.isChange ? parseFloat(item.total_amount) + parseFloat(item.cash_added ? item.cash_added : item.cashAdded) : parseFloat(item.total_amount)}      
             showRemoveButton
             showCommodityInfo
-            onRemove={()=>this.handleRemoveItem(index)}  
+            onRemove={()=>this.handleRemoveItem(item.voucher_details_id,index)}  
             showEditButton
-            onEdit={()=>this.goToEditCommodityDetails(item)}
+            onEdit={()=>this.goToEditCommodityDetails(item,index)}
         />
     )}
     
@@ -165,7 +176,9 @@ export default class EditCart extends React.Component {
         
         let parameters = {           
             voucherInfo:this.state.voucherInfo,
-            cart:this.state.cart,  
+            cart:this.state.cart, 
+            cartTotalAmount:this.state.cartTotalAmount,  
+            removedFromCart:this.state.removedFromCart,  
             supplierId: await GET_SESSION('USER_ID'),
             supplierName: await GET_SESSION('FULL_NAME')
         }
@@ -186,20 +199,11 @@ export default class EditCart extends React.Component {
                         }}                        
 
                         title={"Edit Cart"}             
-                        showGoToCommoditiesButton = {()=>{
-                                let computeRemainingBalance = (parseFloat(this.state.voucherInfo.current_balance) - parseFloat(this.state.cartTotalAmount)) < 0 ? 0.00 :  (parseFloat(this.state.voucherInfo.current_balance) - parseFloat(this.state.cartTotalAmount));
-                                console.warn(computeRemainingBalance);
-                                if(computeRemainingBalance > 0 ){
-                                    return true
-                                }else{
-                                    return false
-                                }
-                        }}
+                        showGoToCommoditiesButton = {(parseFloat(this.state.voucherInfo.default_balance) - parseFloat(this.state.cartTotalAmount))  > 0 ? true :false }
                         onGoToCommodities={()=>{
-
                             this.state.parameters.addToCart = this.addToCart;
-                            this.props.navigation.navigate(constants.ScreenNames.HOME_STACK.EDIT_COMMODITIES,this.state.parameters)
-                            
+                            this.state.parameters.removedFromCart = this.state.removedFromCart;
+                            this.props.navigation.navigate(constants.ScreenNames.HOME_STACK.EDIT_COMMODITIES,this.state.parameters)                            
                         }}                     
 
                 />
@@ -236,7 +240,7 @@ export default class EditCart extends React.Component {
                         </View>
                         <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
                             <Text style={styles.label}>Remaining Balance</Text>
-                            <Components.AmountText  amountStyle={styles.cashAdded} value={(parseFloat(this.state.voucherInfo.current_balance) - parseFloat(this.state.cartTotalAmount)) < 0 ? 0.00 :  (this.state.voucherInfo.current_balance - this.state.cartTotalAmount)}/>                                    
+                            <Components.AmountText  amountStyle={styles.cashAdded} value={(parseFloat(this.state.voucherInfo.default_balance) - parseFloat(this.state.cartTotalAmount)) <= 0 ? 0  : (parseFloat(this.state.voucherInfo.default_balance) - parseFloat(this.state.cartTotalAmount)) }/>                                    
                         </View>                        
                     </View>
                     <View style={{ left: constants.Dimensions.vh(4),bottom:constants.Dimensions.vh(2) }}>

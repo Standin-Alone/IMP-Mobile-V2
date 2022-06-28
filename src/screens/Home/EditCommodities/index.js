@@ -24,6 +24,11 @@ export default class EditCommodities extends React.Component {
 
     setMyState = (value)=>this.setState(value);
 
+
+    componentDidMount(){
+        console.warn(this.state.cart);
+    }
+
     addToCart = (item) => {
         console.warn('ADD TO CART',item);
         this.setState(prevState => ({
@@ -41,7 +46,8 @@ export default class EditCommodities extends React.Component {
             cartTotalAmount:this.state.cart.reduce((prev, current) => prev + parseFloat(current.total_amount ? current.total_amount : current.totalAmount), 0),
             addToCart:this.addToCart,            
         }
-
+        
+        
         this.props.navigation.navigate(constants.ScreenNames.HOME_STACK.ADD_COMMODITY_DETAILS,parameters);
     }
 
@@ -64,9 +70,10 @@ export default class EditCommodities extends React.Component {
         let parameters = {
             voucherInfo:this.state.voucherInfo,
             cart:this.state.cart,            
+            removedFromCart:this.props.route.params.removedFromCart,
             handleUpdateCart:this.handleUpdateCart.bind(this)
         }
-        // console.warn(this.props.route.params)
+        
        return goToEditCheckout(parameters,this.setMyState,this.props)
     }
 
@@ -109,7 +116,7 @@ export default class EditCommodities extends React.Component {
                     <View style={{ left: constants.Dimensions.vh(4) }}>
                         <Components.PrimaryButton  
                             onPress={this.handleGoToCheckout}                      
-                            title={ <Text>{`${this.state.cart.length} items •`} <Components.AmountText amountStyle={styles.amountText} value={this.state.cart.reduce((prev, current) => prev + parseFloat(current.total_amount ? current.total_amount : current.totalAmount), 0).toFixed(2)}/></Text>}                                             
+                            title={ <Text>{`${this.state.cart.length} items •`} <Components.AmountText amountStyle={styles.amountText} value={this.state.cart.reduce((prev, current) => prev + !current.isChange ? (parseFloat(current.total_amount ? current.total_amount : current.totalAmount) + parseFloat(current.cash_added ? current.cash_added : current.cashAdded)) :  parseFloat(current.total_amount ? current.total_amount : current.totalAmount) , 0).toFixed(2)}/></Text>}                                             
                         />
                     </View>
                 </View>            

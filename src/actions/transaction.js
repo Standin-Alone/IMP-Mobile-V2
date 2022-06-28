@@ -236,7 +236,7 @@ export const addToEditCart = (payload,setState,props) => {
            
             Object.keys(payload).map((item,index)=>{                         
                                 
-                if((item != 'subCategory' && item != 'cashAdded'  && item != 'subCategories' )   ){          
+                if((item != 'subCategory' && item != 'cashAdded'  && item != 'subCategories' && item != 'index' && item != 'voucher_details_id' )   ){          
                     
                     if((payload[item] == '' || payload[item] === null)  || payload[item] === undefined  ||  payload[item] == 0 ){                        
                         // console.warn(item)
@@ -301,10 +301,10 @@ export const editCart = (payload,setState,props,state) => {
            
             Object.keys(payload).map((item,index)=>{                         
                                 
-                if((item != 'subCategory' && item != 'cashAdded'  && item != 'subCategories'  && item != 'remainingBalance' )   ){          
+                if((item != 'subCategory' && item != 'cashAdded'  && item != 'subCategories'  && item != 'remainingBalance' && item != 'voucher_details_id' && item != 'index')    ){          
                     
                     if((payload[item] == '' || payload[item] === null)  || payload[item] === undefined  ||  payload[item] == 0 ){                        
-                        // console.warn(item)
+                        console.warn(item)
                         setState({[item]:{...payload[item],error:true,errorMessage:`Please enter your ${item}.`}})      
                         countError++;
                     } 
@@ -329,7 +329,7 @@ export const editCart = (payload,setState,props,state) => {
 
                 
             console.warn(countError);
-            console.warn(payload.remainingBalance);
+   
 
             if(countError == 0){
                 
@@ -1579,10 +1579,10 @@ export const updateCart = (payload,setState,props)=>{
          // if internet connected
          if(state.isConnected && state.isInternetReachable){
 
-        let  cartTotalAmount = payload.cart.reduce((prev,current) => prev + !current.isChange ? (parseFloat(current.total_amount) + parseFloat(current.cash_added)) : parseFloat(current.total_amount) );
+        let  cartTotalAmount = (parseFloat(payload.voucherInfo.default_balance) - parseFloat(payload.cartTotalAmount) );
+            
 
-
-        if(cartTotalAmount >= payload.voucherInfo.default_balance ){
+        if(cartTotalAmount <= 0 ){
 
 
         
@@ -1629,6 +1629,8 @@ export const updateCart = (payload,setState,props)=>{
                 text1:'Message',
                 text2:'Please consume the full amount of the voucher'
             })
+             // turn off loading
+             setState({isLoading:false});
         }
 
          }else{
