@@ -18,14 +18,15 @@ export default class EditCommodityDetails extends React.Component {
           commodityInfo:this.props.route.params.commodityInfo,
           voucherInfo:this.props.route.params.voucherInfo,
           cart:this.props.route.params.cart,
+          cartTotalAmount:this.props.route.params.cartTotalAmount,
           subCategories:[],          
         //   cashAdded:this.props.route.params.cart.reduce((prev, current) =>  prev + parseFloat(current.cash_added),0),
           cashAdded:this.props.route.params.cart.reduce((prev, current) =>  prev +  parseFloat(current.cash_added),0),
-          totalAmount:{
+          total_amount:{
             focus:false,
             error:false,
             errorMessage:'',
-            value:  !this.props.route.params.commodityInfo.isChange ? parseFloat(this.props.route.params.commodityInfo.total_amount) + parseFloat(this.props.route.params.commodityInfo.cash_added)  : parseFloat(this.props.route.params.commodityInfo.total_amount) ,
+            value:  this.props.route.params.commodityInfo.total_amount,       
             isAmountExceed:false
           },  
           quantity:{
@@ -35,23 +36,23 @@ export default class EditCommodityDetails extends React.Component {
             value:this.props.route.params.commodityInfo.quantity,
             isAmountExceed:false
           },  
-          unitMeasurement:{
+          unit_type:{
             focus:false,
             error:false,
             errorMessage:'',
-            value:this.props.route.params.commodityInfo.unit_type_id,        
+            value:this.props.route.params.commodityInfo.unit_type_id ?  this.props.route.params.commodityInfo.unit_type_id : this.props.route.params.commodityInfo.unit_type,        
           },  
-          category:{
+          item_category:{
             focus:false,
             error:false,
             errorMessage:'',
             value:this.props.route.params.commodityInfo.fertilizer_category_id ? this.props.route.params.commodityInfo.fertilizer_category_id : this.props.route.params.commodityInfo.item_category  ,        
           },  
-          subCategory:{
+          item_sub_category:{
             focus:false,
             error:false,
             errorMessage:'',
-            value:this.props.route.params.commodityInfo.item_sub_category ?  this.props.route.params.commodityInfo.item_sub_category : this.props.route.params.commodityInfo.item_sub_category  ,        
+            value:this.props.route.params.commodityInfo.item_sub_category ,        
           },  
           
           subCategories:[]
@@ -61,9 +62,26 @@ export default class EditCommodityDetails extends React.Component {
     
     
     componentDidMount(){
+        console.warn(this.props.route.params.commodityInfo)
+       
         
+        // set sub categories
+        let subCategories= [];
+      
+        this.state.voucherInfo.sub_categories.map((item)=>{
+
+            if(item.fertilizer_category_id == this.state.item_category.value )
+            {
+
+                subCategories.push({label:item.sub_category,value:item.sub_category});
+            }   
+
+        })
+
         
-        console.warn(this.props.route.params.cart)
+        this.setState({subCategories:subCategories})
+        
+        this.setState({item_sub_category:{...this.state.item_sub_category,value:this.props.route.params.commodityInfo.item_sub_category,error:false}})
     }
 
     
@@ -72,8 +90,7 @@ export default class EditCommodityDetails extends React.Component {
     handleChangeTotalAmount = (value)=>{                                              
         
         this.setState({
-            totalAmount:{...this.state.totalAmount,value:value === null ? 0 : Math.abs(value) ,error:false,isAmountExceed:(value + this.state.totalAmount.value) <= this.state.voucherInfo.current_balance  ? false :true},
-            
+            total_amount:{...this.state.total_amount,value:value === null ? 0 : Math.abs(value) ,error:false,isAmountExceed:(value + this.state.total_amount.value) <= this.state.voucherInfo.default_balance  ? false :true},            
         })      
 
     }   
@@ -87,15 +104,19 @@ export default class EditCommodityDetails extends React.Component {
             voucher_details_id:commodity?.voucher_details_id,
             subCategories:this.state.subCategories,
             sub_id: commodity.sub_id,
-            image: commodity.commodityBase64,
-            name: commodity.item_name,
-            unitMeasurement: this.state.unitMeasurement.value,            
-            totalAmount: Math.abs(this.state.totalAmount.value),
+            commodityBase64: commodity.commodityBase64,
+            item_name: commodity.item_name,
+            unit_type: this.state.unit_type.value,            
+            total_amount: Math.abs(this.state.total_amount.value),
             quantity: this.state.quantity.value,                        
-            category: this.state.category.value,
-            subCategory: this.state.subCategory.value,            
-            cashAdded: ((this.state.voucherInfo.default_balance - (this.state.parameters.cartTotalAmount)) - this.state.totalAmount.value) <= 0 ? this.state.totalAmount.value - ((this.state.voucherInfo.default_balance - (this.state.parameters.cartTotalAmount)))  : 0,
-            remainingBalance:(parseFloat(this.state.voucherInfo.default_balance) - parseFloat(this.state.parameters.cartTotalAmount)) - parseFloat(this.state.totalAmount.value) <= 0 ? 0 : (parseFloat(this.state.voucherInfo.default_balance) - parseFloat(this.state.parameters.cartTotalAmount)) - parseFloat(this.state.totalAmount.value) 
+            item_category: this.state.item_category.value,
+            item_sub_category: this.state.item_sub_category.value,            
+            cash_added: this.state.total_amount.value  -  (parseFloat(this.state.voucherInfo.default_balance) -  parseFloat(this.state.cartTotalAmount))  < 0  
+                        ? 0 :
+                        this.state.total_amount.value  -  (parseFloat(this.state.voucherInfo.default_balance) -  parseFloat(this.state.cartTotalAmount)),
+            remainingBalance:(parseFloat(this.state.voucherInfo.default_balance) -  parseFloat(this.state.cartTotalAmount)) - this.state.total_amount.value   <= 0  
+                        ? 0 : 
+                        ((parseFloat(this.state.voucherInfo.default_balance) - parseFloat(this.state.cartTotalAmount))) - parseFloat(this.state.total_amount.value) 
         }
         
 
@@ -107,9 +128,10 @@ export default class EditCommodityDetails extends React.Component {
     handleChangeCategory = (value)=>{                           
             
             let subCategories= [];
+
             this.state.voucherInfo.sub_categories.map((item)=>{
 
-                if(item.fertilizer_category_id == this.state.category.value )
+                if(item.fertilizer_category_id == this.state.item_category.value )
                 {
 
                     subCategories.push({label:item.sub_category,value:item.sub_category});
@@ -119,8 +141,8 @@ export default class EditCommodityDetails extends React.Component {
 
             
             this.setState({subCategories:subCategories})
-            this.setState({category:{...this.state.category,value:value,error:false}})
-            this.setState({subCategory:{...this.state.subCategory,value:'',error:false}})
+            this.setState({item_category:{...this.state.item_category,value:value,error:false}})
+            this.setState({item_sub_category:{...this.state.item_sub_category,value:'',error:false}})
             
         }
 
@@ -144,16 +166,16 @@ export default class EditCommodityDetails extends React.Component {
                             <Text style={styles.label}>Total Amount</Text>
                             <Components.AmountInput
                                 
-                                value={this.state.totalAmount.value}
+                                value={this.state.total_amount.value}
                                 onChangeValue={this.handleChangeTotalAmount}
                                 keyboardType={"decimal-pad"}
                                 iconName="loyalty"
                                 placeholder="Place your total amount here..."
-                                onFocus={()=>this.setState({totalAmount:{...this.state.totalAmount,focus:true}})}
-                                onBlur={()=>this.setState({totalAmount:{...this.state.totalAmount,focus:false}})}
-                                isFocus={this.state.totalAmount.focus}
-                                isError={this.state.totalAmount.error}
-                                errorMessage={this.state.totalAmount.errorMessage}                                
+                                onFocus={()=>this.setState({total_amount:{...this.state.total_amount,focus:true}})}
+                                onBlur={()=>this.setState({total_amount:{...this.state.total_amount,focus:false}})}
+                                isFocus={this.state.total_amount.focus}
+                                isError={this.state.total_amount.error}
+                                errorMessage={this.state.total_amount.errorMessage}                                
                                 prefix={'₱'}
                                 textColor={constants.Colors.dark_tint}
                             
@@ -184,16 +206,16 @@ export default class EditCommodityDetails extends React.Component {
                             <Components.Category
                             iconName="line-weight"
                             placeholder="Select Measurement"
-                            onFocus={()=>this.setState({unitMeasurement:{...this.state.unitMeasurement,focus:true}})}
-                            onBlur={()=>this.setState({unitMeasurement:{...this.state.unitMeasurement,focus:false}})}
-                            isFocus={this.state.unitMeasurement.focus}
-                            isError={this.state.unitMeasurement.error}
-                            errorMessage={this.state.unitMeasurement.errorMessage}
+                            onFocus={()=>this.setState({unit_type:{...this.state.unit_type,focus:true}})}
+                            onBlur={()=>this.setState({unit_type:{...this.state.unit_type,focus:false}})}
+                            isFocus={this.state.unit_type.focus}
+                            isError={this.state.unit_type.error}
+                            errorMessage={this.state.unit_type.errorMessage}
                             items={this.state.voucherInfo.unit_measurements}
-                            value={this.state.unitMeasurement.value}
+                            value={this.state.unit_type.value}
                             onChangeValue={(value)=>{                           
                                     
-                                    this.setState({unitMeasurement:{...this.state.unitMeasurement,value:value,error:false}})
+                                    this.setState({unit_type:{...this.state.unit_type,value:value,error:false}})
                                 }}
                             />
                         </View>
@@ -205,32 +227,32 @@ export default class EditCommodityDetails extends React.Component {
                             <Components.Category
                             iconName="auto-awesome-mosaic"
                             placeholder="Select Category"
-                            onFocus={()=>this.setState({category:{...this.state.category,focus:true}})}
-                            onBlur={()=>this.setState({category:{...this.state.category,focus:false}})}
-                            isFocus={this.state.category.focus}
-                            isError={this.state.category.error}
-                            errorMessage={this.state.category.errorMessage}
+                            onFocus={()=>this.setState({item_category:{...this.state.item_category,focus:true}})}
+                            onBlur={()=>this.setState({item_category:{...this.state.item_category,focus:false}})}
+                            isFocus={this.state.item_category.focus}
+                            isError={this.state.item_category.error}
+                            errorMessage={this.state.item_category.errorMessage}
                             items={this.state.voucherInfo.fertilizer_categories}
-                            value={this.state.category.value}
+                            value={this.state.item_category.value}
                             onChangeValue={this.handleChangeCategory}
                             />
                         </View>
 
                         {/*  show sub category if organic fertilize   */}
-                        { this.state.category.value == 2 &&
+                        { this.state.item_category.value == 2 &&
                             <View style={styles.form}>
                                 <Text style={styles.label}>Sub Category</Text>
                                 <Components.Category
                                 placeholder="Select Sub Category"
                                 iconName="dashboard"
-                                value={this.state.subCategory.value}
-                                onFocus={()=>this.setState({subCategory:{...this.state.subCategory,focus:true}})}
-                                onBlur={()=>this.setState({subCategory:{...this.state.subCategory,focus:false}})}
-                                isFocus={this.state.subCategory.focus}
-                                isError={this.state.subCategory.error}
-                                errorMessage={this.state.subCategory.errorMessage}
+                                value={this.state.item_sub_category.value}
+                                onFocus={()=>this.setState({item_sub_category:{...this.state.item_sub_category,focus:true}})}
+                                onBlur={()=>this.setState({item_sub_category:{...this.state.item_sub_category,focus:false}})}
+                                isFocus={this.state.item_sub_category.focus}
+                                isError={this.state.item_sub_category.error}
+                                errorMessage={this.state.item_sub_category.errorMessage}
                                 items={this.state.subCategories}
-                                onChangeValue={(value)=>this.setState({subCategory:{...this.state.subCategory,value:value,error:false}})}
+                                onChangeValue={(value)=>this.setState({item_sub_category:{...this.state.item_sub_category,value:value,error:false}})}
                                 />
                             </View>
                         }
@@ -242,17 +264,22 @@ export default class EditCommodityDetails extends React.Component {
                 <View style={styles.bottom}>
                     
                     <View style={{ flexDirection:'column',marginHorizontal:constants.Dimensions.vh(5) }}>
-                        <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
-                            <Text style={styles.detailsLabel}>Remaining balance</Text>                            
-                            
-                            <Components.AmountText  amountStyle={styles.remainingBalance} value={((parseFloat(this.state.voucherInfo.default_balance) - (parseFloat(this.state.parameters.cartTotalAmount))) -  parseFloat(this.state.totalAmount.value)) < 0 ?   0 : ((parseFloat(this.state.voucherInfo.default_balance) - (parseFloat(this.state.parameters.cartTotalAmount))) -  parseFloat(this.state.totalAmount.value))}/> 
+                         <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
+                            <Text style={styles.detailsLabel}>Remaining balance</Text>                                                        
+                            <Components.AmountText  amountStyle={styles.remainingBalance} value={
+                                (parseFloat(this.state.voucherInfo.default_balance) -  parseFloat(this.state.cartTotalAmount)) - this.state.total_amount.value   < 0  
+                                ? 0 : 
+                                ((parseFloat(this.state.voucherInfo.default_balance) - parseFloat(this.state.cartTotalAmount))) - parseFloat(this.state.total_amount.value) }/> 
                         </View>
 
 
-                        <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
+                       <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
                             <Text style={styles.detailsLabel}>Cash Added</Text>                                                  
-                            <Components.AmountText  amountStyle={styles.cashAdded} value={((this.state.voucherInfo.default_balance - (this.state.parameters.cartTotalAmount)) - this.state.totalAmount.value) <= 0 ? this.state.totalAmount.value - ((this.state.voucherInfo.default_balance - (this.state.parameters.cartTotalAmount)))  : 0 }/>                                    
-                        </View>
+                             <Components.AmountText  amountStyle={styles.cashAdded} value={
+                                   this.state.total_amount.value  -  (parseFloat(this.state.voucherInfo.default_balance) -  parseFloat(this.state.cartTotalAmount))  < 0  
+                                    ? 0 :
+                                    this.state.total_amount.value  -  (parseFloat(this.state.voucherInfo.default_balance) -  parseFloat(this.state.cartTotalAmount)) }/>                                    
+                         </View> 
                     </View>
                 </View>
                 

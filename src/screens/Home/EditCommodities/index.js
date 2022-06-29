@@ -98,7 +98,9 @@ export default class EditCommodities extends React.Component {
                 />
 
                 <FlatList
-                    data={ this.state.cart.reduce((prev, current) => prev + parseFloat(current.total_amount ? current.total_amount : current.totalAmount), 0) >= this.state.voucherInfo.default_balance ? [] : this.state.voucherInfo.program_items}
+                    data={
+                        (Number(this.state.cart.reduce((prev, current) => prev + (parseFloat(current.total_amount) - parseFloat(current.cash_added) ), 0)).toFixed(2)  < parseFloat(this.state.voucherInfo.default_balance))
+                            ?  this.state.voucherInfo.program_items : [] }
                     renderItem = {({ item, index }) => this.renderItem(item, index)}                
                 />
 
@@ -109,14 +111,19 @@ export default class EditCommodities extends React.Component {
                   
                         <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
                             <Text style={styles.label}>Remaining Balance</Text>
-                            <Components.AmountText  amountStyle={styles.remainingBalance} value={(this.state.voucherInfo.default_balance - this.state.cart.reduce((prev, current) => prev + parseFloat(current.total_amount ? current.total_amount : current.totalAmount), 0)) <= 0 ? 0 :  (this.state.voucherInfo.default_balance - this.state.cart.reduce((prev, current) => prev + parseFloat(current.total_amount ? current.total_amount : current.totalAmount), 0))  }/>                                    
+                            <Components.AmountText  amountStyle={styles.remainingBalance} value={
+                                (parseFloat(this.state.voucherInfo.default_balance) - 
+                                (Number(this.state.cart.reduce((prev, current) => prev + (parseFloat(current.total_amount) - parseFloat(current.cash_added) ), 0)).toFixed(2)) <= 0 ?
+                                 0.00 :  (parseFloat(this.state.voucherInfo.default_balance) - Number(this.state.cart.reduce((prev, current) => prev + (parseFloat(current.total_amount) - parseFloat(current.cash_added) ), 0)).toFixed(2)))
+
+                             }/>                                    
                         </View>                        
                                            
                     </View>
                     <View style={{ left: constants.Dimensions.vh(4) }}>
                         <Components.PrimaryButton  
                             onPress={this.handleGoToCheckout}                      
-                            title={ <Text>{`${this.state.cart.length} items •`} <Components.AmountText amountStyle={styles.amountText} value={this.state.cart.reduce((prev, current) => prev + !current.isChange ? (parseFloat(current.total_amount ? current.total_amount : current.totalAmount) + parseFloat(current.cash_added ? current.cash_added : current.cashAdded)) :  parseFloat(current.total_amount ? current.total_amount : current.totalAmount) , 0).toFixed(2)}/></Text>}                                             
+                            title={ <Text>{`${this.state.cart.length} items •`} <Components.AmountText amountStyle={styles.amountText} value={(Number(this.state.cart.reduce((prev, current) => prev + (parseFloat(current.total_amount) ), 0)).toFixed(2))}/></Text>}                                             
                         />
                     </View>
                 </View>            

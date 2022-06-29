@@ -236,22 +236,22 @@ export const addToEditCart = (payload,setState,props) => {
            
             Object.keys(payload).map((item,index)=>{                         
                                 
-                if((item != 'subCategory' && item != 'cashAdded'  && item != 'subCategories' && item != 'index' && item != 'voucher_details_id' )   ){          
+                if((item != 'item_sub_category' && item != 'cash_added'  && item != 'subCategories' && item != 'index' && item != 'voucher_details_id' )   ){          
                     
                     if((payload[item] == '' || payload[item] === null)  || payload[item] === undefined  ||  payload[item] == 0 ){                        
-                        // console.warn(item)
+                        console.warn(item)
                         setState({[item]:{...payload[item],error:true,errorMessage:`Please enter your ${item}.`}})      
                         countError++;
                     } 
                 }
 
                 // sub category validation
-                if(item == 'category'){
+                if(item == 'item_category'){
 
                     if(payload.subCategories.length  > 0){
-                        if(payload['subCategory'] == ''){
+                        if(payload['item_sub_category'] == ''){
                           
-                            setState({['subCategory']:{...payload['subCategory'],error:true,errorMessage:`Please enter your sub category.`}})      
+                            setState({['item_sub_category']:{...payload['item_sub_category'],error:true,errorMessage:`Please enter your sub category.`}})      
                             countError++;
                         }
                     }                        
@@ -301,7 +301,7 @@ export const editCart = (payload,setState,props,state) => {
            
             Object.keys(payload).map((item,index)=>{                         
                                 
-                if((item != 'subCategory' && item != 'cashAdded'  && item != 'subCategories'  && item != 'remainingBalance' && item != 'voucher_details_id' && item != 'index')    ){          
+                if((item != 'item_sub_category' && item != 'cash_added'  && item != 'subCategories'  && item != 'remainingBalance' && item != 'voucher_details_id' && item != 'index')    ){          
                     
                     if((payload[item] == '' || payload[item] === null)  || payload[item] === undefined  ||  payload[item] == 0 ){                        
                         console.warn(item)
@@ -321,9 +321,7 @@ export const editCart = (payload,setState,props,state) => {
                         }
                     }                        
 
-                }
-            
-
+                }            
             })          
 
 
@@ -510,7 +508,7 @@ export const goToEditCheckout = (payload,setState,props) => {
             if(checkVersion.status){
 
                 if(payload.cart.length > 0){
-                    let cartTotal = payload.cart.reduce((prev, current) => prev + parseFloat(current.total_amount ? current.total_amount : current.totalAmount), 0);
+                    let cartTotal = (Number(payload.cart.reduce((prev, current) => prev + (parseFloat(current.total_amount) - parseFloat(current.cash_added) ), 0)).toFixed(2)) ;
                     let checkBalance = payload.voucherInfo.default_balance  - cartTotal;
                     
                      // FOR ONE TIME TRANSACTION ONLY
@@ -1597,7 +1595,8 @@ export const updateCart = (payload,setState,props)=>{
                             text2: response.data.message
                     });                                                                                                    
 
-                    
+                        
+                    props.route.params.refreshInfo(response.data.voucherInfo[0]);
                     props.navigation.goBack();
 
                 }else{
@@ -1613,7 +1612,7 @@ export const updateCart = (payload,setState,props)=>{
                 setState({isLoading:false});
             }).catch((error)=>{
                     
-                console.warn(error.response);
+                console.warn(error);
                 Toast.show({
                     type:'error',
                     text1:'Something went wrong!',                     

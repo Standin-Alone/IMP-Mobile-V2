@@ -24,7 +24,8 @@ export default class ViewTransaction extends React.Component {
 
     
     refreshInfo = (transaction_info)=>{
-        this.setState({transaction_info:transaction_info})
+        
+        this.setState({transactionInfo:transaction_info})
     }
 
     setMyState = (value)=>this.setState(value);
@@ -52,8 +53,8 @@ export default class ViewTransaction extends React.Component {
                 image={item.commodityBase64}
                 commodityName={item.item_name}
                 category={item.item_category}
-                subCategory={item.item_sub_category}
-                amount={parseFloat(item.total_amount) + parseFloat(item.cash_added) }
+                // subCategory={item.item_sub_category}
+                amount={parseFloat(item.total_amount) }
                 quantity={`x${item.quantity}`}
             
                 
@@ -97,7 +98,8 @@ export default class ViewTransaction extends React.Component {
 
         let parameters = {
             voucherInfo:this.state.transactionInfo,
-            cart:addIndexToCart
+            cart:addIndexToCart,
+            refreshInfo:this.refreshInfo,    
         }
        
        return goToEditCart(parameters,this.setMyState,this.props)
@@ -209,7 +211,7 @@ export default class ViewTransaction extends React.Component {
                                 <Components.Divider style={{width:constants.Dimensions.vw(85)}}/>
                                     <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
                                         <Text style={styles.label} adjustsFontSizeToFit>Total Amount</Text>
-                                        <Components.AmountText  amountStyle={styles.cashAdded} value={this.state.transactionInfo.commodities.reduce((prev, current) => prev + parseFloat(parseFloat(current.total_amount) +  parseFloat(current.cash_added)  ), 0)}/>                                    
+                                        <Components.AmountText  amountStyle={styles.cashAdded} value={this.state.transactionInfo.commodities.reduce((prev, current) => prev + parseFloat(parseFloat(current.total_amount)  ), 0)}/>                                    
                                     </View>                                                                    
                                     <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
                                         <Text style={styles.label} adjustsFontSizeToFit>Total Cash Added</Text>
@@ -220,7 +222,7 @@ export default class ViewTransaction extends React.Component {
                                     <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
                                         <Text style={styles.label} adjustsFontSizeToFit>Total Amount Paid By Voucher</Text>
                                         <Text>
-                                            <Components.AmountText  amountStyle={styles.cashAdded} value={this.state.transactionInfo.commodities.reduce((prev, current) => prev + parseFloat(parseFloat(current.total_amount) +  parseFloat(current.cash_added)  ), 0) - this.state.transactionInfo.commodities.reduce((prev, current) => prev + parseFloat(current.cash_added)  , 0)}/>                                                                           
+                                            <Components.AmountText  amountStyle={styles.cashAdded} value={this.state.transactionInfo.commodities.reduce((prev, current) => prev + parseFloat(parseFloat(current.total_amount)  ), 0) - this.state.transactionInfo.commodities.reduce((prev, current) => prev + parseFloat(current.cash_added)  , 0)}/>                                                                           
                                         </Text>
                                     </View>                                                                    
                             </View>
