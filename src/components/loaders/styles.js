@@ -12,9 +12,9 @@ export const styles = StyleSheet.create({
         marginVertical:constants.Dimensions.vh(2)
     },
     divider:{
-        width:constants.Dimensions.vw(100),
-        borderWidth:0.5,
-        borderColor:constants.Colors.gray
+        width:constants.Dimensions.vw(100),        
+        borderColor:constants.Colors.gray,
+        borderBottomWidth:1,
 
     },
     loaderText:{

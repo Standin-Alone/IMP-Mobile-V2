@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
 
         
         fontFamily:constants.Fonts.PoppinsMedium,       
-        fontSize:16
+        fontSize:constants.Dimensions.normalizeFontSize(14)
     },
 
   

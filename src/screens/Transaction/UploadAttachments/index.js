@@ -58,6 +58,7 @@ export default class UploadAttachments extends React.Component {
 
     showImage = (image)=>{
         this.setState({showImage:true,imageUri:image})
+        console.warn(image);
     }
 
 
@@ -272,7 +273,7 @@ export default class UploadAttachments extends React.Component {
 
                 <Components.ImageModal
                     showImage={this.state.showImage}
-                    image={{ url: "data:image/jpeg;base64," + this.state.imageUri}}
+                    image={[{ url: "data:image/jpeg;base64," + this.state.imageUri}]}
                     onRequestClose={()=>this.setState({showImage:false})}
                 />
                 <View style={styles.container}>           

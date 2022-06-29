@@ -100,7 +100,7 @@ export const checkAppVersion = async ()=>{
 
 export const  rotateImage = async (uri) =>{
 
-    const rotated_image                   = await   ImageResizer.createResizedImage('data:image/JPEG,'+uri, 1920, 1080, 'JPEG', 50, 90, RNFS.DocumentDirectoryPath);
+    const rotated_image                   = await   ImageResizer.createResizedImage('data:image/jpeg,'+uri, 1920, 1080, 'JPEG', 50, 90, RNFS.DocumentDirectoryPath);
     const convert_rotated_image_to_base64 = await RNFS.readFile(rotated_image.uri,'base64');
   
     return convert_rotated_image_to_base64;

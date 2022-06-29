@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
     fullName:{
         fontFamily:constants.Fonts.PoppinsBold,
         color:constants.Colors.light,
-        fontSize:18,
+        fontSize:constants.Dimensions.normalizeFontSize(16),
         textAlign:'center'
     },
     infoContainer: {
@@ -34,12 +34,12 @@ export const styles = StyleSheet.create({
     label:{
         fontFamily:constants.Fonts.PoppinsRegular,
         color:constants.Colors.dark_tint,
-        fontSize:14,        
+        fontSize:constants.Dimensions.normalizeFontSize(12),        
     },
     value:{
         fontFamily:constants.Fonts.PoppinsBold,
         color:constants.Colors.dark_tint,
-        fontSize:14,      
+        fontSize:constants.Dimensions.normalizeFontSize(12),      
     },
     image:{
         width:constants.Dimensions.vw(40),

@@ -18,6 +18,7 @@ export default class EditUploadAttachments extends React.Component {
           otherAttachmentId:'',
           addedAttachments:[],
           deletedAttachments:[],
+          isChange:false,
           type:'',
           attachments:[
             {   
@@ -85,7 +86,8 @@ export default class EditUploadAttachments extends React.Component {
             attachments:this.state.attachments,       
             addedAttachments:this.state.addedAttachments,            
             deletedAttachments:this.state.deletedAttachments,       
-            voucherInfo:this.state.voucherInfo,            
+            voucherInfo:this.state.voucherInfo,   
+            isChange:this.state.isChange         
         }   
 
         
@@ -101,7 +103,9 @@ export default class EditUploadAttachments extends React.Component {
         new_data.map((item_result)=>{
           if(item_result.name == 'Other Documents'){
             // remove file of other documents
-            
+            if(item_result.file[delete_index].attachment_id){
+                this.setState({isChange:true});
+            }
             this.setState({deletedAttachments:[...this.state.deletedAttachments,item_result.file[delete_index].attachment_id]});
 
             item_result.file.splice(delete_index, 1);
@@ -264,6 +268,10 @@ export default class EditUploadAttachments extends React.Component {
                  
                         title={"Edit Upload Attachments"}
                         
+                />
+                <Components.ProgressModal
+                        showProgress={this.state.isLoading}    
+                        title={this.state.loadingText}                
                 />
 
                 <Components.UploadingSelectionCard

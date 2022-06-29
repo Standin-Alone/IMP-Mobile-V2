@@ -45,20 +45,20 @@ export const styles = StyleSheet.create({
     registeredProgramLabel:{
         fontFamily:constants.Fonts.PoppinsBold,
         color:constants.Colors.dark_tint,
-        fontSize:14,
+        fontSize:constants.Dimensions.normalizeFontSize(14),
         top:constants.Dimensions.vh(2),
         textAlign:'center'
     },
     programTitle:{
         fontFamily:constants.Fonts.PoppinsMedium,
         color:constants.Colors.light,
-        fontSize:14,        
+        fontSize:constants.Dimensions.normalizeFontSize(14),        
         
     },
     programShortName:{
         fontFamily:constants.Fonts.PoppinsBold,
         color:constants.Colors.light,
-        fontSize:14,        
+        fontSize:constants.Dimensions.normalizeFontSize(14),        
         
     },
     programContainer:{ 

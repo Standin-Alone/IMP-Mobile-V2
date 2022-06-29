@@ -647,7 +647,7 @@ export const goToEditCart = (payload,setState,props) => {
                     
                     props.navigation.navigate(constants.ScreenNames.HOME_STACK.EDIT_CART,payload)
                                        
-
+                    setState({isLoading:false})
                 }else{
                     Toast.show({
                         type:'error',
@@ -704,7 +704,7 @@ export const goToEditAttachments = (payload,setState,props) => {
                         
                                                         
                         props.navigation.navigate(constants.ScreenNames.HOME_STACK.EDIT_UPLOAD_ATTACHMENTS,payload)
-                        
+                        setState({isLoading:false})
                         
                     }else{
 
@@ -714,7 +714,7 @@ export const goToEditAttachments = (payload,setState,props) => {
                             text1:'Message',
                             text2: response.data.message
                         })
-                        
+                        setState({isLoading:false})
                     }
                     
                 }).catch((error)=>{
@@ -725,7 +725,7 @@ export const goToEditAttachments = (payload,setState,props) => {
                         text1:'error!',
                         text2:error.response
                     })
-                    
+                    setState({isLoading:false})
                 });
 
 
@@ -972,7 +972,7 @@ export const openCameraInEdit = (payload,setState)=>{
                         assets.map(async(cameraResponse)=>{
                             
                             // set latitude longitude
-                            setState({latitude:checkLocation.latitude,longitude:checkLocation.longitude,loadingTitle:'Loading'})
+                            setState({latitude:checkLocation.latitude,longitude:checkLocation.longitude,loadingTitle:'Loading', isChange:true})
                             
                             // check if image is jpeg format
                             if(cameraResponse.type == 'image/jpeg' || cameraResponse.type == 'image/jpg') {
@@ -1111,10 +1111,9 @@ export const openGallery = (payload,setState)=>{
                             
                             // check if image is jpeg format
                             if(cameraResponse.type == 'image/jpeg' || cameraResponse.type == 'image/jpg') {
-                                // rotate image
-                                let rotatedImage = await rotateImage(cameraResponse.base64);
+                                
                                 // get geo tag
-                                let base64_uri_exif = await geotagging(rotatedImage,checkLocation);
+                                let base64_uri_exif = await geotagging(cameraResponse.base64,checkLocation);
 
                                 payload.attachments.map((item, index) => {                
                                     if (payload.documentName == 'Other Documents' && item.name == 'Other Documents') {
@@ -1220,14 +1219,13 @@ export const openGalleryInEdit = (payload,setState)=>{
                         assets.map(async(cameraResponse)=>{
                             
                             // set latitude longitude
-                            setState({latitude:checkLocation.latitude,longitude:checkLocation.longitude,loadingTitle:'Loading'})
+                            setState({latitude:checkLocation.latitude,longitude:checkLocation.longitude,loadingTitle:'Loading', isChange:true})
                             
                             // check if image is jpeg format
                             if(cameraResponse.type == 'image/jpeg' || cameraResponse.type == 'image/jpg') {
-                                // rotate image
-                                let rotatedImage = await rotateImage(cameraResponse.base64);
+                                
                                 // get geo tag
-                                let base64_uri_exif = await geotagging(rotatedImage,checkLocation);
+                                let base64_uri_exif = await geotagging(cameraResponse.base64,checkLocation);
 
                                 payload.attachments.map((item, index) => {                
                                     if (payload.documentName == 'Other Documents' && item.name == 'Other Documents') {
@@ -1510,7 +1508,8 @@ export const updateAttachments = (payload,setState,props)=>{
 
          // if internet connected
          if(state.isConnected && state.isInternetReachable){
-            
+
+            if(payload.isChange){
             // POST REQUEST
             POST(`${getBaseUrl().accesspoint}${constants.EndPoints.UPDATE_ATTACHMENTS}`,payload).then((response)=>{       
                 
@@ -1520,7 +1519,8 @@ export const updateAttachments = (payload,setState,props)=>{
                             type:'success',
                             text1:'Success',                    
                             text2: response.data.message
-                    });                                                                                                    
+                    });         
+                    setState({isLoading:false});                                                                                           
 
                     props.route.params.updateAttachmentList( response.data.updatedAttachments);
                     props.navigation.goBack();
@@ -1531,11 +1531,9 @@ export const updateAttachments = (payload,setState,props)=>{
                         text1:'Message',  
                         text2: response.data.errorMessage
                     });
-
+                    setState({isLoading:false});                                                                                           
                 }
-
-                // turn off loading
-                setState({isLoading:false});
+               
             }).catch((error)=>{
                     
                 console.warn(error);
@@ -1549,7 +1547,9 @@ export const updateAttachments = (payload,setState,props)=>{
                 setState({isLoading:false});
             });
 
-
+         }else{
+            props.navigation.goBack();
+         }
          }else{
              //  No internet Connection
             Toast.show({

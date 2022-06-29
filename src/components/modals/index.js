@@ -26,6 +26,7 @@ export const ImageModal = ({
     <ImageViewer
         imageUrls={image}
         index={0}       
+        visible={true}
     />
     </Modal>
 )

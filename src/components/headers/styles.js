@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
     },
     primaryTitle:{
         fontFamily:constants.Fonts.GothamMedium,
-        fontSize:20,
+        fontSize:constants.Dimensions.normalizeFontSize(15),
         top:constants.Dimensions.vh(4),
         color:constants.Colors.primary
     },
@@ -29,7 +29,7 @@ export const styles = StyleSheet.create({
         width:constants.Dimensions.vw(80),
         height:constants.Dimensions.vh(11),
         color:constants.Colors.light,
-        fontSize:15,      
+        fontSize:constants.Dimensions.normalizeFontSize(15),      
         fontFamily:constants.Fonts.PoppinsRegular,  
         borderRadius:20,
         paddingHorizontal:constants.Dimensions.vw(4),
@@ -46,7 +46,7 @@ export const styles = StyleSheet.create({
     },
     listHeaderText:{
         fontFamily:constants.Fonts.PoppinsLight,
-        fontSize:14,
+        fontSize:constants.Dimensions.normalizeFontSize(14),
     },
     
     hello:{
