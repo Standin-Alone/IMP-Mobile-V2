@@ -25,11 +25,22 @@ export default class SearchVoucher extends React.Component {
 
     handleSearch = (value)=>{
 
-        let parameters = {
-            searchValue:value
-        }
+        this.setState({searchValue:value});
+        
+    }
 
-        return searchVoucher(parameters,this.setMyState);
+    handleSubmitOnSearch = ()=>{
+        console.warn(this.state.searchValue);
+        let parameters = {
+            searchValue:this.state.searchValue
+        }
+        
+        if(parameters.searchValue != ''){
+            return searchVoucher(parameters,this.setMyState);
+        }else{
+            this.setState({data:[]});
+        }
+        
     }
  
     handleViewTransaction = (item)=>{
@@ -49,7 +60,7 @@ export default class SearchVoucher extends React.Component {
         return(
             <Components.HomePrimaryCard
                 image={{uri:`data:image/jpeg;base64,${item.base64[0]?.image}` }}
-                title={item.reference_no}
+                title={item.fullname}
                 titleStyle={{ color:constants.Colors.secondary,fontFamily:constants.Fonts.GothamBold }}
                 subtitle={item.transac_date}
                 onViewTransaction={()=>this.handleViewTransaction(item)}
@@ -74,6 +85,7 @@ export default class SearchVoucher extends React.Component {
                 <Components.PrimaryHeaderSearch                    
                         onGoBack = {()=>this.props.navigation.goBack()}                                                
                         onChangeText={this.handleSearch}                    
+                        onSubmitEditing={this.handleSubmitOnSearch}
                         value={this.state.searchValue}
                 />
             <View style={{flex:1, backgroundColor:constants.Colors.light }}>

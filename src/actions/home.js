@@ -74,7 +74,7 @@ export const getTransactedVouchers = (payload,setState)=>{
 
                 }else{
                     
-                console.warn( response.data.errorMessage);
+                console.warn( response.data);
                     Toast.show({
                         type:'error',
                         text1:'Message',  
@@ -135,7 +135,8 @@ export const searchVoucher = (payload,setState)=>{
             // console.warn(cleanPayload);
             // POST REQUEST
             POST(`${getBaseUrl().accesspoint}${constants.EndPoints.SEARCH_VOUCHER}`,cleanPayload).then((response)=>{       
-                
+                console.warn('SEARCHED DATA',response.data);
+                setState({isSearching:false})
                 if(response.data.status == true){
                     
 

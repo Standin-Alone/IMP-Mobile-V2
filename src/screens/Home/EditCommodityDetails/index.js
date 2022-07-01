@@ -46,7 +46,7 @@ export default class EditCommodityDetails extends React.Component {
             focus:false,
             error:false,
             errorMessage:'',
-            value:this.props.route.params.commodityInfo.fertilizer_category_id ? this.props.route.params.commodityInfo.fertilizer_category_id : this.props.route.params.commodityInfo.item_category  ,        
+            value:this.props.route.params.commodityInfo.fertilizer_category_id ? this.props.route.params.commodityInfo.fertilizer_category_id : this.props.route.params.voucherInfo?.fertilizer_categories.filter((item)=>item.label == this.props.route.params.commodityInfo.item_category || item.value == this.props.route.params.commodityInfo.item_category )[0].value,        
           },  
           item_sub_category:{
             focus:false,
@@ -62,7 +62,7 @@ export default class EditCommodityDetails extends React.Component {
     
     
     componentDidMount(){
-        console.warn(this.props.route.params.commodityInfo)
+        
        
         
         // set sub categories
@@ -77,10 +77,9 @@ export default class EditCommodityDetails extends React.Component {
             }   
 
         })
-
         
-        this.setState({subCategories:subCategories})
         
+        this.setState({subCategories:subCategories})        
         this.setState({item_sub_category:{...this.state.item_sub_category,value:this.props.route.params.commodityInfo.item_sub_category,error:false}})
     }
 

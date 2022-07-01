@@ -1,5 +1,5 @@
 import React from 'react';
-import { View,Text,TouchableOpacity, FlatList} from 'react-native';
+import { View,Text,TouchableOpacity, FlatList,BackHandler} from 'react-native';
 import constants from '../../../constants';
 import {styles} from './styles'
 import Components from '../../../components';
@@ -19,7 +19,16 @@ export default class ViewTransaction extends React.Component {
     }
 
     componentDidMount(){
-     
+        
+
+        BackHandler.addEventListener("hardwareBackPress", ()=>{
+            if(this.props.route.params.hasOwnProperty('handleUpdateTransactionInfo')){
+                this.props.route.params?.handleUpdateTransactionInfo(this.state.transactionInfo,this.props.route.params.transactionIndex)
+            }
+            
+            this.props.navigation.goBack()
+            return true;
+        });  
     }
 
     
@@ -125,7 +134,13 @@ export default class ViewTransaction extends React.Component {
             <>  
             
                 <Components.PrimaryHeader                    
-                        onGoBack = {()=>this.props.navigation.goBack()}
+                        onGoBack = {()=>{
+                            if(this.props.route.params.hasOwnProperty('handleUpdateTransactionInfo')){
+                                this.props.route.params?.handleUpdateTransactionInfo(this.state.transactionInfo,this.props.route.params.transactionIndex)
+                            }
+                            
+                            this.props.navigation.goBack()
+                        }}
                         backIconWhite={true}
                         title={"View Transaction"}                        
                 />

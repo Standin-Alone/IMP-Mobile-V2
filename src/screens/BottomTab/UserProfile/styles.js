@@ -52,13 +52,13 @@ export const styles = StyleSheet.create({
     programTitle:{
         fontFamily:constants.Fonts.PoppinsMedium,
         color:constants.Colors.light,
-        fontSize:constants.Dimensions.normalizeFontSize(14),        
+        fontSize:constants.Dimensions.normalizeFontSize(13),        
         
     },
     programShortName:{
         fontFamily:constants.Fonts.PoppinsBold,
         color:constants.Colors.light,
-        fontSize:constants.Dimensions.normalizeFontSize(14),        
+        fontSize:constants.Dimensions.normalizeFontSize(13),        
         
     },
     programContainer:{ 

@@ -50,10 +50,12 @@ export default class EditCart extends React.Component {
             this.setState({removedFromCart:[...this.state.removedFromCart,voucher_details_id]});
         }        
         
-        // if(newCart.length  == 0){
+        if(newCart.length  == 0){
           
-        //   this.props.navigation.goBack();
-        // }
+            this.state.parameters.addToCart = this.addToCart;
+            this.state.parameters.removedFromCart = this.state.removedFromCart;
+            this.props.navigation.navigate(constants.ScreenNames.HOME_STACK.EDIT_COMMODITIES,this.state.parameters)     
+        }
   }
   
   changeCart = (item)=>{

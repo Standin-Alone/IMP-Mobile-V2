@@ -66,7 +66,7 @@ export const PrimaryHeader = ({
             )}
 
             {showAddToCartButton && (
-                <View style={{left:constants.Dimensions.vw(12),top:constants.Dimensions.vh(2) }}>
+                <View style={{left:constants.Dimensions.vw(14),top:constants.Dimensions.vh(2) }}>
                     <TouchableOpacity onPress={onAddToCart}  >
                         <MaterialIcons 
                             name="check" 
@@ -84,6 +84,7 @@ export const PrimaryHeader = ({
 
 export const PrimaryHeaderSearch = ({
     onChangeText,
+    onSubmitEditing,
     onBlur,
     onFocus,    
     onGoBack,
@@ -109,6 +110,8 @@ export const PrimaryHeaderSearch = ({
                         onFocus={onFocus} 
                         onBlur={onBlur} 
                         value={value}
+                        returnKeyType={"search"}
+                        onSubmitEditing={onSubmitEditing}
                         adjustsFontSizeToFit
                     />
                 </View>                

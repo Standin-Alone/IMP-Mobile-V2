@@ -37,12 +37,14 @@ export const BottomTabNavigator = ()=>(
             tabBarInactiveBackgroundColor: constants.Colors.light,
             tabBarActiveTintColor: constants.Colors.primary,
             tabBarInactiveTintColor: constants.Colors.dark_tint,
-            tabBarLabelStyle:styles.tabBarLabelStyle,
-            // tabBarStyle:styles.barStyle,
+            tabBarLabelStyle:styles.tabBarLabelStyle,            
             headerShown:false,
+            
             tabBarStyle:{display:getTabBarVisibility(route)},   
             
         })}
+
+        
 
 
           
@@ -51,8 +53,9 @@ export const BottomTabNavigator = ()=>(
             name ={constants.ScreenNames.BOTTOM_TABS.HOME}
             component={HomeStackComponent}
             options={({route,navigation})=>({     
-                tabBarStyle:{display:getTabBarVisibility(route)},           
-                tabBarShowLabel:false,                    
+                tabBarStyle:{display:getTabBarVisibility(route),paddingTop:constants.Dimensions.vh(2),height:constants.Dimensions.vh(13)},           
+                tabBarShowLabel:true,
+                tabBarLabel:'Home',
                 tabBarIcon: ({color})=>(
                     <constants.Icons.Octicons name="home" size={25} color={color} adjustsFontSizeToFit/>
                 )
@@ -63,8 +66,9 @@ export const BottomTabNavigator = ()=>(
             name ={constants.ScreenNames.BOTTOM_TABS.SCANNING}
             component={TransactionStackComponent}
             options={({route,navigation})=>({             
-                tabBarStyle:{display:getTabBarVisibility(route)},     
-                tabBarShowLabel:false,                    
+                tabBarStyle:{display:getTabBarVisibility(route),paddingTop:constants.Dimensions.vh(2),height:constants.Dimensions.vh(13)},           
+                tabBarShowLabel:true,       
+                tabBarLabel:'Scan Voucher',             
                 tabBarIcon: ({color})=>(
                     <constants.Icons.MaterialCommunityIcons name="qrcode-scan" size={25} color={color} adjustsFontSizeToFit/>
                 )
@@ -74,8 +78,9 @@ export const BottomTabNavigator = ()=>(
             name ={constants.ScreenNames.BOTTOM_TABS.PAYOUT_MONITORING}
             component={PayoutMonitoringStackComponent}
             options={({route,navigation})=>({ 
-                tabBarStyle:{display:getTabBarVisibility(route)},     
-                tabBarShowLabel:false,
+                tabBarStyle:{display:getTabBarVisibility(route),paddingTop:constants.Dimensions.vh(2),height:constants.Dimensions.vh(13)},           
+                tabBarShowLabel:true,
+                tabBarLabel:'Payout',      
                 tabBarIcon: ({color})=>(
                     <constants.Icons.MaterialIcons name="payments" size={25} color={color} adjustsFontSizeToFit/>
                 )
@@ -87,8 +92,9 @@ export const BottomTabNavigator = ()=>(
             name ={constants.ScreenNames.BOTTOM_TABS.USER_PROFILE}
             component={UserProfile}
             options={({route,navigation})=>({ 
-                tabBarStyle:{display:getTabBarVisibility(route)},     
-                tabBarShowLabel:false,
+                tabBarStyle:{display:getTabBarVisibility(route),paddingTop:constants.Dimensions.vh(2),height:constants.Dimensions.vh(13)},           
+                tabBarShowLabel:true,
+                tabBarLabel:'Profile',      
                 tabBarIcon: ({color})=>(
                     <constants.Icons.Octicons name="person-fill" size={25} color={color} adjustsFontSizeToFit/>
                 )
@@ -101,11 +107,11 @@ export const BottomTabNavigator = ()=>(
 
 const styles = StyleSheet.create({
     barStyle:{
-        height:constants.Dimensions.vh(16),        
+        height:constants.Dimensions.vh(17),        
     },
     tabBarLabelStyle:{
-        fontFamily:constants.Fonts.OpenSansBold,
-        fontSize:14
+        fontFamily:constants.Fonts.PoppinsRegular,
+        fontSize:constants.Dimensions.normalizeFontSize(12)
     }
 
 });

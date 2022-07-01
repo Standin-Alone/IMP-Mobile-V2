@@ -20,10 +20,10 @@ export const styles = StyleSheet.create({
     },
     logo:{
         position:'absolute',
-        height:constants.Dimensions.vh(50),
-        width:constants.Dimensions.vw(50),     
+        height:constants.Dimensions.vh(30),
+        width:constants.Dimensions.vw(30),     
         alignSelf:'center',
-        top:constants.Dimensions.vh(10)           
+        top:constants.Dimensions.vh(5)           
     },
     form:{
         backgroundColor:'rgba(0,0,0,0.5)',
@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
         width:constants.Dimensions.vw(95),
         borderRadius:20,
         position:'absolute',
-        top:constants.Dimensions.vh(70),        
+        top:constants.Dimensions.vh(40),        
         alignSelf:'center',
         flexDirection:"column",        
         
@@ -82,7 +82,7 @@ export const styles = StyleSheet.create({
     title:{
         color:constants.Colors.light,
         fontFamily:constants.Fonts.PoppinsBold,        
-        fontSize:18,
+        fontSize:constants.Dimensions.normalizeFontSize(17),
         textAlign:'center',
    },
 });

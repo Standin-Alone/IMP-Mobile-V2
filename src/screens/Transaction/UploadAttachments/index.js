@@ -37,7 +37,9 @@ export default class UploadAttachments extends React.Component {
           ],
           showSelection:false,
           latitude:'',
-          longitude:''
+          longitude:'',
+          otherAttachmentIndex:'',
+          otherAttachmentType:''
           
       };
     }
@@ -46,11 +48,13 @@ export default class UploadAttachments extends React.Component {
     setMyState = (value)=>this.setState(value);
 
 
-    openUploadSelection = (documentName)=>{
+    openUploadSelection = (documentName,otherAttachmentIndex,otherAttachmentType)=>{
         
         let parameter = {
             documentName:documentName,
-            attachments:this.state.attachments
+            attachments:this.state.attachments,
+            otherAttachmentIndex:otherAttachmentIndex,
+            otherAttachmentType:otherAttachmentType,
         }
         return openUploadSelection(parameter,this.setMyState);        
     }
@@ -107,7 +111,7 @@ export default class UploadAttachments extends React.Component {
                                 iconName={"camera-plus"}
                                 iconColor={constants.Colors.primary}
                                 iconSize= {40}
-                                onPress={()=>this.openUploadSelection(item.name)}
+                                onPress={()=>this.openUploadSelection(item.name,'','insert')}
                                 title={"Press to add photo."}
                             />
                             <View style={{ left:constants.Dimensions.vh(5) }}>                         
@@ -121,7 +125,7 @@ export default class UploadAttachments extends React.Component {
                                 <View style={{ left:constants.Dimensions.vh(5),marginVertical:constants.Dimensions.vh(4)}}>                                    
                                     <Components.ImageCard
                                         image={image}
-                                        onChangeImage={()=>this.openUploadSelection(item.name)}
+                                        onChangeImage={()=>this.openUploadSelection(item.name,index,'update')}
                                         onViewImage={()=>this.showImage(item.file)}
                                         showRemoveButton
                                         onRemove={()=>this.removeImage(index)}
@@ -135,7 +139,7 @@ export default class UploadAttachments extends React.Component {
                                             iconName={"camera-plus"}
                                             iconColor={constants.Colors.primary}
                                             iconSize= {40}
-                                            onPress={()=>this.openUploadSelection(item.name)}
+                                            onPress={()=>this.openUploadSelection(item.name,'','insert')}
                                             title={"Press to add photo."}
                                         />                                                                                  
                                     </View>  
@@ -251,7 +255,9 @@ export default class UploadAttachments extends React.Component {
                             
                         let parameter = {
                             documentName:this.state.documentName,
-                            attachments:this.state.attachments
+                            attachments:this.state.attachments,
+                            otherAttachmentIndex:this.state.otherAttachmentIndex,
+                            otherAttachmentType:this.state.otherAttachmentType
                         }
 
                         return openCamera(parameter,this.setMyState)
@@ -261,7 +267,9 @@ export default class UploadAttachments extends React.Component {
                             
                         let parameter = {
                             documentName:this.state.documentName,
-                            attachments:this.state.attachments
+                            attachments:this.state.attachments,
+                            otherAttachmentIndex:this.state.otherAttachmentIndex,
+                            otherAttachmentType:this.state.otherAttachmentType
                         }
 
                         return openGallery(parameter,this.setMyState)

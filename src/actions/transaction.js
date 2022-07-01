@@ -311,12 +311,12 @@ export const editCart = (payload,setState,props,state) => {
                 }
 
                 // sub category validation
-                if(item == 'category'){
+                if(item == 'item_category'){
 
                     if(payload.subCategories.length  > 0){
-                        if(payload['subCategory'] == ''){
+                        if(payload['item_sub_category'] == ''){
                           
-                            setState({['subCategory']:{...payload['subCategory'],error:true,errorMessage:`Please enter your sub category.`}})      
+                            setState({['item_sub_category']:{...payload['item_sub_category'],error:true,errorMessage:`Please enter your sub category.`}})      
                             countError++;
                         }
                     }                        
@@ -819,7 +819,7 @@ export const checkout = (payload,setState,props) => {
 
 export const openUploadSelection = (payload,setState) => {     
     // console.warn(payload);
-    setState({showSelection:true,documentName:payload.documentName,otherAttachmentId:payload.otherAttachmentId,type:payload.type});  
+    setState({showSelection:true,documentName:payload.documentName,otherAttachmentId:payload.otherAttachmentId,type:payload.type,otherAttachmentIndex:payload.otherAttachmentIndex,otherAttachmentType:payload.otherAttachmentType});  
 }
 
 export const openCamera = (payload,setState)=>{
@@ -844,6 +844,7 @@ export const openCamera = (payload,setState)=>{
                     let openUpCamera = await launchCamera({
                         mediaType: 'photo',
                         includeBase64: true, 
+                        saveToPhotos:true,
                         quality:0.5                   
                     });
                       
@@ -871,7 +872,16 @@ export const openCamera = (payload,setState)=>{
                     
                                         
                                         let attachmentState = [...payload.attachments];
-                                        attachmentState[index].file.push(base64_uri_exif);
+
+                                        if(payload.otherAttachmentType == 'update'){
+                                            attachmentState[index].file[payload.otherAttachmentIndex] = base64_uri_exif;
+                                        }
+
+                                        
+                                        if(payload.otherAttachmentType == 'insert'){                                            
+                                            attachmentState[index].file.push(base64_uri_exif);                                            
+                                        }
+                                       
                                         
                                         setState({attachments:attachmentState})
                                     }else if (payload.documentName == item.name) {
@@ -959,6 +969,7 @@ export const openCameraInEdit = (payload,setState)=>{
                     let openUpCamera = await launchCamera({
                         mediaType: 'photo',
                         includeBase64: true, 
+                        saveToPhotos:true,
                         quality:0.5                   
                     });
                       
@@ -1100,7 +1111,7 @@ export const openGallery = (payload,setState)=>{
 
                     // camera function
                     if (!openUpCamera.didCancel) {
-
+                
                         
                         let {assets} = openUpCamera;
 
@@ -1120,9 +1131,21 @@ export const openGallery = (payload,setState)=>{
                     
                                         
                                         let attachmentState = [...payload.attachments];
-                                        attachmentState[index].file.push(base64_uri_exif);
+                                        if(payload.otherAttachmentType == 'update'){
+                                            attachmentState[index].file[payload.otherAttachmentIndex] = base64_uri_exif;
+                                        }
+
                                         
-                                        setState({attachments:attachmentState})
+                                        if(payload.otherAttachmentType == 'insert'){                                            
+                                            attachmentState[index].file.push(base64_uri_exif);                                            
+                                        }
+
+                                        
+                                       
+
+                                        setState({attachments:attachmentState,otherAttachmentIndex:''})
+
+                                        
                                     }else if (payload.documentName == item.name) {
                     
                                         

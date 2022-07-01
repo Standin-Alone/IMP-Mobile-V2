@@ -61,9 +61,24 @@ export default class EditCommodityDetails extends React.Component {
     
     
     componentDidMount(){
-        console.warn(this.state.parameters.cartTotalAmount);
-        // console.warn((parseFloat(this.state.voucherInfo.amount_val) - parseFloat(this.state.parameters.cartTotalAmount)))
+
+        let subCategories= [];
+      
+        this.state.voucherInfo.sub_categories.map((item)=>{
+
+            if(item.fertilizer_category_id == this.state.category.value )
+            {
+
+                subCategories.push({label:item.sub_category,value:item.sub_category});
+            }   
+
+        })
         
+        
+        this.setState({subCategories:subCategories})
+        
+        this.setState({subCategory:{...this.state.subCategory,value:this.props.route.params.commodityInfo.subCategory,error:false}})
+
     }
 
     

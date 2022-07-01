@@ -38,14 +38,23 @@ export default class Home extends React.Component {
     }
 
 
-    handleViewTransaction = (item)=>{
+    handleUpdateTransactionInfo = (transactionInfo,transactionIndex)=>{
+
+        let updatedTransactedVouchers = [...this.state.transactedVouchers];
+        updatedTransactedVouchers[transactionIndex] = transactionInfo;
+
+        this.setState({transactedVouchers:updatedTransactedVouchers});
+    }
+
+    handleViewTransaction = (item,index)=>{
 
                         
     
         let payload = {
             
             transactionInfo:item,
-            
+            transactionIndex:index,
+            handleUpdateTransactionInfo:this.handleUpdateTransactionInfo         
         };
         this.setState({isLoading:true,loadingText:'Viewing transaction...'})
         
@@ -58,10 +67,10 @@ export default class Home extends React.Component {
         return(
             <Components.HomePrimaryCard
                 image={{uri:`data:image/jpeg;base64,${item.base64[0]?.image}` }}
-                title={item.reference_no}
+                title={item.fullname}
                 titleStyle={{ color:constants.Colors.secondary,fontFamily:constants.Fonts.GothamBold }}
                 subtitle={item.transac_date}
-                onViewTransaction={()=>this.handleViewTransaction(item)}
+                onViewTransaction={()=>this.handleViewTransaction(item,index)}
             />
         )
     }

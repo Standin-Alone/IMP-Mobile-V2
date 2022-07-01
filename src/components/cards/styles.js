@@ -57,7 +57,7 @@ export const styles = StyleSheet.create({
         left:constants.Dimensions.vw(2),
         top:constants.Dimensions.vh(2),
         color:'white',
-        fontSize:12,
+        fontSize:constants.Dimensions.normalizeFontSize(10),
         fontFamily:constants.Fonts.PoppinsRegular
     },
 
@@ -111,7 +111,7 @@ export const styles = StyleSheet.create({
     commodityDetails:{        
         flexDirection:'column',
         justifyContent:'space-between',        
-        left:constants.Dimensions.vw(5),      
+        left:constants.Dimensions.vw(1),      
     },
     addText:{        
         textAlign:'center',  

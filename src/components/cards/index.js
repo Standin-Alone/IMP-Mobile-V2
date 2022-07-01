@@ -233,7 +233,11 @@ export const CommodityCard = ({
                 </View>
             </View>  
                 
+          
 
+        
+        </View>   
+        <View style={{ flexDirection:'row',justifyContent:'flex-end'}}>
             {showEditButton &&
                 <View style={{ flexDirection:'row',justifyContent:'flex-start',marginHorizontal:constants.Dimensions.vw(2)}}>
                         <TouchableOpacity onPress={onEdit}>
@@ -250,8 +254,7 @@ export const CommodityCard = ({
                 </View>      
             }
 
-        
-        </View>    
+            </View> 
     </View>
 
 );

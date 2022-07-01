@@ -309,7 +309,7 @@ export default class EditUploadAttachments extends React.Component {
 
                 <Components.ImageModal
                     showImage={this.state.showImage}
-                    image={{ url: "data:image/jpeg;base64," + this.state.imageUri}}
+                    image={[{ url: "data:image/jpeg;base64," + this.state.imageUri}]}
                     onRequestClose={()=>this.setState({showImage:false})}
                 />
                 <View style={styles.container}>           

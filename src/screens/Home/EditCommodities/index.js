@@ -52,6 +52,8 @@ export default class EditCommodities extends React.Component {
     }
 
     renderItem = (item,index) =>(
+
+    
         <Components.CommodityCard
             image={item.base64}
             commodityName={item.item_name}
