@@ -73,7 +73,7 @@ export const scanQrCode =    (payload,setState,props) => {
 
 
                 }).catch((error)=>{
-                    console.warn('error',error);
+                    console.warn('error',error.response);
                     
                     Toast.show({
                         type:'error',
@@ -1123,8 +1123,11 @@ export const openGallery = (payload,setState)=>{
                             // check if image is jpeg format
                             if(cameraResponse.type == 'image/jpeg' || cameraResponse.type == 'image/jpg') {
                                 
+                                // rotate image
+                                let rotatedImage = await rotateImage(cameraResponse.base64);
+
                                 // get geo tag
-                                let base64_uri_exif = await geotagging(cameraResponse.base64,checkLocation);
+                                let base64_uri_exif = await geotagging(rotatedImage,checkLocation);
 
                                 payload.attachments.map((item, index) => {                
                                     if (payload.documentName == 'Other Documents' && item.name == 'Other Documents') {
@@ -1246,9 +1249,10 @@ export const openGalleryInEdit = (payload,setState)=>{
                             
                             // check if image is jpeg format
                             if(cameraResponse.type == 'image/jpeg' || cameraResponse.type == 'image/jpg') {
-                                
+                                // rotate image
+                                let rotatedImage = await rotateImage(cameraResponse.base64);
                                 // get geo tag
-                                let base64_uri_exif = await geotagging(cameraResponse.base64,checkLocation);
+                                let base64_uri_exif = await geotagging(rotatedImage,checkLocation);
 
                                 payload.attachments.map((item, index) => {                
                                     if (payload.documentName == 'Other Documents' && item.name == 'Other Documents') {

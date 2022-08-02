@@ -61,7 +61,7 @@ export default class FarmerProfile extends React.Component {
                     </View>
                     <View style={{ flexDirection:'row',justifyContent:'center' }}>
                         <View style={{ flexDirection:'column',bottom:constants.Dimensions.vh(2) }}>
-                            <Text style={styles.fullName}>{`${this.state.voucherInfo.first_name} ${this.state.voucherInfo.middle_name} ${this.state.voucherInfo.last_name} `}</Text>
+                            <Text style={styles.fullName}>{`${this.state.voucherInfo.first_name} ${this.state.voucherInfo.middle_name} ${this.state.voucherInfo.last_name} ${this.state.voucherInfo.ext_name &&  `, ${this.state.voucherInfo.ext_name}`  }`}</Text>
                             <Text style={styles.address}> {`${this.state.voucherInfo.brgy_desc}, ${this.state.voucherInfo.mun_desc},${this.state.voucherInfo.prv_desc}, ${this.state.voucherInfo.reg_desc} `}</Text>
                         </View>
                     </View>

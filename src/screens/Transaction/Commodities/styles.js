@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
         position: 'absolute',
         left:0,
         right: 0,
-        bottom: constants.Dimensions.vh(2),
+        bottom: 0,
         backgroundColor:constants.Colors.light,
         paddingVertical:constants.Dimensions.vh(5),
         borderTopWidth:0.5,

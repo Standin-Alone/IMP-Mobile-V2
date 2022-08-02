@@ -4,7 +4,7 @@ import constants from '../../../constants';
 import {styles} from './styles'
 import Components from '../../../components';
 import { goToEditCart,goToEditAttachments } from '../../../actions/transaction';
-
+import { GET_SESSION } from '../../../utils/async_storage';
 export default class ViewTransaction extends React.Component {
     constructor(props) {
       super(props);
@@ -14,12 +14,13 @@ export default class ViewTransaction extends React.Component {
           isReadyToRender:true,
           showImage:false,
           imageUri:'',
+          userId:''
          
       };
     }
 
-    componentDidMount(){
-        
+    async componentDidMount(){
+
 
         BackHandler.addEventListener("hardwareBackPress", ()=>{
             if(this.props.route.params.hasOwnProperty('handleUpdateTransactionInfo')){
@@ -29,6 +30,8 @@ export default class ViewTransaction extends React.Component {
             this.props.navigation.goBack()
             return true;
         });  
+        
+        this.setState({userId : await GET_SESSION('USER_ID')})
     }
 
     
@@ -205,7 +208,7 @@ export default class ViewTransaction extends React.Component {
                             <View style={{ flexDirection:'column',marginVertical:constants.Dimensions.vh(5)}}>
                                 <View style={{ flexDirection:'row',justifyContent:'space-between' }}>
                                     <Text style={styles.cardHeader}>Commodities</Text>
-                                    {!this.state.transactionInfo.batch_id &&
+                                    {!this.state.transactionInfo.batch_id && this.state.transactionInfo.supplier_id == this.state.userId &&
                                         <View style={{ right:constants.Dimensions.vw(5) }}>                                        
                                           <TouchableOpacity onPress={this.handleGoToEditCart}>
                                               <constants.Icons.MaterialCommunityIcons
@@ -259,7 +262,7 @@ export default class ViewTransaction extends React.Component {
                             <View style={{ flexDirection:'column',marginVertical:constants.Dimensions.vh(4)}}>
                             <View style={{ flexDirection:'row',justifyContent:'space-between',marginBottom:constants.Dimensions.vh(2)}}>
                                     <Text style={styles.cardHeader}>Attachments</Text>
-                                    {!this.state.transactionInfo.batch_id &&                                    
+                                    {!this.state.transactionInfo.batch_id && this.state.transactionInfo.supplier_id == this.state.userId &&                                    
                                         <View style={{ right:constants.Dimensions.vw(5) }}>
                                             <TouchableOpacity onPress={this.handleGoToEditAttachments}>
                                                 <constants.Icons.MaterialCommunityIcons
