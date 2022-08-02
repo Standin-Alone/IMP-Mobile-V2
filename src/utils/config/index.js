@@ -1,4 +1,4 @@
-const API_DEV_HOST = `http://172.17.150.188/evoucher/api-v2/`;
+const API_DEV_HOST = `http://192.168.1.8/evoucher/api-v2/`;
 // const API_DEV_HOST = `https://devsysadd.da.gov.ph/evoucher/api-v2/`;
 const API_PROD_HOST = `https://imp-app.da.gov.ph/api-v2/`;
 

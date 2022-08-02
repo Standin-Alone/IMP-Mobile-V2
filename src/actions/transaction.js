@@ -57,7 +57,16 @@ export const scanQrCode =    (payload,setState,props) => {
                         setState({isLoading:false,isScanning:true});
                         
                         // NAVIGATE TO VIEW TRANSACTION
-                        props.navigation.navigate(constants.ScreenNames.HOME_STACK.VIEW_TRANSACTION,parameters)                                    
+                        if(response.data.voucherInfo.length > 0){
+                           props.navigation.navigate(constants.ScreenNames.HOME_STACK.VIEW_TRANSACTION,parameters)                                    
+                        }else{
+                            Toast.show({
+                                type:'error',
+                                text1: 'Message',
+                                text2:response.data.message,
+                            });
+                        }
+
                     }else{
                         Toast.show({
                             type:'error',
