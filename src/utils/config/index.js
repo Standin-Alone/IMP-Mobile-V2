@@ -4,7 +4,7 @@ const API_PROD_HOST = `https://imp-app.da.gov.ph/api-v2/`;
 
 const Config = {
     // 0 => Devlopment env, 1 => Production env
-    APP_MODE:0,
+    APP_MODE:1,
     DEVELOPMENT: {
         API_HOST: `${API_DEV_HOST}`,
         API_ACCESS_POINT: `${API_DEV_HOST}`,
