@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     },
     tabBarLabelStyle:{
         fontFamily:constants.Fonts.PoppinsRegular,
-        fontSize:constants.Dimensions.normalizeFontSize(12)
+        fontSize:constants.Dimensions.normalizeFontSize(6)
     }
 
 });

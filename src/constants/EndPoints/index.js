@@ -11,9 +11,8 @@ const EndPoints = {
     SEARCH_VOUCHER:'search-voucher',
     UPDATE_ATTACHMENTS:'update-attachments',
     UPDATE_CART:'update-cart',
-    CHECK_IN_BATCH:'check-in-batch'
-    
-
+    CHECK_IN_BATCH:'check-in-batch',
+    CHECK_LAST_ATTACHMENTS:'check-last-attachments'
 }
 
 

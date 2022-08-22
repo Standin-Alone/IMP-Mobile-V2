@@ -237,8 +237,8 @@ export default class EditCommodityDetails extends React.Component {
                             />
                         </View>
 
-                        {/*  show sub category if organic fertilize   */}
-                        { this.state.item_category.value == 2 &&
+                        {/*  show sub category if inorganic fertilize   */}
+                        { this.state.item_category.value == 1 &&
                             <View style={styles.form}>
                                 <Text style={styles.label}>Sub Category</Text>
                                 <Components.Category

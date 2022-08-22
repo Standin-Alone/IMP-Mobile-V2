@@ -197,6 +197,9 @@ export const login = (payload,setState,props) => {
                         // // NAVIGATE TO VERIFY OTP
                         props.navigation.navigate('VerifyOtp',params);
                     }else{
+
+                        console.warn(`MAY ERROR`,response.data);
+                        
                         Toast.show({
                             type:'error',
                             text1:'Message',   
@@ -209,7 +212,7 @@ export const login = (payload,setState,props) => {
                      setState({isLoading:false});
                 }).catch((error)=>{
                     
-                    console.warn(error.response);
+                    console.warn(`MAY ERROR`,error);
                     Toast.show({
                         type:'error',
                         text1:'Something went wrong!'

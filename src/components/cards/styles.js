@@ -55,9 +55,9 @@ export const styles = StyleSheet.create({
     },
     cardHeaderText:{
         left:constants.Dimensions.vw(2),
-        top:constants.Dimensions.vh(2),
+        top:constants.Dimensions.vh(2),        
         color:'white',
-        fontSize:constants.Dimensions.normalizeFontSize(10),
+        fontSize:constants.Dimensions.normalizeFontSize(5),
         fontFamily:constants.Fonts.PoppinsRegular
     },
 

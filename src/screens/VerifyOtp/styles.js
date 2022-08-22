@@ -11,26 +11,26 @@ export const styles = StyleSheet.create({
         backgroundColor:constants.Colors.light        
     },
     otpVerificationTitleContainer:{
-        top: constants.Dimensions.vw(50),  
+        top: constants.Dimensions.vw(10),  
         justifyContent:'center'
     },
     otpVerificationTitle:{  
         textAlign:'center',
         fontFamily:constants.Fonts.OpenSansBold,        
-        fontSize:28,
+        fontSize:constants.Dimensions.normalizeFontSize(16),
         color:constants.Colors.dark
     },
     otpSubtitle:{
         textAlign:'center',
         fontFamily:constants.Fonts.NexaRegular,
-        fontSize:18,     
+        fontSize:constants.Dimensions.normalizeFontSize(9),
     },  
     email:{ 
         color:constants.Colors.primary,
         fontFamily:constants.Fonts.GothamBold
     },  
     codeFieldContainer:{
-        top: constants.Dimensions.vw(70),                
+        top: constants.Dimensions.vw(20),                
     },  
     cell: {
         width: constants.Dimensions.vw(14),
@@ -49,7 +49,7 @@ export const styles = StyleSheet.create({
 
     },
     buttonContainer:{
-        top:constants.Dimensions.vh(80),    
+        top:constants.Dimensions.vh(30),    
         left:constants.Dimensions.vw(5),  
         flexDirection:'column',
         flex:0.25

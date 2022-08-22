@@ -82,7 +82,7 @@ export const styles = StyleSheet.create({
     title:{
         color:constants.Colors.light,
         fontFamily:constants.Fonts.PoppinsBold,        
-        fontSize:constants.Dimensions.normalizeFontSize(17),
+        fontSize:constants.Dimensions.normalizeFontSize(12),
         textAlign:'center',
    },
 });

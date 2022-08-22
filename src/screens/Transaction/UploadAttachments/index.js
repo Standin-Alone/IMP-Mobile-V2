@@ -3,7 +3,7 @@ import { View,Text,FlatList} from 'react-native';
 import constants from '../../../constants';
 import {styles} from './styles'
 import Components from '../../../components';
-import { goToReviewTransaction, openUploadSelection,openCamera, openGallery } from '../../../actions/transaction';
+import { goToReviewTransaction, checkLastAttachments,openUploadSelection,openCamera, openGallery } from '../../../actions/transaction';
 
 export default class UploadAttachments extends React.Component {
     constructor(props) {
@@ -46,7 +46,17 @@ export default class UploadAttachments extends React.Component {
     
 
     setMyState = (value)=>this.setState(value);
+    
+    componentDidMount(){
 
+        let parameter = {
+            voucherInfo:this.props.route.params.voucherInfo[0]
+        }
+        checkLastAttachments(parameter,this.setMyState,this.props);
+
+
+        
+    }
 
     openUploadSelection = (documentName,otherAttachmentIndex,otherAttachmentType)=>{
         

@@ -49,7 +49,7 @@ export const checkAppVersion = async ()=>{
         
          // if internet connected
          if(state.isConnected && state.isInternetReachable){
-            console.warn(`${getBaseUrl().accesspoint}${constants.EndPoints.CHECK_APP_VERSION}`)
+        
             // POST REQUEST
            await  POST(`${getBaseUrl().accesspoint}${constants.EndPoints.CHECK_APP_VERSION}`,cleanPayload).then((response)=>{                    
                   
@@ -68,7 +68,7 @@ export const checkAppVersion = async ()=>{
                
                 
             }).catch((error)=>{
-                console.warn(error)                
+                console.warn('check_app',error)                
                 
                 Toast.show({
                     type:'error',

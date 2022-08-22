@@ -32,7 +32,7 @@ export const scanQrCode =    (payload,setState,props) => {
                            
                 // POST REQUEST
                 POST(`${getBaseUrl().accesspoint}${constants.EndPoints.SCAN_QR_CODE}`,clean_payload).then((response)=>{  
-                    console.warn(response.data.fullyClaimed);  
+                    console.warn(response);  
                     if(response.data.status == true){
                          
 
@@ -82,7 +82,7 @@ export const scanQrCode =    (payload,setState,props) => {
 
 
                 }).catch((error)=>{
-                    console.warn('error',error.response);
+                    console.warn('error',error);
                     
                     Toast.show({
                         type:'error',
@@ -1567,12 +1567,13 @@ export const updateAttachments = (payload,setState,props)=>{
                         text1:'Message',  
                         text2: response.data.errorMessage
                     });
+                    console.warn(response.data.errorMessage);
                     setState({isLoading:false});                                                                                           
                 }
                
             }).catch((error)=>{
                     
-                console.warn(error);
+                console.warn(error.response);
                 Toast.show({
                     type:'error',
                     text1:'Something went wrong!',                     
@@ -1668,6 +1669,148 @@ export const updateCart = (payload,setState,props)=>{
              setState({isLoading:false});
         }
 
+         }else{
+             //  No internet Connection
+            Toast.show({
+                type:'error',
+                text1:'No internet Connection!'
+            })
+             // turn off loading
+            setState({isLoading:false});
+         }
+    });
+
+}
+
+
+
+
+
+
+
+
+
+
+
+export const checkLastAttachments = (payload,setState,props)=>{
+    
+    // Check Internet Connection
+    NetInfo.fetch().then((state)=>{
+
+
+        let cleanPayload  = {
+            voucherInfo:props.route.params.voucherInfo
+        }   
+
+        
+
+     
+         // if internet connected
+         if(state.isConnected && state.isInternetReachable){
+            console.warn(`${getBaseUrl().accesspoint}${constants.EndPoints.CHECK_LAST_ATTACHMENTS}`)
+            // POST REQUEST
+            POST(`${getBaseUrl().accesspoint}${constants.EndPoints.CHECK_LAST_ATTACHMENTS}`,cleanPayload).then((response)=>{       
+                
+                if(response.data.status == true){
+
+
+                    let attachments = [
+                        {
+                        name: "Valid ID",
+                        file: [{ front: null, back: null }],
+                      },
+                      {name:"Other Documents",file:[]}
+                    ];
+
+                    
+
+                if(response.data.previousAttachments.length > 0 ){
+
+                    response.data.previousAttachments.map((item,index)=>{
+
+                        if(item?.name == "Beneficiary with Commodity" ){
+
+                            let checkName = attachments.some((info)=>info.name == 'Beneficiary with Commodity');
+
+                            if(!checkName){
+                                attachments.push({
+                                    name: "Beneficiary with Commodity",
+                                    file: item.image,
+                                  })
+                            }
+
+
+                        }else if(item?.name == "Valid ID"){
+                            
+
+                            
+                            attachments.map((attachmentsInfo)=>{
+                                if(attachmentsInfo.name == "Valid ID"){
+                                        let checkIfHasFile = attachmentsInfo.file.some((validId) => validId.front == null);
+                                        if(checkIfHasFile){
+                                            attachmentsInfo.file[0].front = item.image;
+                                        }else{
+                                            attachmentsInfo.file[0].back = item.image;
+                                        }
+                                }
+                                return attachmentsInfo;
+                            })
+                                
+                                                   
+                        }else if(item?.name == "Receipt"){
+                            let checkName = attachments.some((info)=>info.name == 'Receipt');
+                            
+                            if(!checkName){
+                                    attachments.push({
+                                        name: "Receipt",
+                                        file: item.image,
+                                    })
+                            }
+                                               
+                        }else if(item?.name == 'Other Documents'){
+
+
+                            attachments.map((attachmentsInfo)=>{
+                                if(attachmentsInfo.name == "Other Documents"){
+                                        attachmentsInfo.file.push(item.image)
+                                }                                
+                                return attachmentsInfo
+                            })
+
+                        }
+                    });
+
+                    let newOrder = ["Beneficiary with Commodities","Valid ID", "Receipt", "Other Documents"];
+
+                    const cleanAttachment = attachments.sort(({name: a}, {name: b}) => newOrder.indexOf(a) - newOrder.indexOf(b));
+
+
+                    
+                    
+                    setState({attachments:cleanAttachment})
+                }
+
+                    setState({isLoading:false});                                                                                           
+                }else{
+                 
+                    console.warn(`ERRORs`,response.data);
+                    setState({isLoading:false});                                                                                           
+                }
+               
+            }).catch((error)=>{
+                    
+                console.warn(`ERROR`,error);
+                Toast.show({
+                    type:'error',
+                    text1:'Something went wrong!',                     
+                    text2:error.response
+                });
+                
+                // turn off loading
+                setState({isLoading:false});
+            });
+
+         
          }else{
              //  No internet Connection
             Toast.show({

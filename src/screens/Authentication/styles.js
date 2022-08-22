@@ -33,7 +33,7 @@ export const styles = StyleSheet.create({
     title:{
         color:constants.Colors.light,
         fontFamily:constants.Fonts.PoppinsBold,        
-        fontSize:30,
+        fontSize:constants.Dimensions.normalizeFontSize(15),
         textAlign:'center',
    },
     loadingText:{

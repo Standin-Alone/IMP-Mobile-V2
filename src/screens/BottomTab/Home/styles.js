@@ -36,7 +36,7 @@ export const styles = StyleSheet.create({
     },
     transactionLabel:{
         fontFamily:constants.Fonts.PoppinsBold,
-        fontSize:constants.Dimensions.normalizeFontSize(15),
+        fontSize:constants.Dimensions.normalizeFontSize(9),
         color:constants.Colors.dark
     }
 });

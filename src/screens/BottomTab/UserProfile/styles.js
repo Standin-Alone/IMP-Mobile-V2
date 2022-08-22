@@ -25,13 +25,13 @@ export const styles = StyleSheet.create({
     fullName:{
         fontFamily:constants.Fonts.PoppinsBold,
         color:constants.Colors.light,
-        fontSize:18,
+        fontSize:constants.Dimensions.normalizeFontSize(8),
         textAlign:'center'
     },
     address:{
         fontFamily:constants.Fonts.PoppinsRegular,
         color:constants.Colors.light,
-        fontSize:16,
+        fontSize:constants.Dimensions.normalizeFontSize(8),
         textAlign:'center'
     },
     bottom:{
@@ -45,20 +45,20 @@ export const styles = StyleSheet.create({
     registeredProgramLabel:{
         fontFamily:constants.Fonts.PoppinsBold,
         color:constants.Colors.dark_tint,
-        fontSize:constants.Dimensions.normalizeFontSize(14),
+        fontSize:constants.Dimensions.normalizeFontSize(10),
         top:constants.Dimensions.vh(2),
         textAlign:'center'
     },
     programTitle:{
         fontFamily:constants.Fonts.PoppinsMedium,
         color:constants.Colors.light,
-        fontSize:constants.Dimensions.normalizeFontSize(13),        
+        fontSize:constants.Dimensions.normalizeFontSize(7),        
         
     },
     programShortName:{
         fontFamily:constants.Fonts.PoppinsBold,
         color:constants.Colors.light,
-        fontSize:constants.Dimensions.normalizeFontSize(13),        
+        fontSize:constants.Dimensions.normalizeFontSize(7),        
         
     },
     programContainer:{ 
