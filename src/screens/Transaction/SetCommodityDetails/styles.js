@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
    },
    detailsLabel:{
         fontFamily:constants.Fonts.PoppinsBold,
-        fontSize:14,
+        fontSize:constants.Dimensions.normalizeFontSize(6),
         color:constants.Colors.dark
     },
    scrollView:{
@@ -30,10 +30,12 @@ export const styles = StyleSheet.create({
        
    },
    remainingBalance:{
-        color:constants.Colors.danger
+        color:constants.Colors.danger,
+        left:constants.Dimensions.vw(5)
     },
    cashAdded:{
-       color:constants.Colors.primary
+       color:constants.Colors.primary,
+       left:constants.Dimensions.vw(5)
    },
    bottom:{
         position:'absolute',

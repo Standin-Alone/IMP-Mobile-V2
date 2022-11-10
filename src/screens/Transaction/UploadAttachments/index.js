@@ -50,11 +50,12 @@ export default class UploadAttachments extends React.Component {
     componentDidMount(){
 
         let parameter = {
-            voucherInfo:this.props.route.params.voucherInfo[0]
+            voucherInfo:this.props.route.params.voucherInfo
         }
+        
         checkLastAttachments(parameter,this.setMyState,this.props);
-
-
+        
+       
         
     }
 

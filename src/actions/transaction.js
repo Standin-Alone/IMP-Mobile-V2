@@ -8,6 +8,7 @@ import { GET_SESSION, SET_SESSION } from "../utils/async_storage";
 import { checkAppVersion, getLocation, rotateImage,geotagging, backgroundTime } from "../utils/functions";
 import BackgroundTimer from 'react-native-background-timer';
 import {launchCamera,launchImageLibrary} from 'react-native-image-picker';
+import Exif from 'react-native-exif';
 
 export const scanQrCode =    (payload,setState,props) => {     
     //turn on loading
@@ -192,8 +193,9 @@ export const addToCart = (payload,setState,props) => {
                 if(item == 'category'){
 
                     if(payload.subCategories.length  > 0){
-                        if(payload['subCategory'] == ''){
-                          
+                        
+                        if(payload['subCategory'] == '' || payload.subCategory === undefined ){
+                            
                             setState({['subCategory']:{...payload['subCategory'],error:true,errorMessage:`Please enter your sub category.`}})      
                             countError++;
                         }
@@ -323,7 +325,7 @@ export const editCart = (payload,setState,props,state) => {
                 if(item == 'item_category'){
 
                     if(payload.subCategories.length  > 0){
-                        if(payload['item_sub_category'] == ''){
+                        if(payload['item_sub_category'] == '' || payload['item_sub_category'] === undefined){
                           
                             setState({['item_sub_category']:{...payload['item_sub_category'],error:true,errorMessage:`Please enter your sub category.`}})      
                             countError++;
@@ -347,6 +349,7 @@ export const editCart = (payload,setState,props,state) => {
                         text2:'Please consume the remaining balance.'
                     })
                 }else{
+                    console.warn(payload);
                     props.route.params.changeCart(payload);
                     props.navigation.goBack();
                 }
@@ -449,9 +452,11 @@ export const goToCheckout = (payload,setState,props) => {
             if(checkVersion.status){
 
                 if(payload.cart.length > 0){
-                    let cartTotal = payload.cart.reduce((prev, current) => prev + parseFloat(current.totalAmount), 0);
+                    let cartTotal = payload.cart.reduce((prev, current) => prev + parseFloat(current.totalAmount), 0).toFixed(2);
                     let checkBalance = payload.voucherInfo.amount_val  - cartTotal;
+
                     
+
                      // FOR ONE TIME TRANSACTION ONLY
                     if(payload.voucherInfo.one_time_transaction == '1'){
                         if(checkBalance <=  0){
@@ -780,7 +785,7 @@ export const checkout = (payload,setState,props) => {
 
                 // FOR ONE TIME TRANSACTION ONLY
                 if(payload.voucherInfo.one_time_transaction == '1'){
-                    let cartTotal = payload.cart.reduce((prev, current) => prev + parseFloat(current.totalAmount), 0);
+                    let cartTotal = payload.cart.reduce((prev, current) => prev + parseFloat(current.totalAmount), 0).toFixed(2);
                     let checkBalance = payload.voucherInfo.amount_val  - cartTotal;                    
              
                     if(checkBalance <=  0){
@@ -871,8 +876,13 @@ export const openCamera = (payload,setState)=>{
                             
                             // check if image is jpeg format
                             if(cameraResponse.type == 'image/jpeg' || cameraResponse.type == 'image/jpg') {
+                                
+
+                                const orientation = await Exif.getExif(cameraResponse.uri);
+                                
                                 // rotate image
-                                let rotatedImage = await rotateImage(cameraResponse.base64);
+                                let rotatedImage = await rotateImage(cameraResponse.base64,orientation.Orientation);
+                                
                                 // get geo tag
                                 let base64_uri_exif = await geotagging(rotatedImage,checkLocation);
 
@@ -996,8 +1006,11 @@ export const openCameraInEdit = (payload,setState)=>{
                             
                             // check if image is jpeg format
                             if(cameraResponse.type == 'image/jpeg' || cameraResponse.type == 'image/jpg') {
+
+                                const orientation = await Exif.getExif(cameraResponse.uri);
+
                                 // rotate image
-                                let rotatedImage = await rotateImage(cameraResponse.base64);
+                                let rotatedImage = await rotateImage(cameraResponse.base64,orientation.Orientation);
                                 // get geo tag
                                 let base64_uri_exif = await geotagging(rotatedImage,checkLocation);
 
@@ -1131,9 +1144,10 @@ export const openGallery = (payload,setState)=>{
                             
                             // check if image is jpeg format
                             if(cameraResponse.type == 'image/jpeg' || cameraResponse.type == 'image/jpg') {
-                                
+                                const orientation = await Exif.getExif(cameraResponse.uri);
+                              
                                 // rotate image
-                                let rotatedImage = await rotateImage(cameraResponse.base64);
+                                let rotatedImage = await rotateImage(cameraResponse.base64,orientation.Orientation);
 
                                 // get geo tag
                                 let base64_uri_exif = await geotagging(rotatedImage,checkLocation);
@@ -1258,8 +1272,10 @@ export const openGalleryInEdit = (payload,setState)=>{
                             
                             // check if image is jpeg format
                             if(cameraResponse.type == 'image/jpeg' || cameraResponse.type == 'image/jpg') {
+                                const orientation = await Exif.getExif(cameraResponse.uri);
+
                                 // rotate image
-                                let rotatedImage = await rotateImage(cameraResponse.base64);
+                                let rotatedImage = await rotateImage(cameraResponse.base64,orientation.Orientation);
                                 // get geo tag
                                 let base64_uri_exif = await geotagging(rotatedImage,checkLocation);
 
@@ -1468,7 +1484,7 @@ export const transact = (payload,setState,props) => {
                 
                 POST(`${getBaseUrl().accesspoint}${constants.EndPoints.TRANSACT_VOUCHER}`,payload).then((response)=>{  
                     
-                    console.warn(response.data)
+                    console.warn(response)
 
                     if(response.data.status == true){
                         
@@ -1541,14 +1557,14 @@ export const updateAttachments = (payload,setState,props)=>{
 
     // Check Internet Connection
     NetInfo.fetch().then((state)=>{
-
+        
          // if internet connected
          if(state.isConnected && state.isInternetReachable){
 
             if(payload.isChange){
             // POST REQUEST
             POST(`${getBaseUrl().accesspoint}${constants.EndPoints.UPDATE_ATTACHMENTS}`,payload).then((response)=>{       
-                
+                console.warn(response.data);
                 if(response.data.status == true){
 
                     Toast.show({
@@ -1558,8 +1574,8 @@ export const updateAttachments = (payload,setState,props)=>{
                     });         
                     setState({isLoading:false});                                                                                           
 
-                    props.route.params.updateAttachmentList( response.data.updatedAttachments);
-                    props.navigation.goBack();
+                    // props.route.params.updateAttachmentList( response.data.updatedAttachments);
+                    // props.navigation.goBack();
                     return true;
                 }else{
                     Toast.show({
@@ -1567,7 +1583,7 @@ export const updateAttachments = (payload,setState,props)=>{
                         text1:'Message',  
                         text2: response.data.errorMessage
                     });
-                    console.warn(response.data.errorMessage);
+                    console.warn(response.data);
                     setState({isLoading:false});                                                                                           
                 }
                
@@ -1576,7 +1592,7 @@ export const updateAttachments = (payload,setState,props)=>{
                 console.warn(error.response);
                 Toast.show({
                     type:'error',
-                    text1:'Something went wrong!',                     
+                    text1:error.response,                     
                     text2:error.response
                 });
                 
@@ -1649,7 +1665,7 @@ export const updateCart = (payload,setState,props)=>{
                 setState({isLoading:false});
             }).catch((error)=>{
                     
-                console.warn(error);
+                console.warn(error.response);
                 Toast.show({
                     type:'error',
                     text1:'Something went wrong!',                     
@@ -1703,14 +1719,15 @@ export const checkLastAttachments = (payload,setState,props)=>{
         }   
 
         
-
+        
      
          // if internet connected
          if(state.isConnected && state.isInternetReachable){
-            console.warn(`${getBaseUrl().accesspoint}${constants.EndPoints.CHECK_LAST_ATTACHMENTS}`)
+         
             // POST REQUEST
             POST(`${getBaseUrl().accesspoint}${constants.EndPoints.CHECK_LAST_ATTACHMENTS}`,cleanPayload).then((response)=>{       
-                
+               
+                console.warn(response.data);
                 if(response.data.status == true){
 
 
@@ -1721,7 +1738,7 @@ export const checkLastAttachments = (payload,setState,props)=>{
                       },
                       {name:"Other Documents",file:[]}
                     ];
-
+                
                     
 
                 if(response.data.previousAttachments.length > 0 ){
@@ -1743,9 +1760,11 @@ export const checkLastAttachments = (payload,setState,props)=>{
                         }else if(item?.name == "Valid ID"){
                             
 
-                            
+                            // let getValidIdAttachments = attachments.filter((attachmentInfoItem)=> attachmentInfoItem.name == 'Valid ID' );
+                            // console.warn('SAMPLE',item);
                             attachments.map((attachmentsInfo)=>{
                                 if(attachmentsInfo.name == "Valid ID"){
+                                        console.warn('SAMPLE',attachmentsInfo.file);
                                         let checkIfHasFile = attachmentsInfo.file.some((validId) => validId.front == null);
                                         if(checkIfHasFile){
                                             attachmentsInfo.file[0].front = item.image;
@@ -1791,8 +1810,7 @@ export const checkLastAttachments = (payload,setState,props)=>{
                 }
 
                     setState({isLoading:false});                                                                                           
-                }else{
-                 
+                }else{                 
                     console.warn(`ERRORs`,response.data);
                     setState({isLoading:false});                                                                                           
                 }

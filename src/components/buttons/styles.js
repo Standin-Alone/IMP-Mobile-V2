@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
     },
     primaryButtonText:{        
         textAlign:'center',
-        fontSize:20,
+        fontSize:constants.Dimensions.normalizeFontSize(10),
         fontFamily:constants.Fonts.GothamBold,        
         color:constants.Colors.light
     },

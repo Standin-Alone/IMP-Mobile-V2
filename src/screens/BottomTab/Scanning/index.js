@@ -23,18 +23,34 @@ export default class Scanning extends React.Component {
 
     setMyState = (value)=>this.setState(value);
 
-
-    handleBarCodeRead =   async (scanResult)=>{
+    async componentDidMount(){
         let payload = {
-            scanResult:scanResult.data,
+            // scanResult:scanResult.data,
+            scanResult:'DA497DHQ6JUH',
+            
             userId: await GET_SESSION('USER_ID'),                       
         };
-        
-        if(this.state.isScanning == true){
-            return scanQrCode(payload,this.setMyState,this.props);   
-        }
-        
+        scanQrCode(payload,this.setMyState,this.props);   
     }
+
+    // handleBarCodeRead =   async ({barcodes})=>{
+        
+    //     if(barcodes.length > 0 && barcodes[0].format === 'QR_CODE'){
+       
+    //          let payload = {
+    //             scanResult:barcodes[0].data,                        
+    //             userId: await GET_SESSION('USER_ID'),                       
+    //         };
+    //         console.warn(payload);
+    //         if(this.state.isScanning == true){
+    //             return scanQrCode(payload,this.setMyState,this.props);   
+    //         }
+    //     }
+       
+        
+    // }
+
+
 
     render(){
         return(
@@ -51,11 +67,12 @@ export default class Scanning extends React.Component {
                     
                         <RNCamera
                             defaultTouchToFocus
-                            onBarCodeRead = {this.handleBarCodeRead.bind(this)}
+                            onGoogleVisionBarcodesDetected = {this.handleBarCodeRead}
+                            
                             style={[StyleSheet.absoluteFillObject,styles.container]}
                             permissionDialogTitle={'Permission to use camera'}
                             permissionDialogMessage={'We need your permission to use your camera phone'}                      
-                            barCodeTypes={[RNCamera.Constants.BarCodeType.qr]}
+                            googleVisionBarcodeType={RNCamera.Constants.GoogleVisionBarcodeDetection.BarcodeType.QR_CODE}
                         >                      
                             <BarcodeMask edgeColor={constants.Colors.primary} showAnimatedLine={false}/>                            
                         </RNCamera>  

@@ -21,14 +21,14 @@ export const styles = StyleSheet.create({
 
         fontFamily:constants.Fonts.PoppinsBold,
         color:constants.Colors.dark,
-        fontSize:16,
+        fontSize:constants.Dimensions.normalizeFontSize(8),
       
     },
     remainingBalance:{
 
         fontFamily:constants.Fonts.PoppinsBold,
         color:constants.Colors.danger,
-        fontSize:16,
+        fontSize:constants.Dimensions.normalizeFontSize(8),
       
     },
     amountText:{        
@@ -37,6 +37,14 @@ export const styles = StyleSheet.create({
         fontFamily:constants.Fonts.GothamBold,        
         color:constants.Colors.light
     },
+    emptyList:{
+    
+    },
+    emptyText:{
+        textAlign:'center',
+        fontSize:constants.Dimensions.normalizeFontSize(5),
+        fontFamily:constants.Fonts.GothamBold,                
+    }
 
 });
 

@@ -15,7 +15,8 @@ export default class Checkout extends React.Component {
           timer:this.props.route.params.timer,
           newCart:[],
           cartTotalAmount:0,
-          isLoading:false
+          isLoading:false,
+          removedItem:[]
          
       };
     }
@@ -66,13 +67,16 @@ export default class Checkout extends React.Component {
 
     handleRemoveItem = (index)=>{
           let newCart = this.state.cart;
+
+
           
+
           // remove delete 
           newCart.splice(index, 1);
 
-        
           this.setState({cartTotalAmount:  Number(this.state.cart.reduce((prev, current) => prev + parseFloat(current.totalAmount), 0)).toFixed(2)})
 
+          
           if(newCart.length  == 0){
             this.state.parameters.handleUpdateCart(newCart);
             this.props.navigation.goBack();
@@ -115,7 +119,13 @@ export default class Checkout extends React.Component {
             unitMeasurement={unitMeasurement}
             totalAmount={item.totalAmount}     
             cashAdded={item.cashAdded}     
-            showRemoveButton
+            
+            showRemoveButton={
+                Number(this.state.cart.reduce((prev, current) => prev + parseFloat(current.cashAdded), 0)).toFixed(2) > 0.00
+                && item.cashAdded > 0.00 ? true :
+                Number(this.state.cart.reduce((prev, current) => prev + parseFloat(current.cashAdded), 0)).toFixed(2) == 0.00 && true
+
+            }
             showEditButton
             showCommodityInfo
             onRemove={()=>this.handleRemoveItem(index)}  

@@ -63,7 +63,7 @@ export default class EditCart extends React.Component {
     let getCart = [...this.state.cart];
     getCart[item.index] = item;
 
-    this.setState({cart:getCart});
+    this.setState({cart:getCart,cartTotalAmount: Number(getCart.reduce((prev, current) => prev + parseFloat(current.total_amount), 0)).toFixed(2)});
   }
 
   goToEditCommodityDetails = (item,index)=>{        
@@ -108,7 +108,13 @@ export default class EditCart extends React.Component {
             unitMeasurement={unitMeasurement}
             totalAmount={item.total_amount}     
             cashAdded={item.cash_added}     
-            showRemoveButton
+        
+            showRemoveButton={
+                Number(this.state.cart.reduce((prev, current) => prev + parseFloat(current.cash_added), 0)).toFixed(2) > 0.00
+                && item.cash_added > 0.00 ? true :
+                Number(this.state.cart.reduce((prev, current) => prev + parseFloat(current.cash_added), 0)).toFixed(2) == 0.00 && true
+
+            }
             showEditButton
             showCommodityInfo
             onRemove={()=>this.handleRemoveItem(item.voucher_details_id,index)}  

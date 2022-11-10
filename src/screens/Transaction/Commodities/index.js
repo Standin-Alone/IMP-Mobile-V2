@@ -75,6 +75,26 @@ export default class Commodities extends React.Component {
     }
 
 
+    renderEmpty = ()=>{
+        return(
+            <>  
+                {this.state.cart.length == 0 ?
+                    <View style={styles.emptyList}>
+                        <Text style={styles.emptyText} numberOfLines={2}>
+                            Please contact your regional focal to setup your commodities.
+                        </Text>
+                    </View>
+                    :
+                    <View style={styles.emptyList}>
+                        <Text style={styles.emptyText} numberOfLines={2}>
+                           You remaining balance is 0.00.
+                        </Text>
+                    </View>
+                }
+                
+            </>
+        )
+    }
 
     
 
@@ -94,8 +114,10 @@ export default class Commodities extends React.Component {
                 />
 
                 <FlatList
-                    data={ this.state.cart.reduce((prev, current) => prev + parseFloat(current.totalAmount), 0) >= this.state.voucherInfo.amount_val ? [] : this.state.voucherInfo.program_items}
-                    renderItem = {({ item, index }) => this.renderItem(item, index)}                
+                    data={this.state.cart.reduce((prev, current) => prev + parseFloat(current.totalAmount), 0) >= this.state.voucherInfo.amount_val ? [] : this.state.voucherInfo.program_items}
+                    renderItem = {({ item, index }) => this.renderItem(item, index)}                                           
+                    ListEmptyComponent={this.renderEmpty}
+                    contentContainerStyle={{ paddingBottom:constants.Dimensions.vh(60) }}             
                 />
 
 

@@ -143,8 +143,8 @@ export default class EditCommodityDetails extends React.Component {
                 <Components.PrimaryHeader                    
                         onGoBack = {()=>this.props.navigation.goBack()}                        
                         title={"Edit Commodity Details"}
-                        showAddToCartButton={true}        
-                        onAddToCart={()=>this.handleEditCommodity(this.state.commodityInfo)}               
+                        showAddToCartButton={false}        
+                        
                 />       
                 <ScrollView style={{ flexGrow:0 }} >                    
 
@@ -226,8 +226,8 @@ export default class EditCommodityDetails extends React.Component {
                             />
                         </View>
 
-                        {/*  show sub category if organic fertilize   */}
-                        { this.state.category.value == 2 &&
+                        {/*  show sub category if  inorganic fertilize   */}
+                        { this.state.category.value == 1 &&
                             <View style={styles.form}>
                                 <Text style={styles.label}>Sub Category</Text>
                                 <Components.Category
@@ -249,12 +249,12 @@ export default class EditCommodityDetails extends React.Component {
                     </View>
                 </ScrollView>
 
-                <View style={styles.bottom}>
+                {/* <View style={styles.bottom}>
                     
                     <View style={{ flexDirection:'column',marginHorizontal:constants.Dimensions.vh(5) }}>
                         <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
                             <Text style={styles.detailsLabel}>Remaining balance</Text>
-                            {/* <Components.AmountText  amountStyle={styles.remainingBalance} value={this.state.subTotalAmount - this.state.totalAmount.value <= 0 ? 0 : (parseFloat(this.state.subTotalAmount) -  parseFloat(this.state.cashAdded)) - this.state.totalAmount.value }/>                                     */}
+                            
                             <Components.AmountText  amountStyle={styles.remainingBalance} value={(parseFloat(this.state.voucherInfo.amount_val) - parseFloat(this.state.parameters.cartTotalAmount)) - parseFloat(this.state.totalAmount.value) <= 0 ? 0 : (parseFloat(this.state.voucherInfo.amount_val) - parseFloat(this.state.parameters.cartTotalAmount)) - parseFloat(this.state.totalAmount.value) }/> 
                         </View>
 
@@ -263,10 +263,32 @@ export default class EditCommodityDetails extends React.Component {
                             <Text style={styles.detailsLabel}>Cash Added</Text>
                             <Components.AmountText  amountStyle={styles.cashAdded} value={(parseFloat(this.state.voucherInfo.amount_val) - parseFloat(this.state.parameters.cartTotalAmount)) -  parseFloat(this.state.totalAmount.value) <= 0 ?  parseFloat(this.state.totalAmount.value) - (parseFloat(this.state.voucherInfo.amount_val) - parseFloat(this.state.parameters.cartTotalAmount)) : 0}/>                                    
                         </View>
+                        
                     </View>
-                </View>
+                </View> */}
                 
-             
+                        
+
+                
+                <View style={styles.bottom}>
+                    <View style={{ flexDirection:'row',paddingVertical:constants.Dimensions.vh(5) }}>                    
+                        <View style={{ flexDirection:'column',marginHorizontal:constants.Dimensions.vh(2)}}>
+
+                            <View style={{ flexDirection:'row',justifyContent:'space-between',}}>
+                                <Text style={styles.detailsLabel}>Remaining balance</Text>
+                                <Components.AmountText  amountStyle={styles.remainingBalance} value={(parseFloat(this.state.voucherInfo.amount_val) - parseFloat(this.state.parameters.cartTotalAmount)) - parseFloat(this.state.totalAmount.value) <= 0 ? 0 : (parseFloat(this.state.voucherInfo.amount_val) - parseFloat(this.state.parameters.cartTotalAmount)) - parseFloat(this.state.totalAmount.value) }/> 
+                            </View>
+                            <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
+                                <Text style={styles.detailsLabel}>Cash Added</Text>
+                                <Components.AmountText  amountStyle={styles.cashAdded} value={(parseFloat(this.state.voucherInfo.amount_val) - parseFloat(this.state.parameters.cartTotalAmount)) -  parseFloat(this.state.totalAmount.value) <= 0 ?  parseFloat(this.state.totalAmount.value) - (parseFloat(this.state.voucherInfo.amount_val) - parseFloat(this.state.parameters.cartTotalAmount)) : 0}/>                                    
+                            </View>
+                        </View>
+
+                        <View style={{ flexDirection:'column',left:constants.Dimensions.vw(10)}}>                
+                           <Components.PrimaryButton title="Save" moreStyle={{width:constants.Dimensions.vw(30),height:constants.Dimensions.vh(12)}} onPress={()=>this.handleEditCommodity(this.state.commodityInfo)}/>
+                        </View>
+                    </View>                    
+                </View>
                 
             </View>         
             </>

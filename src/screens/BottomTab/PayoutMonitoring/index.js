@@ -67,6 +67,8 @@ export default class PayoutMonitoring extends React.Component {
 
         
         return(
+            
+            item.amount > 0.00 && (
             <Components.PayoutBatchCard
                 batchNumber={item.application_number}  
                 totalAmount={item.amount}  
@@ -86,6 +88,7 @@ export default class PayoutMonitoring extends React.Component {
                     ()=>this.goToPayoutTracking(item)
                 }                
             />
+            )
         )
     }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View,Text,Image, FlatList, ScrollView} from 'react-native';
+import { View,Text,Image, FlatList, ScrollView, TouchableOpacity} from 'react-native';
 import constants from '../../../constants';
 import {styles} from './styles'
 import Components from '../../../components';
@@ -126,8 +126,8 @@ export default class SetCommodityDetails extends React.Component {
                 <Components.PrimaryHeader                    
                         onGoBack = {()=>this.props.navigation.goBack()}                        
                         title={"Set Commodity Details"}
-                        showAddToCartButton={true}        
-                        onAddToCart={()=>this.handleAddToCart(this.state.commodityInfo)}               
+                        // showAddToCartButton={true}        
+                        // onAddToCart={()=>this.handleAddToCart(this.state.commodityInfo)}               
                 />       
                 <ScrollView style={{ flexGrow:0 }} >         
                  <FastImage
@@ -241,17 +241,26 @@ export default class SetCommodityDetails extends React.Component {
                 </ScrollView>
 
                 <View style={styles.bottom}>
-                    
-                    <View style={{ flexDirection:'column',marginHorizontal:constants.Dimensions.vh(5) }}>
-                        <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
-                            <Text style={styles.detailsLabel}>Remaining balance</Text>
-                            <Components.AmountText  amountStyle={styles.remainingBalance} value={(this.state.voucherInfo.amount_val - this.state.parameters.cartTotalAmount) - this.state.totalAmount.value < 0 ? 0 : (this.state.voucherInfo.amount_val - this.state.parameters.cartTotalAmount) - this.state.totalAmount.value }/>                                    
+                    <View style={{ flexDirection:'row',paddingVertical:constants.Dimensions.vh(5) }}>                    
+                        <View style={{ flexDirection:'column',marginHorizontal:constants.Dimensions.vh(2)}}>
+
+                            <View style={{ flexDirection:'row',justifyContent:'space-between',}}>
+                                <Text style={styles.detailsLabel}>Remaining balance</Text>
+                                <Components.AmountText  amountStyle={styles.remainingBalance} value={(this.state.voucherInfo.amount_val - this.state.parameters.cartTotalAmount) - this.state.totalAmount.value < 0 ? 0 : (this.state.voucherInfo.amount_val - this.state.parameters.cartTotalAmount) - this.state.totalAmount.value }/>                                    
+                            </View>
+                            <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
+                                <Text style={styles.detailsLabel}>Cash Added</Text>
+                                <Components.AmountText  amountStyle={styles.cashAdded} value={(this.state.voucherInfo.amount_val - this.state.parameters.cartTotalAmount) -  this.state.totalAmount.value < 0 ?  this.state.totalAmount.value - (this.state.voucherInfo.amount_val - this.state.parameters.cartTotalAmount) : 0}/>                                    
+                            </View>
                         </View>
-                        <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
-                            <Text style={styles.detailsLabel}>Cash Added</Text>
-                            <Components.AmountText  amountStyle={styles.cashAdded} value={(this.state.voucherInfo.amount_val - this.state.parameters.cartTotalAmount) -  this.state.totalAmount.value < 0 ?  this.state.totalAmount.value - (this.state.voucherInfo.amount_val - this.state.parameters.cartTotalAmount) : 0}/>                                    
+
+                        <View style={{ flexDirection:'column',left:constants.Dimensions.vw(10)}}>
+
+                           <Components.PrimaryButton title="Add" moreStyle={{width:constants.Dimensions.vw(30),height:constants.Dimensions.vh(12)}} onPress={()=>this.handleAddToCart(this.state.commodityInfo)}/>
                         </View>
                     </View>
+
+                    
                 </View>
                 
              

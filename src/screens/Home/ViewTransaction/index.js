@@ -183,7 +183,19 @@ export default class ViewTransaction extends React.Component {
                                     <View style={{ flexDirection:'column',left:constants.Dimensions.vh(5) }}>                                                                                
                                         <Text style={styles.voucherAmount} adjustsFontSizeToFit>{this.state.transactionInfo.fullname}</Text>                                        
                                     </View>                                    
-                                </View>                                
+                                </View>     
+
+
+                                <View style={{ flexDirection:'row' ,left:constants.Dimensions.vh(5),marginVertical:constants.Dimensions.vh(1)}}>
+                                    <View style={{ flexDirection:'row' }} >                                        
+                                        <Text style={styles.voucherAmountLabel} adjustsFontSizeToFit>Birthday:</Text>
+                                    </View>
+                                    <View style={{ flexDirection:'column',left:constants.Dimensions.vh(5) }}>                                                                                
+                                        <Text style={styles.voucherAmount} adjustsFontSizeToFit>{this.state.transactionInfo.birthday}</Text>                                        
+                                    </View>                                    
+                                </View>  
+
+                                                       
 
                                 <View style={{ flexDirection:'row' ,left:constants.Dimensions.vh(5),marginVertical:constants.Dimensions.vh(1)}}>
                                     <View style={{ flexDirection:'row' }} >                                        
@@ -210,12 +222,13 @@ export default class ViewTransaction extends React.Component {
                                     <Text style={styles.cardHeader}>Commodities</Text>
                                     {!this.state.transactionInfo.batch_id && this.state.transactionInfo.supplier_id == this.state.userId &&
                                         <View style={{ right:constants.Dimensions.vw(5) }}>                                        
-                                          <TouchableOpacity onPress={this.handleGoToEditCart}>
+                                          <TouchableOpacity onPress={this.handleGoToEditCart} style={{flexDirection:'row'}}>
                                               <constants.Icons.MaterialCommunityIcons
                                                   name="square-edit-outline"
                                                   size={20}
                                                   color={constants.Colors.warning}
                                               />
+                                              <Text style={styles.editText}>Edit</Text>
                                           </TouchableOpacity> 
                                         </View>                                    
                                     }
@@ -264,12 +277,13 @@ export default class ViewTransaction extends React.Component {
                                     <Text style={styles.cardHeader}>Attachments</Text>
                                     {!this.state.transactionInfo.batch_id && this.state.transactionInfo.supplier_id == this.state.userId &&                                    
                                         <View style={{ right:constants.Dimensions.vw(5) }}>
-                                            <TouchableOpacity onPress={this.handleGoToEditAttachments}>
+                                            <TouchableOpacity onPress={this.handleGoToEditAttachments} style={{flexDirection:'row'}}>
                                                 <constants.Icons.MaterialCommunityIcons
                                                     name="square-edit-outline"
                                                     size={20}
                                                     color={constants.Colors.warning}
                                                 />
+                                                <Text style={styles.editText}>Edit</Text>
                                             </TouchableOpacity> 
                                         </View>
                                     }

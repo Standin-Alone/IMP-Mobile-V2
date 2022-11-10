@@ -53,6 +53,7 @@ export default class ReviewTransaction extends React.Component {
     }
 
     renderAttachments = ({item,index})=>{
+            
         
         return(
             item.name == 'Other Documents'? 
@@ -64,7 +65,7 @@ export default class ReviewTransaction extends React.Component {
                         imageStyle={styles.image}
                         title={item.name}
                         buttonStyle={styles.commodityButtonImage}
-                        onPress={()=>this.showImage(item.file)}
+                        onPress={()=>this.showImage(otherDocument)}
 
                     />                    
                 ))

@@ -1,6 +1,7 @@
-const API_DEV_HOST = `http://172.17.150.201/evoucher/api-v2/`;
-// const API_DEV_HOST = `https://devsysadd.da.gov.ph/evoucher/api-v2/`;
-const API_PROD_HOST = `https://imp-app.da.gov.ph/api-v2/`;
+const API_DEV_HOST = `http://172.17.150.216/evoucher/api-v2/`;
+const EXPRESS_ACCESS_POINT = `http://172.17.150.216:8080/`;
+// const API_DEV_HOST = `https://devsysadd.da.gov.ph/imp/api-v2/`;
+const API_PROD_HOST = `https://imp-rsbsa.da.gov.ph/api-v2/`;
 
 const Config = {
     // 0 => Devlopment env, 1 => Production env
@@ -8,6 +9,7 @@ const Config = {
     DEVELOPMENT: {
         API_HOST: `${API_DEV_HOST}`,
         API_ACCESS_POINT: `${API_DEV_HOST}`,
+        EXPRESS_ACCESS_POINT:`${EXPRESS_ACCESS_POINT}`
     },
     PRODUCTION: {
         API_HOST: `${API_PROD_HOST}`,
@@ -20,6 +22,7 @@ export default function getBaseUrl() {
     let config = {
         apihost: '',
         accesspoint: '',
+        expressAccessPoint:''
     };
     
 
@@ -28,6 +31,8 @@ export default function getBaseUrl() {
             ...config,
             apihost: Config.DEVELOPMENT.API_HOST,
             accesspoint: Config.DEVELOPMENT.API_ACCESS_POINT,
+            expressAccessPoint:Config.DEVELOPMENT.EXPRESS_ACCESS_POINT
+
         };
     } else {
         config = {

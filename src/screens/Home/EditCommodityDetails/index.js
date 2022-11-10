@@ -95,8 +95,7 @@ export default class EditCommodityDetails extends React.Component {
     }   
 
     handleEditCommodity = (commodity)=>{
-        
-        
+                
         
         let parameter = {
             index:commodity.index,
@@ -154,8 +153,8 @@ export default class EditCommodityDetails extends React.Component {
                 <Components.PrimaryHeader                    
                         onGoBack = {()=>this.props.navigation.goBack()}                        
                         title={"Edit Commodity Details"}
-                        showAddToCartButton={true}        
-                        onAddToCart={()=>this.handleEditCommodity(this.state.commodityInfo)}               
+                        showAddToCartButton={false}        
+                        
                 />       
                 <ScrollView style={{ flexGrow:0 }} >                    
 
@@ -260,7 +259,7 @@ export default class EditCommodityDetails extends React.Component {
                     </View>
                 </ScrollView>
 
-                <View style={styles.bottom}>
+                {/* <View style={styles.bottom}>
                     
                     <View style={{ flexDirection:'column',marginHorizontal:constants.Dimensions.vh(5) }}>
                          <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
@@ -280,8 +279,35 @@ export default class EditCommodityDetails extends React.Component {
                                     this.state.total_amount.value  -  (parseFloat(this.state.voucherInfo.default_balance) -  parseFloat(this.state.cartTotalAmount)) }/>                                    
                          </View> 
                     </View>
-                </View>
+                </View> */}
+                        
+
                 
+                <View style={styles.bottom}>
+                    <View style={{ flexDirection:'row',paddingVertical:constants.Dimensions.vh(5) }}>                    
+                        <View style={{ flexDirection:'column',marginHorizontal:constants.Dimensions.vh(2)}}>
+
+                            <View style={{ flexDirection:'row',justifyContent:'space-between',}}>
+                                <Text style={styles.detailsLabel}>Remaining balance</Text>
+                                <Components.AmountText  amountStyle={styles.remainingBalance} value={
+                                (parseFloat(this.state.voucherInfo.default_balance) -  parseFloat(this.state.cartTotalAmount)) - this.state.total_amount.value   < 0  
+                                ? 0 : 
+                                ((parseFloat(this.state.voucherInfo.default_balance) - parseFloat(this.state.cartTotalAmount))) - parseFloat(this.state.total_amount.value) }/> 
+                            </View>
+                            <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
+                                <Text style={styles.detailsLabel}>Cash Added</Text>
+                                <Components.AmountText  amountStyle={styles.cashAdded} value={
+                                   this.state.total_amount.value  -  (parseFloat(this.state.voucherInfo.default_balance) -  parseFloat(this.state.cartTotalAmount))  < 0  
+                                    ? 0 :
+                                    this.state.total_amount.value  -  (parseFloat(this.state.voucherInfo.default_balance) -  parseFloat(this.state.cartTotalAmount)) }/>                                    
+                            </View>
+                        </View>
+
+                        <View style={{ flexDirection:'column',left:constants.Dimensions.vw(10)}}>                
+                           <Components.PrimaryButton title="Save" moreStyle={{width:constants.Dimensions.vw(30),height:constants.Dimensions.vh(12)}} onPress={()=>this.handleEditCommodity(this.state.commodityInfo)}/>
+                        </View>
+                    </View>                    
+                </View>
              
                 
             </View>         

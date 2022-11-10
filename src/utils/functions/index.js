@@ -32,6 +32,8 @@ export const backgroundTime = (timer,props)=>{
   timer
 )}
 
+
+
 export const checkAppVersion = async ()=>{
     
    
@@ -98,9 +100,9 @@ export const checkAppVersion = async ()=>{
 
 
 
-export const  rotateImage = async (uri) =>{
-
-    const rotated_image                   = await   ImageResizer.createResizedImage('data:image/jpeg,'+uri, 1920, 1080, 'JPEG', 50, 90, RNFS.DocumentDirectoryPath);
+export const  rotateImage = async (uri,orientation) =>{
+    
+    const rotated_image                   = await   ImageResizer.createResizedImage('data:image/jpeg,'+uri, 1920, 1080, 'JPEG', 50, orientation == 8  ? 270 : orientation == 6 ? 90 : orientation == 3 ? 180 : 0 , RNFS.DocumentDirectoryPath);
     const convert_rotated_image_to_base64 = await RNFS.readFile(rotated_image.uri,'base64');
   
     return convert_rotated_image_to_base64;
