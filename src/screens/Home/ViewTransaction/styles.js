@@ -16,17 +16,18 @@ export const styles = StyleSheet.create({
     },
     referenceNumberLabel:{
         fontFamily:constants.Fonts.GothamBold,
-        color:constants.Colors.secondary
+        color:constants.Colors.secondary,
+        fontSize:constants.Dimensions.normalizeFontSize(6)
     },
     referenceNumber:{
         fontFamily:constants.Fonts.GothamBold,
         color:constants.Colors.secondary,
-        fontSize:16
+        fontSize:constants.Dimensions.normalizeFontSize(8)
     },
     cardHeader:{
         fontFamily:constants.Fonts.GothamBold,
         color:constants.Colors.dark_tint,
-        fontSize:16,
+        fontSize:constants.Dimensions.normalizeFontSize(8),
         left:constants.Dimensions.vw(2)
     },
     image:{
@@ -36,6 +37,18 @@ export const styles = StyleSheet.create({
     },
     commodityButtonImage:{
         marginHorizontal:constants.Dimensions.vw(2)
+    },    
+    label:{
+        fontSize:constants.Dimensions.normalizeFontSize(7),
     },
+    cashAdded:{
+        fontSize:constants.Dimensions.normalizeFontSize(7),
+    },
+    firsCardLabel:{
+        fontSize:constants.Dimensions.normalizeFontSize(7),
+    },
+    firstCardValue:{
+        fontSize:constants.Dimensions.normalizeFontSize(7),
+    }
 });
 

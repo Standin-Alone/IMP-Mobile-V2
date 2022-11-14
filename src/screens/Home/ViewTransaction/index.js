@@ -178,7 +178,7 @@ export default class ViewTransaction extends React.Component {
 
                                 <View style={{ flexDirection:'row' ,left:constants.Dimensions.vh(5),marginVertical:constants.Dimensions.vh(1)}}>
                                     <View style={{ flexDirection:'row' }} >                                        
-                                        <Text style={styles.voucherAmountLabel} adjustsFontSizeToFit>Name:</Text>
+                                        <Text style={styles.firsCardLabel} adjustsFontSizeToFit>Name:</Text>
                                     </View>
                                     <View style={{ flexDirection:'column',left:constants.Dimensions.vh(5) }}>                                                                                
                                         <Text style={styles.voucherAmount} adjustsFontSizeToFit>{this.state.transactionInfo.fullname}</Text>                                        
@@ -188,10 +188,10 @@ export default class ViewTransaction extends React.Component {
 
                                 <View style={{ flexDirection:'row' ,left:constants.Dimensions.vh(5),marginVertical:constants.Dimensions.vh(1)}}>
                                     <View style={{ flexDirection:'row' }} >                                        
-                                        <Text style={styles.voucherAmountLabel} adjustsFontSizeToFit>Birthday:</Text>
+                                        <Text style={styles.firsCardLabel} adjustsFontSizeToFit>Birthday:</Text>
                                     </View>
                                     <View style={{ flexDirection:'column',left:constants.Dimensions.vh(5) }}>                                                                                
-                                        <Text style={styles.voucherAmount} adjustsFontSizeToFit>{this.state.transactionInfo.birthday}</Text>                                        
+                                        <Text style={styles.firsCardValue} adjustsFontSizeToFit>{this.state.transactionInfo.birthday}</Text>                                        
                                     </View>                                    
                                 </View>  
 
@@ -199,19 +199,19 @@ export default class ViewTransaction extends React.Component {
 
                                 <View style={{ flexDirection:'row' ,left:constants.Dimensions.vh(5),marginVertical:constants.Dimensions.vh(1)}}>
                                     <View style={{ flexDirection:'row' }} >                                        
-                                        <Text style={styles.voucherAmountLabel} adjustsFontSizeToFit>Program:</Text>
+                                        <Text style={styles.firsCardLabel} adjustsFontSizeToFit>Program:</Text>
                                     </View>
                                     <View style={{ flexDirection:'column',left:constants.Dimensions.vh(5),backgroundColor: this.state.transactionInfo.shortname == 'RFDV' ? constants.Colors.brown : constants.Colors.secondary,borderRadius:20,paddingHorizontal:constants.Dimensions.vw(2)}}>                                                                                
-                                        <Text style={styles.voucherAmount} adjustsFontSizeToFit>{this.state.transactionInfo.program_title}</Text>                                        
+                                        <Text style={styles.firsCardValue} adjustsFontSizeToFit>{this.state.transactionInfo.program_title}</Text>                                        
                                     </View>                                    
                                 </View>                                
 
                                 <View style={{ flexDirection:'row' ,left:constants.Dimensions.vh(5),marginVertical:constants.Dimensions.vh(1)}}>
                                     <View style={{ flexDirection:'row' }} >                                        
-                                        <Text style={styles.voucherAmountLabel} adjustsFontSizeToFit>Voucher Amount:</Text>
+                                        <Text style={styles.firsCardLabel} adjustsFontSizeToFit>Voucher Amount:</Text>
                                     </View>
                                     <View style={{ flexDirection:'column',left:constants.Dimensions.vh(5) }}>                                                                                
-                                        <Text style={styles.voucherAmount} adjustsFontSizeToFit><Components.AmountText value={this.state.transactionInfo.default_balance}/></Text>                                        
+                                        <Text style={styles.firsCardValue} adjustsFontSizeToFit><Components.AmountText value={this.state.transactionInfo.default_balance}/></Text>                                        
                                     </View>                                    
                                 </View>                                
                         </View>

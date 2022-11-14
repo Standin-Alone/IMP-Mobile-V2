@@ -5,13 +5,10 @@ import constants from '../../constants';
 import { styles } from './styles';
 import { login } from '../../actions/auth';
 
-
-
 export default class Login extends React.Component {
     constructor(props) {
       super(props);
       this.state = {        
-
           username:{
               focus:false,
               error:false,
